@@ -16,8 +16,12 @@ const AdminDashboard = () => {
 
     setLoading(true);
     Promise.all([
-      axios.get('${import.meta.env.VITE_API_URL}/api/admin/users', { headers: { Authorization: `Bearer ${token}` } }),
-      axios.get('${import.meta.env.VITE_API_URL}/api/donations', { headers: { Authorization: `Bearer ${token}` } }),
+      axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`, { 
+        headers: { Authorization: `Bearer ${token}` } 
+      }),
+      axios.get(`${import.meta.env.VITE_API_URL}/api/donations`, { 
+        headers: { Authorization: `Bearer ${token}` } 
+      }),
     ])
       .then(([usersRes, donationsRes]) => {
         setUsers(usersRes.data);
@@ -32,18 +36,26 @@ const AdminDashboard = () => {
 
   const handleApprove = async (id) => {
     const token = localStorage.getItem('token');
-    await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { isApproved: true }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, 
+      { isApproved: true }, 
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setUsers(users.map(u => u._id === id ? { ...u, isApproved: true } : u));
   };
 
   const handleToggleRole = async (id, currentRole) => {
     const token = localStorage.getItem('token');
     const newRole = currentRole === 'admin' ? 'alumni' : 'admin';
-    await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { role: newRole }, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, 
+      { role: newRole }, 
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     setUsers(users.map(u => u._id === id ? { ...u, role: newRole } : u));
   };
 
@@ -64,7 +76,7 @@ const AdminDashboard = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-            Admin
+            Admin Dashboard
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed">
             Guardian of our sisterhood — welcome, approve, and nurture our growing family with care.
@@ -161,7 +173,7 @@ const AdminDashboard = () => {
           </div>
         </motion.div>
 
-        {/* All Members Table (Optional - Hidden if too long) */}
+        {/* All Members Table */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

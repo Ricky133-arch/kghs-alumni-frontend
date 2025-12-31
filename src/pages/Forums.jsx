@@ -11,7 +11,7 @@ const Forums = () => {
 
   useEffect(() => {
     axios
-      .get('${import.meta.env.VITE_API_URL}/api/forums')
+      .get(`${import.meta.env.VITE_API_URL}/api/forums`)  // ← Fixed: backticks
       .then((res) => {
         // Sort newest first
         setThreads(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -25,17 +25,30 @@ const Forums = () => {
 
   const handleCreateThread = async (e) => {
     e.preventDefault();
-    if (!newThread.title || !newThread.content) return;
+    if (!newThread.title.trim() || !newThread.content.trim()) {
+      alert('Please add a title and message.');
+      return;
+    }
 
     setCreating(true);
     const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to start a conversation.');
+      setCreating(false);
+      return;
+    }
+
     try {
-      await axios.post('${import.meta.env.VITE_API_URL}/api/forums', newThread, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/forums`,  // ← Fixed: backticks
+        newThread,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       window.location.reload();
     } catch (err) {
-      alert('Failed to create thread.');
+      alert('Failed to create thread. Please try again.');
       setCreating(false);
     }
   };
@@ -46,14 +59,23 @@ const Forums = () => {
 
   const handleSubmitReply = async (threadId, e) => {
     e.preventDefault();
-    const content = replies[threadId];
-    if (!content) return;
+    const content = replies[threadId]?.trim();
+    if (!content) {
+      alert('Please write a reply.');
+      return;
+    }
 
     setReplying({ ...replying, [threadId]: true });
     const token = localStorage.getItem('token');
+    if (!token) {
+      alert('Please log in to reply.');
+      setReplying({ ...replying, [threadId]: false });
+      return;
+    }
+
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/forums/${threadId}/reply`,
+        `${import.meta.env.VITE_API_URL}/api/forums/${threadId}/reply`,  // ← Already correct
         { content },
         { headers: { Authorization: `Bearer ${token}` } }
       );

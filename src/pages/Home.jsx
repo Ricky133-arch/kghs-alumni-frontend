@@ -15,16 +15,16 @@ const Home = () => {
   const [loadingFinance, setLoadingFinance] = useState(true);
 
   useEffect(() => {
-    axios.get('${import.meta.env.VITE_API_URL}/api/news')
+    axios.get(`${import.meta.env.VITE_API_URL}/api/news`)
       .then(res => setNews(res.data.slice(0, 5)))
       .catch(() => setNews([]));
 
-    axios.get('${import.meta.env.VITE_API_URL}/api/events')
+    axios.get(`${import.meta.env.VITE_API_URL}/api/events`)
       .then(res => setEvents(res.data.slice(0, 5)))
       .catch(() => setEvents([]));
 
     // Fetch donations for finance showcase
-    axios.get('${import.meta.env.VITE_API_URL}/api/public/donations')
+    axios.get(`${import.meta.env.VITE_API_URL}/api/public/donations`)
       .then(res => {
         const data = res.data;
         setDonations(data);

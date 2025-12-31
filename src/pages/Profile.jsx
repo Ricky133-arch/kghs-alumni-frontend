@@ -21,7 +21,7 @@ const Profile = () => {
     if (!token) return navigate('/login');
 
     axios
-      .get('${import.meta.env.VITE_API_URL}/api/profile', {
+      .get(`${import.meta.env.VITE_API_URL}/api/profile`, {  // ← Fixed: backticks
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -58,12 +58,16 @@ const Profile = () => {
     });
 
     try {
-      await axios.put('${import.meta.env.VITE_API_URL}/api/profile', data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/profile`,  // ← Fixed: backticks
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
       window.location.reload();
     } catch (err) {
       alert('Update failed. Please try again.');

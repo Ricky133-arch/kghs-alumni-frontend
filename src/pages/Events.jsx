@@ -40,10 +40,15 @@ const Events = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.title || !formData.description || !formData.date || !formData.location) {
+      alert('Please fill in all fields.');
+      return;
+    }
+
     setCreating(true);
     const token = localStorage.getItem('token');
     if (!token) {
-      alert('Please log in to create an event.');
+      alert('Please log in to create a gathering.');
       setCreating(false);
       return;
     }
@@ -81,12 +86,12 @@ const Events = () => {
           </p>
         </motion.div>
 
-        {/* FullCalendar - Elegant & Pink */}
+        {/* FullCalendar - Elegant & Feminine */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 mb-20 border border-primary/20"
+          className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-10 mb-20 border border-primary/20 overflow-hidden"
         >
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -98,11 +103,17 @@ const Events = () => {
             }}
             events={events}
             eventBackgroundColor="#FFC0CB"
-            eventBorderColor="#FFB6C1"
-            eventTextColor="#333"
+            eventBorderColor="#FF69B4"
+            eventTextColor="#4a154b"
             height="auto"
             dayMaxEvents={4}
-            moreLinkText="more"
+            moreLinkText="+ more"
+            buttonText={{
+              today: 'Today',
+              month: 'Month',
+              week: 'Week',
+              day: 'Day',
+            }}
           />
         </motion.div>
 
@@ -120,6 +131,9 @@ const Events = () => {
           <div className="text-center py-20">
             <p className="text-2xl md:text-3xl text-textDark/60 font-light">
               No gatherings planned yet... but the next one will be magical 🌸
+            </p>
+            <p className="text-xl text-textDark/50 mt-6">
+              Plan one below and invite your sisters home.
             </p>
           </div>
         ) : (
