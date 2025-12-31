@@ -14,6 +14,7 @@ const Profile = () => {
   });
   const [previewPic, setPreviewPic] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false); // ← Added for feedback
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const Profile = () => {
     if (!token) return navigate('/login');
 
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/profile`, {  // ← Fixed: backticks
+      .get(`${import.meta.env.VITE_API_URL}/api/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -51,6 +52,7 @@ const Profile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    setSuccess(false);
     const token = localStorage.getItem('token');
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -59,7 +61,7 @@ const Profile = () => {
 
     try {
       await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/profile`,  // ← Fixed: backticks
+        `${import.meta.env.VITE_API_URL}/api/profile`,
         data,
         {
           headers: {
@@ -68,14 +70,18 @@ const Profile = () => {
           },
         }
       );
+      setSuccess(true);
+      setSaving(false);
+      // Optional: reload to show fresh data
       window.location.reload();
     } catch (err) {
+      console.error('Profile update error:', err);
       alert('Update failed. Please try again.');
       setSaving(false);
     }
   };
 
-  if (!user) return <div className="text-center py-32 text-2xl">Loading your profile...</div>;
+  if (!user) return <div className="text-center py-32 text-3xl text-primary">Loading your profile...</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/20 via-white to-primary/10 py-12 px-6">
@@ -87,7 +93,7 @@ const Profile = () => {
           className="text-center mb-12"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-4">
-            Welcome Back, {user.name} 
+            Welcome Back, {user.name} ❤️
           </h1>
           <p className="text-xl text-textDark/70">Class of {user.graduationYear}</p>
         </motion.div>
@@ -116,7 +122,7 @@ const Profile = () => {
               <p className="text-textDark/70 mt-4 text-lg">{user.location || 'Add your location'}</p>
 
               <div className="mt-8">
-                <label className="block text-primary font-semibold mb-3 cursor-pointer">
+                <label className="block text-primary font-semibold mb-3 cursor-pointer text-lg hover:underline">
                   Change Profile Photo
                   <input
                     type="file"
@@ -138,6 +144,17 @@ const Profile = () => {
           >
             <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 border border-primary/20">
               <h3 className="text-3xl font-bold text-primary mb-8">Edit Your Profile</h3>
+
+              {/* Success Message */}
+              {success && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 rounded-2xl text-center"
+                >
+                  <p className="text-xl font-bold">Profile updated successfully! ❤️</p>
+                </motion.div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div>
