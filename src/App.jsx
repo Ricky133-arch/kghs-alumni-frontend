@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+
+// Import all your pages and components
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -11,8 +13,9 @@ import News from './pages/News';
 import Forums from './pages/Forums';
 import Gallery from './pages/Gallery';
 import Donations from './pages/Donations';
+import DonationSuccess from './pages/DonationSuccess';
 import AdminDashboard from './pages/AdminDashboard';
-import Navbar from './components/Navbar'; // Add this for navigation
+import Navbar from './components/Navbar';
 
 function App() {
   return (
@@ -30,8 +33,8 @@ function App() {
           <Route path="/forums" element={<Forums />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/donations" element={<Donations />} />
-          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/donations/success" element={<DonationSuccess />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </AnimatePresence>
     </Router>
