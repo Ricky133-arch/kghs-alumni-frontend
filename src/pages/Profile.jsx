@@ -21,7 +21,7 @@ const Profile = () => {
     if (!token) return navigate('/login');
 
     axios
-      .get('http://localhost:5000/api/profile', {
+      .get('${import.meta.env.VITE_API_URL}/api/profile', {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -58,7 +58,7 @@ const Profile = () => {
     });
 
     try {
-      await axios.put('http://localhost:5000/api/profile', data, {
+      await axios.put('${import.meta.env.VITE_API_URL}/api/profile', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

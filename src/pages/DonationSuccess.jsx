@@ -16,7 +16,7 @@ const DonationSuccess = () => {
       }
 
       axios
-        .get(`http://localhost:5000/api/donations/verify/${reference}`, {
+        .get(`${import.meta.env.VITE_API_URL}/api/donations/verify/${reference}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {

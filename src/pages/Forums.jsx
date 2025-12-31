@@ -11,7 +11,7 @@ const Forums = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/forums')
+      .get('${import.meta.env.VITE_API_URL}/api/forums')
       .then((res) => {
         // Sort newest first
         setThreads(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -30,7 +30,7 @@ const Forums = () => {
     setCreating(true);
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:5000/api/forums', newThread, {
+      await axios.post('${import.meta.env.VITE_API_URL}/api/forums', newThread, {
         headers: { Authorization: `Bearer ${token}` },
       });
       window.location.reload();
@@ -53,7 +53,7 @@ const Forums = () => {
     const token = localStorage.getItem('token');
     try {
       await axios.post(
-        `http://localhost:5000/api/forums/${threadId}/reply`,
+        `${import.meta.env.VITE_API_URL}/api/forums/${threadId}/reply`,
         { content },
         { headers: { Authorization: `Bearer ${token}` } }
       );

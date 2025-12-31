@@ -16,8 +16,8 @@ const AdminDashboard = () => {
 
     setLoading(true);
     Promise.all([
-      axios.get('http://localhost:5000/api/admin/users', { headers: { Authorization: `Bearer ${token}` } }),
-      axios.get('http://localhost:5000/api/donations', { headers: { Authorization: `Bearer ${token}` } }),
+      axios.get('${import.meta.env.VITE_API_URL}/api/admin/users', { headers: { Authorization: `Bearer ${token}` } }),
+      axios.get('${import.meta.env.VITE_API_URL}/api/donations', { headers: { Authorization: `Bearer ${token}` } }),
     ])
       .then(([usersRes, donationsRes]) => {
         setUsers(usersRes.data);
@@ -32,7 +32,7 @@ const AdminDashboard = () => {
 
   const handleApprove = async (id) => {
     const token = localStorage.getItem('token');
-    await axios.put(`http://localhost:5000/api/admin/users/${id}`, { isApproved: true }, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { isApproved: true }, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setUsers(users.map(u => u._id === id ? { ...u, isApproved: true } : u));
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
   const handleToggleRole = async (id, currentRole) => {
     const token = localStorage.getItem('token');
     const newRole = currentRole === 'admin' ? 'alumni' : 'admin';
-    await axios.put(`http://localhost:5000/api/admin/users/${id}`, { role: newRole }, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { role: newRole }, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setUsers(users.map(u => u._id === id ? { ...u, role: newRole } : u));

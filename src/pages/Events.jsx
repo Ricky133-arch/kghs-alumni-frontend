@@ -18,7 +18,7 @@ const Events = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/events')
+      .get(`${import.meta.env.VITE_API_URL}/api/events`)
       .then((res) => {
         const formattedEvents = res.data.map((e) => ({
           id: e._id,
@@ -50,7 +50,7 @@ const Events = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/events',
+        `${import.meta.env.VITE_API_URL}/api/events`,
         formData,
         {
           headers: { Authorization: `Bearer ${token}` },

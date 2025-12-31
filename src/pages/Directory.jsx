@@ -14,7 +14,7 @@ const Directory = () => {
 
     setLoading(true);
     axios
-      .get(`http://localhost:5000/api/directory?year=${year}&location=${location}`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/directory?year=${year}&location=${location}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

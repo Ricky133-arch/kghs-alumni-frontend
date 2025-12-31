@@ -11,7 +11,7 @@ const Gallery = () => {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/api/gallery')
+      .get('${import.meta.env.VITE_API_URL}/api/gallery')
       .then((res) => {
         // Sort by newest first
         setImages(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -47,7 +47,7 @@ const Gallery = () => {
     data.append('image', formData.image);
 
     try {
-      await axios.post('http://localhost:5000/api/gallery', data, {
+      await axios.post('${import.meta.env.VITE_API_URL}/api/gallery', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
