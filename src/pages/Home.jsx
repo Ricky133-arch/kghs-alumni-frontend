@@ -565,34 +565,101 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Quick Links - Public Pages Only - Text only */}
-      <section className="py-16 bg-primary/10 border-t border-accent-lavender/20">
+           {/* Quick Links - Public Pages Only - Enhanced with animation */}
+      <section className="py-20 bg-primary/10 border-t border-accent-lavender/20">
         <div className="max-w-6xl mx-auto px-6">
-          <h3 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-5xl font-bold text-center text-primary mb-16"
+          >
             Explore Our Foundation
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
-            <Link to="/" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Home</span>
-            </Link>
-            <Link to="/events" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Events</span>
-            </Link>
-            <Link to="/gallery" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Gallery</span>
-            </Link>
-            <Link to="/news" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">News</span>
-            </Link>
-            <Link to="/donations" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Donate</span>
-            </Link>
-            <Link to="/signup" className="text-center group">
-              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Join Us</span>
-            </Link>
+          </motion.h3>
+
+          <div className="grid grid-cols-3 gap-12 max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <Link to="/gallery" className="block text-center group">
+                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
+                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
+                    Gallery
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Link to="/donations" className="block text-center group">
+                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
+                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
+                    Donate
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <Link to="/signup" className="block text-center group">
+                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
+                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
+                    Join Us
+                  </span>
+                </div>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Elegant Footer */}
+      <footer className="bg-primary/20 py-16 border-t border-accent-lavender/30">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h4 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+              KGHS Alumni Foundation
+            </h4>
+            <p className="text-lg text-textDark/80 mb-8 max-w-2xl mx-auto leading-relaxed">
+              Connect • Share • Inspire<br />
+              Building legacies of leadership, one sister at a time.
+            </p>
+
+            <div className="mb-10">
+              <p className="text-textDark/70 mb-2">Get in touch</p>
+              <a
+                href="mailto:alumnuskghs@gmail.com"
+                className="text-xl font-medium text-primary hover:text-accent-orchid transition underline decoration-accent-lavender/50"
+              >
+                alumnuskghs@gmail.com
+              </a>
+            </div>
+
+            <p className="text-textDark/60 text-sm">
+              © {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.
+            </p>
+          </motion.div>
+        </div>
+      </footer>
     </div>
   );
 };
