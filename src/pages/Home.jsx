@@ -94,16 +94,20 @@ const Home = () => {
           >
             Connect • Share • Inspire
           </motion.p>
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-            whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(255,192,203,0.6)" }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-primary text-white px-10 py-5 rounded-full text-xl font-semibold shadow-2xl hover:bg-pink-600 transition duration-300"
-          >
-            Join Our Community
-          </motion.button>
+
+          {/* Updated: Button now links to /signup */}
+          <Link to="/signup">
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
+              whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(255,192,203,0.6)" }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-primary text-white px-10 py-5 rounded-full text-xl font-semibold shadow-2xl hover:bg-pink-600 transition duration-300"
+            >
+              Join Our Community
+            </motion.button>
+          </Link>
         </motion.div>
       </section>
 
