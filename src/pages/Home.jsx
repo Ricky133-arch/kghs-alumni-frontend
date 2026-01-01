@@ -6,6 +6,24 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+// Heroicons – install once: npm install @heroicons/react
+import {
+  AcademicCapIcon,
+  TrophyIcon,
+  BackpackIcon,
+  BookOpenIcon,
+  PencilIcon,
+  PaintBrushIcon,
+  CalculatorIcon,
+  RulerPenIcon as RulerIcon, // Heroicons has RulerPenIcon – perfect for ruler
+  HomeIcon,
+  CalendarIcon,
+  PhotoIcon,
+  NewspaperIcon,
+  HeartIcon,
+  UserPlusIcon,
+} from '@heroicons/react/24/outline';
+
 const Home = () => {
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
@@ -476,6 +494,149 @@ const Home = () => {
               All donations go directly to supporting KGHS students and programs. Thank you for believing in the power of education.
             </p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* New: Annual Merit-Based Scholarship Section - Icons instead of emojis */}
+      <section className="py-20 md:py-28 bg-bg-cream">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-bg-light rounded-3xl shadow-2xl p-10 md:p-16 border border-accent-lavender/30"
+          >
+            <div className="text-center mb-12">
+              <AcademicCapIcon className="w-20 h-20 mx-auto text-primary mb-6" />
+              <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
+                Annual Merit-Based Scholarship
+              </h2>
+              <TrophyIcon className="w-16 h-16 mx-auto text-accent-gold" />
+            </div>
+
+            <p className="text-lg md:text-xl text-textDark/80 leading-relaxed mb-8">
+              The Foundation, in collaboration with the school Principal and a newly established 5-member Scholarship Panel of Judges, will formulate a stimulative and thought-provoking academic exercise for students in Junior Secondary School 2 (JSS2).
+            </p>
+
+            <p className="text-lg md:text-xl text-textDark/80 leading-relaxed mb-8">
+              At the conclusion of each exercise, 10 top finalists will be chosen by the Panel of Judges in a double-blinded format for an award determined by the Foundation’s Board of Trustees.
+            </p>
+
+            <h3 className="text-3xl font-bold text-primary mb-6">Objective</h3>
+            <p className="text-lg text-textDark/80 leading-relaxed mb-10">
+              This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in a written form understandable to the reader.
+            </p>
+
+            <h3 className="text-3xl font-bold text-primary mb-6 flex items-center justify-center gap-4">
+              <BackpackIcon className="w-12 h-12 text-primary" />
+              Award: Impact Backpack
+            </h3>
+            <p className="text-lg text-center text-textDark/80 leading-relaxed mb-8">
+              The Foundation will give an award package called <strong>Impact Backpack</strong>, including:
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-12">
+              <div className="flex items-center gap-4">
+                <BackpackIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Backpacks</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <BookOpenIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">80-leaf exercise books</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <PencilIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Pack of pens</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <PencilIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Pencils</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <PaintBrushIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Crayons</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <BookOpenIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Drawing books</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <CalculatorIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Mathematical sets</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <RulerIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <span className="text-textDark/80">Rulers, etc.</span>
+              </div>
+            </div>
+
+            <h3 className="text-3xl font-bold text-primary mb-6">Eligibility Requirement</h3>
+            <p className="text-lg text-textDark/80 leading-relaxed mb-10">
+              While our goal is to support every student, we establish standards to empower them. Only JSS2 students achieving at least 70% in English and Mathematics qualify — fostering healthy competition where everyone can excel.
+            </p>
+
+            <h3 className="text-3xl font-bold text-primary mb-6">2024/2025 Academic Year</h3>
+            <p className="text-lg text-textDark/80 leading-relaxed mb-8">
+              Eligible students wrote a 300-word essay on "My First Day at School." Regrettably, only three met criteria.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
+              <div className="text-center">
+                <TrophyIcon className="w-20 h-20 mx-auto text-accent-gold mb-4" />
+                <p className="text-2xl font-bold text-primary">1st Place</p>
+                <p className="text-lg mt-2">Batubo Charity Sepiribo</p>
+              </div>
+              <div className="text-center">
+                <TrophyIcon className="w-16 h-16 mx-auto text-accent-lavender mb-4" />
+                <p className="text-2xl font-bold text-primary">2nd Place</p>
+                <p className="text-lg mt-2">Davidwest Ibiso</p>
+              </div>
+              <div className="text-center">
+                <TrophyIcon className="w-14 h-14 mx-auto text-primary mb-4" />
+                <p className="text-2xl font-bold text-primary">3rd Place</p>
+                <p className="text-lg mt-2">Batubo Soibifaa</p>
+              </div>
+            </div>
+
+            <p className="text-center text-textDark/70 mt-12 text-lg italic">
+              This is what the Foundation hopes to change — more winners, more impact.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Quick Links - Public Pages Only */}
+      <section className="py-16 bg-primary/10 border-t border-accent-lavender/20">
+        <div className="max-w-6xl mx-auto px-6">
+          <h3 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">
+            Explore Our Foundation
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
+            <Link to="/" className="flex flex-col items-center group">
+              <HomeIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Home</span>
+            </Link>
+            <Link to="/events" className="flex flex-col items-center group">
+              <CalendarIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Events</span>
+            </Link>
+            <Link to="/gallery" className="flex flex-col items-center group">
+              <PhotoIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Gallery</span>
+            </Link>
+            <Link to="/news" className="flex flex-col items-center group">
+              <NewspaperIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">News</span>
+            </Link>
+            <Link to="/donations" className="flex flex-col items-center group">
+              <HeartIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Donate</span>
+            </Link>
+            <Link to="/signup" className="flex flex-col items-center group">
+              <UserPlusIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
+              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Join Us</span>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
