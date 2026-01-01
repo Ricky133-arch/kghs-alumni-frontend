@@ -1,29 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* Your exact loved vibrant hot pink as primary */
+  /* Your exact vibrant hot pink as primary - kept unchanged */
   --color-primary: #ff69b4;
 
-  /* Soft off-white / very light pinkish cream for main backgrounds - reduces stark white while keeping brightness */
-  --color-secondary: #fff5fb;
+  /* Very soft pinkish off-white for main backgrounds - warm, feminine, reduces stark white */
+  --color-secondary: #fff0f8;
 
-  /* Vibrant teal/cyan for accents - complementary pop that energizes the pink without clashing */
-  --color-accent-teal: #00ffff;
+  /* Light blush pink for cards, sections, and subtle backgrounds - stylish alternative to white */
+  --color-bg-light: #ffe4f0;
 
-  /* Fresh mint green for subtle sections or highlights - adds lively contrast */
-  --color-accent-mint: #98fb98;
-
-  /* Gold for elegant touches (buttons hover, icons) - warm and luxurious with pink */
+  /* Elegant gold for luxurious accents (button hovers, icons, borders) */
   --color-accent-gold: #ffd700;
 
-  /* Light blush pink for cards/hovers - softer white alternative */
-  --color-bg-light: #ffd1e3;
+  /* Soft lavender-purple for harmonious feminine depth (secondary accents, highlights) */
+  --color-accent-lavender: #e6ccff;
 
-  /* Deep charcoal for text - better contrast than pure black, modern feel */
-  --color-textDark: #2d1b2a;
+  /* Vibrant orchid purple for bold touches (links, subheadings) - mind-blowing pop with hot pink */
+  --color-accent-orchid: #ba55d3;
 
-  /* Medium purple for occasional bold accents - harmonious with hot pink */
-  --color-accent-purple: #ba55d3;
+  /* Warm cream for alternate sections - adds variety without pure white */
+  --color-bg-cream: #fff8fb;
+
+  /* Deep elegant charcoal for text - sophisticated contrast */
+  --color-textDark: #2c1a2a;
 }
 
 body {
@@ -32,10 +32,23 @@ body {
   margin: 0;
 }
 
-/* Example usage tips in Tailwind classes:
-   - bg-secondary for main page background (soft pinkish white)
-   - bg-bg-light for cards/sections (light blush instead of pure white)
-   - bg-primary / text-primary for buttons/headings
-   - bg-accent-teal or bg-accent-mint for vibrant accent sections
-   - hover:bg-accent-gold for button hovers
+/* Stylish Header Font: Elegant modern serif (Playfair Display) for headings */
+/* Load from Google Fonts - add this to your <head> in index.html:
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"> */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; /* Bold yet elegant */
+  letter-spacing: 0.5px; /* Slight spacing for sophistication */
+  line-height: 1.2; /* Tight for impact */
+}
+
+/* Example Tailwind usage:
+   - bg-secondary: main page
+   - bg-bg-light: cards/events/news
+   - bg-bg-cream: alternate sections (e.g., vision/values)
+   - bg-primary / text-primary: buttons/headings
+   - hover:bg-accent-gold: button hovers
+   - text-accent-orchid: accents/links
+   - border-accent-lavender: subtle borders
 */
