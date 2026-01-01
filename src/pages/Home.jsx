@@ -6,26 +6,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-// Heroicons
-import {
-  AcademicCapIcon,
-  TrophyIcon,
-  BookOpenIcon,
-  PencilIcon,
-  PaintBrushIcon,
-  CalculatorIcon,
-  RulerPenIcon as RulerIcon,
-  HomeIcon,
-  CalendarIcon,
-  PhotoIcon,
-  NewspaperIcon,
-  HeartIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/outline';
-
-// lucide-react for Backpack icon (exact school backpack style)
-import { Backpack } from 'lucide-react';
-
 const Home = () => {
   const [news, setNews] = useState([]);
   const [events, setEvents] = useState([]);
@@ -73,7 +53,6 @@ const Home = () => {
     <div className="min-h-screen bg-secondary">
       {/* Hero Section with Continuous Animation */}
       <section className="relative bg-cover bg-center bg-no-repeat text-textDark py-32 md:py-40 text-center overflow-hidden">
-        {/* Parallax + Zoom Background */}
         <motion.div
           className="absolute inset-0"
           animate={{ scale: [1.1, 1.15, 1.1] }}
@@ -85,14 +64,12 @@ const Home = () => {
           }}
         />
 
-        {/* Breathing Overlay */}
         <motion.div
           className="absolute inset-0 bg-black/40"
           animate={{ opacity: [0.35, 0.5, 0.35] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Floating Content */}
         <motion.div
           className="relative z-10 max-w-5xl mx-auto px-6"
           animate={{ y: [0, -12, 0] }}
@@ -115,7 +92,6 @@ const Home = () => {
             Connect • Share • Inspire
           </motion.p>
 
-          {/* Updated: Button now links to /signup */}
           <Link to="/signup">
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
@@ -192,7 +168,7 @@ const Home = () => {
                     <h3 className="text-2xl font-semibold mb-3 text-textDark">{event.title}</h3>
                     <p className="text-textDark/70 mb-4">{event.description || 'Join us for this exciting event!'}</p>
                     <p className="text-sm text-primary font-medium">
-                      📅 {new Date(event.date).toLocaleDateString()} • {event.location || 'Location TBD'}
+                      {new Date(event.date).toLocaleDateString()} • {event.location || 'Location TBD'}
                     </p>
                   </div>
                 </motion.div>
@@ -357,28 +333,24 @@ const Home = () => {
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Core Values</h2>
               <ul className="space-y-6 text-base md:text-lg">
                 <li className="flex items-start">
-                  <span className="text-primary text-3xl mr-4">🤝</span>
                   <div>
                     <strong className="text-textDark text-xl">Sisterhood</strong>
                     <p className="text-textDark/80 mt-1">Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.</p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary text-3xl mr-4">⭐</span>
                   <div>
                     <strong className="text-textDark text-xl">Excellence</strong>
                     <p className="text-textDark/80 mt-1">Pursuing the highest standards in education, leadership, and personal achievement.</p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary text-3xl mr-4">❤️</span>
                   <div>
                     <strong className="text-textDark text-xl">Compassion & Service</strong>
                     <p className="text-textDark/80 mt-1">Giving back to our community and uplifting those in need with kindness and generosity.</p>
                   </div>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-primary text-3xl mr-4">💪</span>
                   <div>
                     <strong className="text-textDark text-xl">Empowerment</strong>
                     <p className="text-textDark/80 mt-1">Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.</p>
@@ -499,7 +471,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* New: Annual Merit-Based Scholarship Section - Icons instead of emojis */}
+      {/* Annual Merit-Based Scholarship Section - Text only */}
       <section className="py-20 md:py-28 bg-bg-cream">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
@@ -509,11 +481,9 @@ const Home = () => {
             className="bg-bg-light rounded-3xl shadow-2xl p-10 md:p-16 border border-accent-lavender/30"
           >
             <div className="text-center mb-12">
-              <AcademicCapIcon className="w-20 h-20 mx-auto text-primary mb-6" />
               <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
                 Annual Merit-Based Scholarship
               </h2>
-              <TrophyIcon className="w-16 h-16 mx-auto text-accent-gold" />
             </div>
 
             <p className="text-lg md:text-xl text-textDark/80 leading-relaxed mb-8">
@@ -529,8 +499,7 @@ const Home = () => {
               This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in a written form understandable to the reader.
             </p>
 
-            <h3 className="text-3xl font-bold text-primary mb-6 flex items-center justify-center gap-4">
-              <Backpack className="w-12 h-12 text-primary" />
+            <h3 className="text-3xl font-bold text-primary mb-6">
               Award: Impact Backpack
             </h3>
             <p className="text-lg text-center text-textDark/80 leading-relaxed mb-8">
@@ -538,36 +507,28 @@ const Home = () => {
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-12">
-              <div className="flex items-center gap-4">
-                <Backpack className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Backpacks</span>
               </div>
-              <div className="flex items-center gap-4">
-                <BookOpenIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">80-leaf exercise books</span>
               </div>
-              <div className="flex items-center gap-4">
-                <PencilIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Pack of pens</span>
               </div>
-              <div className="flex items-center gap-4">
-                <PencilIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Pencils</span>
               </div>
-              <div className="flex items-center gap-4">
-                <PaintBrushIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Crayons</span>
               </div>
-              <div className="flex items-center gap-4">
-                <BookOpenIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Drawing books</span>
               </div>
-              <div className="flex items-center gap-4">
-                <CalculatorIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Mathematical sets</span>
               </div>
-              <div className="flex items-center gap-4">
-                <RulerIcon className="w-10 h-10 text-primary flex-shrink-0" />
+              <div className="text-center">
                 <span className="text-textDark/80">Rulers, etc.</span>
               </div>
             </div>
@@ -584,17 +545,14 @@ const Home = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
               <div className="text-center">
-                <TrophyIcon className="w-20 h-20 mx-auto text-accent-gold mb-4" />
                 <p className="text-2xl font-bold text-primary">1st Place</p>
                 <p className="text-lg mt-2">Batubo Charity Sepiribo</p>
               </div>
               <div className="text-center">
-                <TrophyIcon className="w-16 h-16 mx-auto text-accent-lavender mb-4" />
                 <p className="text-2xl font-bold text-primary">2nd Place</p>
                 <p className="text-lg mt-2">Davidwest Ibiso</p>
               </div>
               <div className="text-center">
-                <TrophyIcon className="w-14 h-14 mx-auto text-primary mb-4" />
                 <p className="text-2xl font-bold text-primary">3rd Place</p>
                 <p className="text-lg mt-2">Batubo Soibifaa</p>
               </div>
@@ -607,36 +565,30 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Quick Links - Public Pages Only */}
+      {/* Quick Links - Public Pages Only - Text only */}
       <section className="py-16 bg-primary/10 border-t border-accent-lavender/20">
         <div className="max-w-6xl mx-auto px-6">
           <h3 className="text-3xl md:text-4xl font-bold text-center text-primary mb-12">
             Explore Our Foundation
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
-            <Link to="/" className="flex flex-col items-center group">
-              <HomeIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Home</span>
+            <Link to="/" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Home</span>
             </Link>
-            <Link to="/events" className="flex flex-col items-center group">
-              <CalendarIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Events</span>
+            <Link to="/events" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Events</span>
             </Link>
-            <Link to="/gallery" className="flex flex-col items-center group">
-              <PhotoIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Gallery</span>
+            <Link to="/gallery" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Gallery</span>
             </Link>
-            <Link to="/news" className="flex flex-col items-center group">
-              <NewspaperIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">News</span>
+            <Link to="/news" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">News</span>
             </Link>
-            <Link to="/donations" className="flex flex-col items-center group">
-              <HeartIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Donate</span>
+            <Link to="/donations" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Donate</span>
             </Link>
-            <Link to="/signup" className="flex flex-col items-center group">
-              <UserPlusIcon className="w-16 h-16 text-primary group-hover:text-accent-gold transition duration-300" />
-              <span className="mt-4 text-lg font-medium text-textDark group-hover:text-primary transition">Join Us</span>
+            <Link to="/signup" className="text-center group">
+              <span className="text-2xl font-bold text-primary group-hover:text-accent-gold transition">Join Us</span>
             </Link>
           </div>
         </div>
