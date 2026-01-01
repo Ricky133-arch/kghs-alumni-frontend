@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,7 +13,6 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [showBankDetails, setShowBankDetails] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -74,7 +73,7 @@ const Signup = () => {
           </p>
         </div>
 
-        {/* Success Message with Bank Details */}
+        {/* Success Message with Bank Details Always Shown */}
         {success && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -90,36 +89,18 @@ const Signup = () => {
               Once confirmed, your account will be approved and you'll receive a welcome email.
             </p>
 
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setShowBankDetails(!showBankDetails)}
-              className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition"
-            >
-              {showBankDetails ? 'Hide' : 'Show'} Payment Details
-            </motion.button>
-
-            <AnimatePresence>
-              {showBankDetails && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="mt-10 p-8 bg-white rounded-2xl border-2 border-primary/30"
-                >
-                  <h4 className="text-2xl font-bold text-primary mb-6">Bank Transfer Details</h4>
-                  <div className="space-y-5 text-left text-lg">
-                    <p><strong>Bank:</strong> Zenith Bank Plc</p>
-                    <p><strong>Account Name:</strong> KALABARI GIRLS</p>
-                    <p><strong>Account Number:</strong> <span className="text-2xl font-bold text-primary">1226557765</span></p>
-                  </div>
-                  <p className="text-textDark/70 mt-6 italic">
-                    Please use your name or email as the transfer description for easy identification.
-                  </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Bank Details - Always Visible */}
+            <div className="mt-10 p-8 bg-white rounded-2xl border-2 border-primary/30">
+              <h4 className="text-2xl font-bold text-primary mb-6">Bank Transfer Details</h4>
+              <div className="space-y-5 text-left text-lg">
+                <p><strong>Bank:</strong> Zenith Bank Plc</p>
+                <p><strong>Account Name:</strong> KALABARI GIRLS</p>
+                <p><strong>Account Number:</strong> <span className="text-2xl font-bold text-primary">1226557765</span></p>
+              </div>
+              <p className="text-textDark/70 mt-6 italic">
+                Please use your name or email as the transfer description for easy identification.
+              </p>
+            </div>
 
             <p className="mt-10 text-lg text-textDark/70">
               You will receive a welcome email once your payment is confirmed and account approved.
