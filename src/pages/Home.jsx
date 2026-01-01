@@ -6,16 +6,15 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-// Heroicons – install once: npm install @heroicons/react
+// Heroicons
 import {
   AcademicCapIcon,
   TrophyIcon,
-  BackpackIcon,
   BookOpenIcon,
   PencilIcon,
   PaintBrushIcon,
   CalculatorIcon,
-  RulerPenIcon as RulerIcon, // Heroicons has RulerPenIcon – perfect for ruler
+  RulerPenIcon as RulerIcon,
   HomeIcon,
   CalendarIcon,
   PhotoIcon,
@@ -23,6 +22,9 @@ import {
   HeartIcon,
   UserPlusIcon,
 } from '@heroicons/react/24/outline';
+
+// lucide-react for Backpack icon (exact school backpack style)
+import { Backpack } from 'lucide-react';
 
 const Home = () => {
   const [news, setNews] = useState([]);
@@ -528,7 +530,7 @@ const Home = () => {
             </p>
 
             <h3 className="text-3xl font-bold text-primary mb-6 flex items-center justify-center gap-4">
-              <BackpackIcon className="w-12 h-12 text-primary" />
+              <Backpack className="w-12 h-12 text-primary" />
               Award: Impact Backpack
             </h3>
             <p className="text-lg text-center text-textDark/80 leading-relaxed mb-8">
@@ -537,7 +539,7 @@ const Home = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-12">
               <div className="flex items-center gap-4">
-                <BackpackIcon className="w-10 h-10 text-primary flex-shrink-0" />
+                <Backpack className="w-10 h-10 text-primary flex-shrink-0" />
                 <span className="text-textDark/80">Backpacks</span>
               </div>
               <div className="flex items-center gap-4">
