@@ -565,61 +565,111 @@ const Home = () => {
         </div>
       </section>
 
-           {/* Quick Links - Public Pages Only - Enhanced with animation */}
-      <section className="py-20 bg-primary/10 border-t border-accent-lavender/20">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
+               {/* Refined Explore Section - Clean, Elegant, Modern */}
+      <section className="py-24 bg-gradient-to-b from-transparent to-primary/5">
+        <div className="max-w-5xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl font-bold text-center text-primary mb-16"
+            transition={{ duration: 0.9 }}
+            className="text-center mb-20"
           >
-            Explore Our Foundation
-          </motion.h3>
+            <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+              Explore Our Foundation
+            </h3>
+            <p className="text-lg md:text-xl text-textDark/70 max-w-2xl mx-auto">
+              Discover memories, give back, and join our global sisterhood.
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-3 gap-12 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {/* Gallery Card */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              whileHover={{ y: -12, scale: 1.03 }}
+              className="group"
             >
-              <Link to="/gallery" className="block text-center group">
-                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
-                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
-                    Gallery
-                  </span>
+              <Link to="/gallery" className="block">
+                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
+                  <div className="h-64 bg-gradient-to-br from-primary/20 to-accent-lavender/20 flex items-center justify-center">
+                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
+                      <div className="w-32 h-32 bg-primary/10 rounded-xl mx-auto flex items-center justify-center">
+                        <span className="text-6xl text-primary">📸</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-8 text-center">
+                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-orchid transition duration-300 mb-3">
+                      Gallery
+                    </h4>
+                    <p className="text-textDark/70">
+                      Relive cherished moments and celebrate our shared history.
+                    </p>
+                  </div>
                 </div>
               </Link>
             </motion.div>
 
+            {/* Donate Card */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              whileHover={{ y: -12, scale: 1.03 }}
+              className="group"
             >
-              <Link to="/donations" className="block text-center group">
-                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
-                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
-                    Donate
-                  </span>
+              <Link to="/donations" className="block">
+                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
+                  <div className="h-64 bg-gradient-to-br from-accent-gold/20 to-primary/20 flex items-center justify-center">
+                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
+                      <div className="w-32 h-32 bg-accent-gold/10 rounded-xl mx-auto flex items-center justify-center">
+                        <span className="text-6xl text-accent-gold">❤️</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-8 text-center">
+                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-gold transition duration-300 mb-3">
+                      Donate
+                    </h4>
+                    <p className="text-textDark/70">
+                      Support scholarships and empower the next generation of KGHS girls.
+                    </p>
+                  </div>
                 </div>
               </Link>
             </motion.div>
 
+            {/* Join Us Card */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              whileHover={{ y: -12, scale: 1.03 }}
+              className="group"
             >
-              <Link to="/signup" className="block text-center group">
-                <div className="bg-bg-light/70 rounded-3xl p-10 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:bg-accent-gold/10 border border-accent-lavender/20">
-                  <span className="text-3xl md:text-4xl font-bold text-primary group-hover:text-accent-gold transition">
-                    Join Us
-                  </span>
+              <Link to="/signup" className="block">
+                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
+                  <div className="h-64 bg-gradient-to-br from-accent-orchid/20 to-primary/20 flex items-center justify-center">
+                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
+                      <div className="w-32 h-32 bg-accent-orchid/10 rounded-xl mx-auto flex items-center justify-center">
+                        <span className="text-6xl text-accent-orchid">✨</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-8 text-center">
+                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-orchid transition duration-300 mb-3">
+                      Join Us
+                    </h4>
+                    <p className="text-textDark/70">
+                      Become part of our global sisterhood and stay connected forever.
+                    </p>
+                  </div>
                 </div>
               </Link>
             </motion.div>
@@ -627,34 +677,35 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Elegant Footer */}
-      <footer className="bg-primary/20 py-16 border-t border-accent-lavender/30">
-        <div className="max-w-6xl mx-auto px-6 text-center">
+      {/* Sophisticated Footer */}
+      <footer className="bg-gradient-to-t from-primary/20 via-primary/10 to-transparent py-20 mt-20">
+        <div className="max-w-5xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1 }}
+            className="text-center"
           >
-            <h4 className="text-3xl md:text-4xl font-bold text-primary mb-6">
+            <h4 className="text-4xl md:text-5xl font-bold text-primary mb-6">
               KGHS Alumni Foundation
             </h4>
-            <p className="text-lg text-textDark/80 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-textDark/80 mb-10 max-w-2xl mx-auto leading-relaxed">
               Connect • Share • Inspire<br />
               Building legacies of leadership, one sister at a time.
             </p>
 
-            <div className="mb-10">
-              <p className="text-textDark/70 mb-2">Get in touch</p>
+            <div className="bg-white/60 backdrop-blur-md rounded-3xl py-10 px-12 shadow-2xl border border-accent-lavender/30 inline-block">
+              <p className="text-textDark/70 mb-3 text-lg">Connect with us</p>
               <a
                 href="mailto:alumnuskghs@gmail.com"
-                className="text-xl font-medium text-primary hover:text-accent-orchid transition underline decoration-accent-lavender/50"
+                className="text-2xl font-semibold text-primary hover:text-accent-orchid transition duration-300 underline decoration-accent-gold/50 underline-offset-4"
               >
                 alumnuskghs@gmail.com
               </a>
             </div>
 
-            <p className="text-textDark/60 text-sm">
+            <p className="text-textDark/60 mt-12 text-sm">
               © {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.
             </p>
           </motion.div>
