@@ -1,14 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* Vibrant, eye-catching hot pink as primary - energetic yet feminine */
+  /* Your exact loved vibrant hot pink as primary */
   --color-primary: #ff69b4;
 
-  /* Crisp white for clean backgrounds and excellent readability */
-  --color-secondary: #ffffff;
+  /* Soft off-white / very light pinkish cream for main backgrounds - reduces stark white while keeping brightness */
+  --color-secondary: #fff5fb;
 
-  /* Deep charcoal for text - high contrast, modern and elegant */
-  --color-textDark: #1e1e1e;
+  /* Vibrant teal/cyan for accents - complementary pop that energizes the pink without clashing */
+  --color-accent-teal: #00ffff;
+
+  /* Fresh mint green for subtle sections or highlights - adds lively contrast */
+  --color-accent-mint: #98fb98;
+
+  /* Gold for elegant touches (buttons hover, icons) - warm and luxurious with pink */
+  --color-accent-gold: #ffd700;
+
+  /* Light blush pink for cards/hovers - softer white alternative */
+  --color-bg-light: #ffd1e3;
+
+  /* Deep charcoal for text - better contrast than pure black, modern feel */
+  --color-textDark: #2d1b2a;
+
+  /* Medium purple for occasional bold accents - harmonious with hot pink */
+  --color-accent-purple: #ba55d3;
 }
 
 body {
@@ -17,11 +32,10 @@ body {
   margin: 0;
 }
 
-/* Optional: Add subtle accents for even more vibrancy */
-@theme {
-  /* Soft light pink for hover states or subtle backgrounds */
-  --color-accent-light: #ffd1e3;
-
-  /* Deeper pink for stronger accents or buttons on hover */
-  --color-accent-dark: #ff1493;
-}
+/* Example usage tips in Tailwind classes:
+   - bg-secondary for main page background (soft pinkish white)
+   - bg-bg-light for cards/sections (light blush instead of pure white)
+   - bg-primary / text-primary for buttons/headings
+   - bg-accent-teal or bg-accent-mint for vibrant accent sections
+   - hover:bg-accent-gold for button hovers
+*/
