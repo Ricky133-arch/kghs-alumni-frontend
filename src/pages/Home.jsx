@@ -598,7 +598,7 @@ const Home = () => {
                   <div className="h-64 bg-gradient-to-br from-primary/20 to-accent-lavender/20 flex items-center justify-center">
                     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
                       <div className="w-32 h-32 bg-primary/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-primary">📸</span>
+                        <span className="text-6xl text-primary"></span>
                       </div>
                     </div>
                   </div>
@@ -628,7 +628,7 @@ const Home = () => {
                   <div className="h-64 bg-gradient-to-br from-accent-gold/20 to-primary/20 flex items-center justify-center">
                     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
                       <div className="w-32 h-32 bg-accent-gold/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-accent-gold">❤️</span>
+                        <span className="text-6xl text-accent-gold"></span>
                       </div>
                     </div>
                   </div>
@@ -658,7 +658,7 @@ const Home = () => {
                   <div className="h-64 bg-gradient-to-br from-accent-orchid/20 to-primary/20 flex items-center justify-center">
                     <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
                       <div className="w-32 h-32 bg-accent-orchid/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-accent-orchid">✨</span>
+                        <span className="text-6xl text-accent-orchid"></span>
                       </div>
                     </div>
                   </div>
