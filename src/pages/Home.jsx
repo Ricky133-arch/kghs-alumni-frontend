@@ -53,11 +53,10 @@ const Home = () => {
     <div className="min-h-screen bg-secondary">
       {/* Hero Section with Continuous Animation */}
       <section className="relative bg-cover bg-center bg-no-repeat text-textDark py-32 md:py-40 text-center overflow-hidden">
-        {/* Parallax Background Image */}
+        {/* Parallax + Zoom Background */}
         <motion.div
           className="absolute inset-0"
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1.15 }}
+          animate={{ scale: [1.1, 1.15, 1.1] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
           style={{
             backgroundImage: `url('https://i.imgur.com/wY9ZpTO.jpg')`,
@@ -69,15 +68,15 @@ const Home = () => {
         {/* Breathing Overlay */}
         <motion.div
           className="absolute inset-0 bg-black/40"
-          animate={{ opacity: [0.4, 0.5, 0.4] }}
+          animate={{ opacity: [0.35, 0.5, 0.35] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Floating Content */}
         <motion.div
           className="relative z-10 max-w-5xl mx-auto px-6"
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         >
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -188,7 +187,7 @@ const Home = () => {
             <motion.div
               className="order-2 md:order-1"
               animate={{ 
-                y: [0, -20, 0],
+                y: [0, -18, 0],
                 rotate: [0, 2, -2, 0]
               }}
               transition={{ 
@@ -216,26 +215,50 @@ const Home = () => {
               className="order-1 md:order-2 space-y-5"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Story: Journey to Reinstatement</h2>
-              {/* Your existing long text */}
               <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                Deep in the heart of Buguma, Asari Toru Local Government Area, existed a girls’ high school...
-                {/* (keep all your beautiful story text) */}
+                Deep in the heart of Buguma, Asari Toru Local Government Area, existed a girls’ high school, which produced many girls from across the Niger Delta area and beyond.
               </p>
-              {/* ... rest of story */}
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                They grew up to become successful women that changed the trajectory of poverty in their respective communities. And then, it was closed.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                The road to reinstatement started from a conversation between a few Ladies…Alaro George-Lawson, Nderiya Princewill Harry and Okorite Akoko at a funeral in Buguma, Rivers State, Nigeria. They shared the idea with Ene Dokiwari-Taylor, whom they knew had always been very passionate about giving back to the school prior to its closure. Together with a few more Ladies, they forged on the reinstatement journey.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                With the use of social media, the concept of the Alumni Foundation was realized in December 2018. This allowed the ladies to seek and invite other alums to attend and engage in the discussion of reinstatement.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                This effort led to a fact-finding mission that revealed the deplorable state of the school site. The effort also discovered that the school was closed in September of 2008 for no good reason, other than the desire by the then State Government to give schools with historical religious background back to religious organizations.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                In the case of Kalabari Girls’ High School, the only girls’ school in the local community, was erroneously handed over to the church. The church soon abandoned the school, giving way to dilapidation and ruins.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                This action created a complete vacuum and total devastation in the community. It left high school age girls with nowhere to go for their education. Instead, the inaction led to a community with very high teen pregnancy, unruly behavior and even criminality.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                The Kalabari Girls’ High School Alumni Foundation is growing in leaps and bounds. With more than 300 vibrant Alumni registered members and still counting, the Foundation has now restored the school with the help of the Rivers State Government.
+              </p>
+              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
+                Like other girls’ high schools in Rivers State, Kalabari Girls’ High School has produced notable graduates from across the State. Many went on to become very successful women in various endeavors. Among them are accomplished Businesswomen, Lawyers, Government Workers, Medical Doctors, Nurses, Judges and Teachers to name a few.
+              </p>
+              <p className="text-base md:text-lg font-medium text-primary leading-relaxed">
+                With the achievement of reinstatement, the goal is to instill competence and confidence in the girls’ to compete worldwide.
+              </p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Our Vision Section - Different Pattern */}
+      {/* Our Vision Section - Different Animation Pattern */}
       <section className="py-16 md:py-20 bg-gradient-to-r from-primary/10 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               className="order-2"
               animate={{ 
-                y: [0, -25, 0],
-                rotate: [0, -3, 3, 0]
+                y: [0, -22, 0],
+                rotate: [0, -2, 3, 0]
               }}
               transition={{ 
                 duration: 14,
@@ -263,7 +286,7 @@ const Home = () => {
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Vision</h2>
               <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                To cultivate a global sisterhood of empowered Kalabari Girls’ High School alumnae...
+                To cultivate a global sisterhood of empowered Kalabari Girls’ High School alumnae who lead with excellence, compassion, and unwavering confidence — transforming communities, breaking barriers, and inspiring future generations of women to reach their fullest potential.
               </p>
               <p className="text-xl italic font-medium text-primary">
                 Building legacies of leadership, one sister at a time.
@@ -273,15 +296,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Our Values Section - Gentle Breathe */}
+      {/* Our Values Section - Gentle Breathing */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               className="order-2 md:order-1"
               animate={{ 
-                scale: [1, 1.03, 1],
-                rotate: [0, 1, -1, 0]
+                scale: [1, 1.02, 1],
+                rotate: [0, 1.5, -1.5, 0]
               }}
               transition={{ 
                 duration: 18,
@@ -309,7 +332,34 @@ const Home = () => {
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Core Values</h2>
               <ul className="space-y-6 text-base md:text-lg">
-                {/* Your values list */}
+                <li className="flex items-start">
+                  <span className="text-primary text-3xl mr-4">🤝</span>
+                  <div>
+                    <strong className="text-textDark text-xl">Sisterhood</strong>
+                    <p className="text-textDark/80 mt-1">Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.</p>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-primary text-3xl mr-4">⭐</span>
+                  <div>
+                    <strong className="text-textDark text-xl">Excellence</strong>
+                    <p className="text-textDark/80 mt-1">Pursuing the highest standards in education, leadership, and personal achievement.</p>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-primary text-3xl mr-4">❤️</span>
+                  <div>
+                    <strong className="text-textDark text-xl">Compassion & Service</strong>
+                    <p className="text-textDark/80 mt-1">Giving back to our community and uplifting those in need with kindness and generosity.</p>
+                  </div>
+                </li>
+                <li className="flex items-start">
+                  <span className="text-primary text-3xl mr-4">💪</span>
+                  <div>
+                    <strong className="text-textDark text-xl">Empowerment</strong>
+                    <p className="text-textDark/80 mt-1">Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.</p>
+                  </div>
+                </li>
               </ul>
             </motion.div>
           </div>
