@@ -1,13 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #FFC0CB; /* Your soft pink */
-  --color-secondary: #FFFFFF; /* White */
-  --color-textDark: #333333; /* Dark text */
+  /* Vibrant, eye-catching hot pink as primary - energetic yet feminine */
+  --color-primary: #ff69b4;
+
+  /* Crisp white for clean backgrounds and excellent readability */
+  --color-secondary: #ffffff;
+
+  /* Deep charcoal for text - high contrast, modern and elegant */
+  --color-textDark: #1e1e1e;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-secondary);
   margin: 0;
+}
+
+/* Optional: Add subtle accents for even more vibrancy */
+@theme {
+  /* Soft light pink for hover states or subtle backgrounds */
+  --color-accent-light: #ffd1e3;
+
+  /* Deeper pink for stronger accents or buttons on hover */
+  --color-accent-dark: #ff1493;
 }
