@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -13,11 +13,12 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showBankDetails, setShowBankDetails] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError(''); // Clear error on change
+    setError('');
   };
 
   const handleSubmit = async (e) => {
@@ -27,19 +28,13 @@ const Signup = () => {
     setSuccess(false);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,  // ← Fixed: backticks!
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
         formData
       );
 
-      // Success — account created, pending approval
       setSuccess(true);
       setLoading(false);
-
-      // Optional: redirect to login after a delay
-      setTimeout(() => {
-        navigate('/login');
-      }, 5000);
     } catch (err) {
       setLoading(false);
 
@@ -74,23 +69,62 @@ const Signup = () => {
         <div className="text-center mb-10">
           <h2 className="text-4xl font-bold text-primary mb-2">Join KGHS Alumni</h2>
           <p className="text-textDark/70">Become part of our vibrant sisterhood</p>
+          <p className="text-lg text-textDark/80 mt-6 font-medium">
+            Membership requires a one-time payment via bank transfer
+          </p>
         </div>
 
-        {/* Success Message */}
+        {/* Success Message with Bank Details */}
         {success && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 rounded-2xl text-center"
+            className="mb-8 p-8 bg-green-50 border-2 border-green-200 text-green-800 rounded-3xl text-center"
           >
-            <h3 className="text-2xl font-bold mb-3">Thank You, {formData.name}!</h3>
-            <p className="text-lg leading-relaxed">
+            <h3 className="text-3xl font-bold mb-4">Thank You, {formData.name}! ❤️</h3>
+            <p className="text-xl leading-relaxed mb-6">
               Your account has been created and is now <strong>pending approval</strong>.
             </p>
-            <p className="mt-3">
-              Only verified KGHS graduates are approved. You will receive an email when your account is activated.
+            <p className="text-lg mb-8">
+              To complete your membership, please make the required payment via bank transfer.
+              Once confirmed, your account will be approved and you'll receive a welcome email.
             </p>
-            <p className="mt-4 text-sm">
+
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowBankDetails(!showBankDetails)}
+              className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition"
+            >
+              {showBankDetails ? 'Hide' : 'Show'} Payment Details
+            </motion.button>
+
+            <AnimatePresence>
+              {showBankDetails && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="mt-10 p-8 bg-white rounded-2xl border-2 border-primary/30"
+                >
+                  <h4 className="text-2xl font-bold text-primary mb-6">Bank Transfer Details</h4>
+                  <div className="space-y-5 text-left text-lg">
+                    <p><strong>Bank:</strong> Zenith Bank Plc</p>
+                    <p><strong>Account Name:</strong> KALABARI GIRLS</p>
+                    <p><strong>Account Number:</strong> <span className="text-2xl font-bold text-primary">1226557765</span></p>
+                  </div>
+                  <p className="text-textDark/70 mt-6 italic">
+                    Please use your name or email as the transfer description for easy identification.
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <p className="mt-10 text-lg text-textDark/70">
+              You will receive a welcome email once your payment is confirmed and account approved.
+            </p>
+            <p className="mt-6 text-sm">
               Redirecting to login in 5 seconds...
             </p>
           </motion.div>
@@ -189,7 +223,7 @@ const Signup = () => {
         </p>
 
         <p className="text-center mt-4 text-textDark/60 text-sm">
-          Membership is exclusive to verified KGHS graduates. All applications are reviewed by admin.
+          Membership is exclusive to verified KGHS graduates. Payment required via bank transfer. All applications are reviewed by admin.
         </p>
       </motion.div>
     </div>
