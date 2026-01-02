@@ -471,102 +471,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Annual Merit-Based Scholarship Section - Text only */}
-      <section className="py-20 md:py-28 bg-bg-cream">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-bg-light rounded-3xl shadow-2xl p-10 md:p-16 border border-accent-lavender/30"
-          >
-            <div className="text-center mb-12">
-              <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-                Annual Merit-Based Scholarship
-              </h2>
-            </div>
-
-            <p className="text-lg md:text-xl text-textDark/80 leading-relaxed mb-8">
-              The Foundation, in collaboration with the school Principal and a newly established 5-member Scholarship Panel of Judges, will formulate a stimulative and thought-provoking academic exercise for students in Junior Secondary School 2 (JSS2).
-            </p>
-
-            <p className="text-lg md:text-xl text-textDark/80 leading-relaxed mb-8">
-              At the conclusion of each exercise, 10 top finalists will be chosen by the Panel of Judges in a double-blinded format for an award determined by the Foundation’s Board of Trustees.
-            </p>
-
-            <h3 className="text-3xl font-bold text-primary mb-6">Objective</h3>
-            <p className="text-lg text-textDark/80 leading-relaxed mb-10">
-              This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in a written form understandable to the reader.
-            </p>
-
-            <h3 className="text-3xl font-bold text-primary mb-6">
-              Award: Impact Backpack
-            </h3>
-            <p className="text-lg text-center text-textDark/80 leading-relaxed mb-8">
-              The Foundation will give an award package called <strong>Impact Backpack</strong>, including:
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-12">
-              <div className="text-center">
-                <span className="text-textDark/80">Backpacks</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">80-leaf exercise books</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Pack of pens</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Pencils</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Crayons</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Drawing books</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Mathematical sets</span>
-              </div>
-              <div className="text-center">
-                <span className="text-textDark/80">Rulers, etc.</span>
-              </div>
-            </div>
-
-            <h3 className="text-3xl font-bold text-primary mb-6">Eligibility Requirement</h3>
-            <p className="text-lg text-textDark/80 leading-relaxed mb-10">
-              While our goal is to support every student, we establish standards to empower them. Only JSS2 students achieving at least 70% in English and Mathematics qualify — fostering healthy competition where everyone can excel.
-            </p>
-
-            <h3 className="text-3xl font-bold text-primary mb-6">2024/2025 Academic Year</h3>
-            <p className="text-lg text-textDark/80 leading-relaxed mb-8">
-              Eligible students wrote a 300-word essay on "My First Day at School." Regrettably, only three met criteria.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">1st Place</p>
-                <p className="text-lg mt-2">Batubo Charity Sepiribo</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">2nd Place</p>
-                <p className="text-lg mt-2">Davidwest Ibiso</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-primary">3rd Place</p>
-                <p className="text-lg mt-2">Batubo Soibifaa</p>
-              </div>
-            </div>
-
-            <p className="text-center text-textDark/70 mt-12 text-lg italic">
-              This is what the Foundation hopes to change — more winners, more impact.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-               {/* Refined Explore Section - Clean, Elegant, Modern */}
-      <section className="py-24 bg-gradient-to-b from-transparent to-primary/5">
+            {/* Explore Our Foundation - Lively, Animated, Teaser Style */}
+      <section className="py-24 md:py-32 bg-gradient-to-b from-transparent via-primary/5 to-bg-cream">
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -575,140 +481,118 @@ const Home = () => {
             transition={{ duration: 0.9 }}
             className="text-center mb-20"
           >
-            <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+            <h3 className="text-5xl md:text-6xl font-bold text-primary mb-6">
               Explore Our Foundation
             </h3>
-            <p className="text-lg md:text-xl text-textDark/70 max-w-2xl mx-auto">
-              Discover memories, give back, and join our global sisterhood.
+            <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed">
+              Discover our impact, initiatives, and how we're empowering the next generation of KGHS girls.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {/* Gallery Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              whileHover={{ y: -12, scale: 1.03 }}
-              className="group"
-            >
-              <Link to="/gallery" className="block">
-                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
-                  <div className="h-64 bg-gradient-to-br from-primary/20 to-accent-lavender/20 flex items-center justify-center">
-                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
-                      <div className="w-32 h-32 bg-primary/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-primary"></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-8 text-center">
-                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-orchid transition duration-300 mb-3">
-                      Gallery
-                    </h4>
-                    <p className="text-textDark/70">
-                      Relive cherished moments and celebrate our shared history.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
+          {/* Annual Merit-Based Scholarship Teaser */}
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 md:p-16 border border-accent-lavender/30 hover:shadow-3xl transition-shadow duration-500"
+          >
+            <div className="text-center mb-10">
+              <motion.h4
+                initial={{ scale: 0.9 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-5xl font-bold text-primary mb-6"
+              >
+                Annual Merit-Based Scholarship
+              </motion.h4>
+              <p className="text-xl text-accent-gold font-medium">Empowering Excellence • One Girl at a Time</p>
+            </div>
 
-            {/* Donate Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              whileHover={{ y: -12, scale: 1.03 }}
-              className="group"
-            >
-              <Link to="/donations" className="block">
-                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
-                  <div className="h-64 bg-gradient-to-br from-accent-gold/20 to-primary/20 flex items-center justify-center">
-                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
-                      <div className="w-32 h-32 bg-accent-gold/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-accent-gold"></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-8 text-center">
-                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-gold transition duration-300 mb-3">
-                      Donate
-                    </h4>
-                    <p className="text-textDark/70">
-                      Support scholarships and empower the next generation of KGHS girls.
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
+            <div className="space-y-6 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto">
+              <p>
+                In partnership with the school, we run an inspiring academic challenge for JSS2 students — designed to spark creativity, critical thinking, and healthy competition.
+              </p>
+              <p>
+                Top performers earn the <strong>Impact Backpack</strong> — a carefully curated award filled with essential school supplies to support their educational journey.
+              </p>
+              <p className="text-primary font-medium">
+                In 2024/2025, only three brilliant students qualified — but we're determined to change that. With your support, more girls can shine.
+              </p>
+            </div>
 
-            {/* Join Us Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              whileHover={{ y: -12, scale: 1.03 }}
-              className="group"
-            >
-              <Link to="/signup" className="block">
-                <div className="bg-bg-light rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-accent-lavender/20">
-                  <div className="h-64 bg-gradient-to-br from-accent-orchid/20 to-primary/20 flex items-center justify-center">
-                    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 shadow-inner">
-                      <div className="w-32 h-32 bg-accent-orchid/10 rounded-xl mx-auto flex items-center justify-center">
-                        <span className="text-6xl text-accent-orchid"></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-8 text-center">
-                    <h4 className="text-3xl font-bold text-primary group-hover:text-accent-orchid transition duration-300 mb-3">
-                      Join Us
-                    </h4>
-                    <p className="text-textDark/70">
-                      Become part of our global sisterhood and stay connected forever.
-                    </p>
-                  </div>
-                </div>
+            <div className="text-center mt-12">
+              <Link to="/scholarships" className="inline-block">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-accent-orchid transition-all duration-300"
+                >
+                  Read More About Our Scholarship →
+                </motion.button>
               </Link>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Sophisticated Footer */}
-      <footer className="bg-gradient-to-t from-primary/20 via-primary/10 to-transparent py-20 mt-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="text-center"
-          >
-            <h4 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-              KGHS Alumni Foundation
-            </h4>
-            <p className="text-xl text-textDark/80 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Connect • Share • Inspire<br />
-              Building legacies of leadership, one sister at a time.
-            </p>
+      {/* Modern, Sleek Footer */}
+      <footer className="bg-gradient-to-t from-primary/30 via-primary/10 to-transparent py-20 border-t-0">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+            {/* Left: Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center md:text-left"
+            >
+              <h4 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+                KGHS Alumni
+              </h4>
+              <p className="text-lg text-textDark/70">
+                Connect • Share • Inspire
+              </p>
+            </motion.div>
 
-            <div className="bg-white/60 backdrop-blur-md rounded-3xl py-10 px-12 shadow-2xl border border-accent-lavender/30 inline-block">
-              <p className="text-textDark/70 mb-3 text-lg">Connect with us</p>
-              <a
-                href="mailto:alumnuskghs@gmail.com"
-                className="text-2xl font-semibold text-primary hover:text-accent-orchid transition duration-300 underline decoration-accent-gold/50 underline-offset-4"
-              >
-                alumnuskghs@gmail.com
-              </a>
-            </div>
+            {/* Center: Tagline & Email */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-center"
+            >
+              <p className="text-xl md:text-2xl text-textDark/80 italic mb-6 max-w-md mx-auto">
+                Building legacies of leadership,<br />
+                one sister at a time.
+              </p>
+              <div className="bg-white/70 backdrop-blur-lg rounded-2xl py-6 px-10 inline-block shadow-xl border border-accent-lavender/20">
+                <p className="text-textDark/70 mb-2">Contact us</p>
+                <a
+                  href="mailto:alumnuskghs@gmail.com"
+                  className="text-2xl font-bold text-primary hover:text-accent-orchid transition duration-300"
+                >
+                  alumnuskghs@gmail.com
+                </a>
+              </div>
+            </motion.div>
 
-            <p className="text-textDark/60 mt-12 text-sm">
-              © {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.
-            </p>
-          </motion.div>
+            {/* Right: Copyright */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center md:text-right"
+            >
+              <p className="text-textDark/60">
+                © {new Date().getFullYear()} KGHS Alumni Foundation<br />
+                All rights reserved.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </footer>
     </div>
