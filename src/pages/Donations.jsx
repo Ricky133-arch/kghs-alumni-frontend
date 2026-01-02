@@ -82,11 +82,11 @@ const Donations = () => {
                     </div>
                     <div>
                       <p className="font-semibold">Account Name</p>
-                      <p className="text-xl mt-1">KALABARI GIRLS</p>
+                      <p className="text-xl mt-1">KALABARI GIRLS HIGH SCHOOL ALUMNI FOUNDATION</p>
                     </div>
                     <div>
                       <p className="font-semibold">Account Number</p>
-                      <p className="text-2xl font-bold text-primary mt-1">1226557765</p>
+                      <p className="text-2xl font-bold text-primary mt-1">1017230743</p>
                     </div>
                     
                   </div>
