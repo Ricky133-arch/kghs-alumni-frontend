@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,6 +13,7 @@ const Home = () => {
   const [totalDonated, setTotalDonated] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
   const [loadingFinance, setLoadingFinance] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false); // State for dropdown
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/api/news`)
@@ -471,7 +472,7 @@ const Home = () => {
         </div>
       </section>
 
-                  {/* Explore Our Foundation - With Animated Dropdown Scholarship Details */}
+      {/* Explore Our Foundation - With Animated Dropdown Scholarship Details */}
       <section className="py-24 md:py-32 bg-gradient-to-b from-transparent via-primary/5 to-bg-cream">
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
