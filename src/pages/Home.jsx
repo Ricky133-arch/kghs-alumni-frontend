@@ -471,7 +471,7 @@ const Home = () => {
         </div>
       </section>
 
-            {/* Explore Our Foundation - Lively, Animated, Teaser Style */}
+                  {/* Explore Our Foundation - With Animated Dropdown Scholarship Details */}
       <section className="py-24 md:py-32 bg-gradient-to-b from-transparent via-primary/5 to-bg-cream">
         <div className="max-w-5xl mx-auto px-6">
           <motion.div
@@ -489,15 +489,16 @@ const Home = () => {
             </p>
           </motion.div>
 
-          {/* Annual Merit-Based Scholarship Teaser */}
+          {/* Scholarship Card with Dropdown */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl p-10 md:p-16 border border-accent-lavender/30 hover:shadow-3xl transition-shadow duration-500"
+            className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-accent-lavender/30"
           >
-            <div className="text-center mb-10">
+            {/* Teaser Header */}
+            <div className="p-10 md:p-16 text-center">
               <motion.h4
                 initial={{ scale: 0.9 }}
                 whileInView={{ scale: 1 }}
@@ -506,47 +507,138 @@ const Home = () => {
               >
                 Annual Merit-Based Scholarship
               </motion.h4>
-              <p className="text-xl text-accent-gold font-medium">Empowering Excellence • One Girl at a Time</p>
-            </div>
+              <p className="text-xl text-accent-gold font-medium mb-10">
+                Empowering Excellence • One Girl at a Time
+              </p>
 
-            <div className="space-y-6 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto">
-              <p>
-                In partnership with the school, we run an inspiring academic challenge for JSS2 students — designed to spark creativity, critical thinking, and healthy competition.
-              </p>
-              <p>
-                Top performers earn the <strong>Impact Backpack</strong> — a carefully curated award filled with essential school supplies to support their educational journey.
-              </p>
-              <p className="text-primary font-medium">
-                In 2024/2025, only three brilliant students qualified — but we're determined to change that. With your support, more girls can shine.
-              </p>
-            </div>
+              {/* Teaser Text */}
+              <div className="space-y-6 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto mb-12">
+                <p>
+                  In partnership with the school, we run an inspiring academic challenge for JSS2 students — designed to spark creativity, critical thinking, and healthy competition.
+                </p>
+                <p>
+                  Top performers earn the <strong>Impact Backpack</strong> — a carefully curated award filled with essential school supplies to support their educational journey.
+                </p>
+                <p className="text-primary font-medium">
+                  In 2024/2025, only three brilliant students qualified — but we're determined to change that. With your support, more girls can shine.
+                </p>
+              </div>
 
-            <div className="text-center mt-12">
-              <Link to="/scholarships" className="inline-block">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-accent-orchid transition-all duration-300"
+              {/* Read More Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="bg-primary text-white px-12 py-6 rounded-full text-xl font-bold shadow-xl hover:bg-accent-orchid transition-all duration-300 inline-flex items-center gap-4"
+              >
+                {isExpanded ? 'Show Less' : 'Read Full Details'}
+                <motion.span
+                  animate={{ rotate: isExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="inline-block"
                 >
-                  Read More About Our Scholarship →
-                </motion.button>
-              </Link>
+                  ↓
+                </motion.span>
+              </motion.button>
             </div>
+
+            {/* Dropdown Full Details */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.7, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-10 md:px-16 pb-16 pt-8 bg-bg-light/50 border-t border-accent-lavender/20">
+                    <div className="space-y-10 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto">
+                      <div>
+                        <h5 className="text-2xl font-bold text-primary mb-4">Program Overview</h5>
+                        <p>
+                          The Foundation, in collaboration with the school Principal and a newly established 5-member Scholarship Panel of Judges, will formulate a stimulative and thought-provoking academic exercise for students in Junior Secondary School 2 (JSS2).
+                        </p>
+                        <p className="mt-4">
+                          At the conclusion of each exercise, 10 top finalists will be chosen by the Panel of Judges in a double-blinded format for an award determined by the Foundation’s Board of Trustees.
+                        </p>
+                      </div>
+
+                      <div>
+                        <h5 className="text-2xl font-bold text-primary mb-4">Objective</h5>
+                        <p>
+                          This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in a written form understandable to the reader.
+                        </p>
+                      </div>
+
+                      <div>
+                        <h5 className="text-2xl font-bold text-primary mb-4">Award: Impact Backpack</h5>
+                        <p>
+                          The Foundation will give an award package called <strong>Impact Backpack</strong>, including:
+                        </p>
+                        <ul className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
+                          <li>• Backpacks</li>
+                          <li>• 80-leaf exercise books</li>
+                          <li>• Pack of pens</li>
+                          <li>• Pencils</li>
+                          <li>• Crayons</li>
+                          <li>• Drawing books</li>
+                          <li>• Mathematical sets</li>
+                          <li>• Rulers, etc.</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h5 className="text-2xl font-bold text-primary mb-4">Eligibility Requirement</h5>
+                        <p>
+                          While our goal is to support every student, we establish standards to empower them. Only JSS2 students achieving at least 70% in English and Mathematics qualify — fostering healthy competition where everyone can excel.
+                        </p>
+                      </div>
+
+                      <div>
+                        <h5 className="text-2xl font-bold text-primary mb-4">2024/2025 Academic Year</h5>
+                        <p>
+                          Eligible students wrote a 300-word essay on "My First Day at School." Regrettably, only three met criteria.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-accent-gold">1st Place</p>
+                            <p className="text-lg mt-2">Batubo Charity Sepiribo</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-accent-lavender">2nd Place</p>
+                            <p className="text-lg mt-2">Davidwest Ibiso</p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-2xl font-bold text-primary">3rd Place</p>
+                            <p className="text-lg mt-2">Batubo Soibifaa</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-center text-textDark/70 mt-12 text-xl italic font-medium">
+                        This is what the Foundation hopes to change — more winners, more impact.
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </section>
 
-      {/* Modern, Sleek Footer */}
+      {/* Modern, Sleek Footer - Email Centered */}
       <footer className="bg-gradient-to-t from-primary/30 via-primary/10 to-transparent py-20 border-t-0">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center">
             {/* Left: Brand */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center md:text-left"
+              className="md:text-left"
             >
               <h4 className="text-4xl md:text-5xl font-bold text-primary mb-4">
                 KGHS Alumni
@@ -556,23 +648,22 @@ const Home = () => {
               </p>
             </motion.div>
 
-            {/* Center: Tagline & Email */}
+            {/* Center: Tagline & Email - Perfectly Centered */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-center"
             >
-              <p className="text-xl md:text-2xl text-textDark/80 italic mb-6 max-w-md mx-auto">
+              <p className="text-xl md:text-2xl text-textDark/80 italic mb-6">
                 Building legacies of leadership,<br />
                 one sister at a time.
               </p>
               <div className="bg-white/70 backdrop-blur-lg rounded-2xl py-6 px-10 inline-block shadow-xl border border-accent-lavender/20">
-                <p className="text-textDark/70 mb-2">Contact us</p>
+                <p className="text-textDark/70 mb-2 text-lg">Contact us</p>
                 <a
                   href="mailto:alumnuskghs@gmail.com"
-                  className="text-2xl font-bold text-primary hover:text-accent-orchid transition duration-300"
+                  className="text-2xl font-semibold text-primary hover:text-accent-orchid transition duration-300 underline decoration-accent-gold/50 underline-offset-4"
                 >
                   alumnuskghs@gmail.com
                 </a>
@@ -585,7 +676,7 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
-              className="text-center md:text-right"
+              className="md:text-right"
             >
               <p className="text-textDark/60">
                 © {new Date().getFullYear()} KGHS Alumni Foundation<br />
