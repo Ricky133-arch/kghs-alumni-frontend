@@ -47,7 +47,7 @@ const Navbar = () => {
               className="relative"
             >
               <img 
-                src="https://i.imgur.com/7ROR0Ka.png" 
+                src="https://i.imgur.com/WwrdAkS.png" 
                 alt="KGHS Alumni Foundation Logo"
                 className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 object-contain rounded-full bg-white p-3 shadow-2xl border-4 border-primary/40 transition-all duration-300"
               />
