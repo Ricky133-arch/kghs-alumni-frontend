@@ -33,28 +33,22 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg shadow-xl border-b border-primary/10"
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Logo - Now Bold & Unmissable on All Devices */}
+          {/* Logo + Name - Clean, No Circular Border */}
           <Link to="/" className="flex items-center space-x-4">
-            <div className="relative flex-shrink-0">
-              <motion.div
-                whileHover={{ scale: 1.08 }}
-                transition={{ duration: 0.3 }}
-                className="relative"
-              >
-                <img 
-                  src="https://i.imgur.com/7ROR0Ka.png" 
-                  alt="KGHS Alumni Foundation"
-                  className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain rounded-full shadow-2xl border-6 border-primary bg-white p-2"
-                />
-                {/* Strong pink glow ring for emphasis */}
-                <div className="absolute inset-0 rounded-full shadow-2xl shadow-primary/50 blur-2xl -z-10 scale-110"></div>
-              </motion.div>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-2xl md:text-3xl font-extrabold text-primary tracking-tight">
+            <motion.img 
+              src="https://i.imgur.com/7ROR0Ka.png" 
+              alt="KGHS Alumni Foundation"
+              className="h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24 object-contain shadow-lg"
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 0.3 }}
+            />
+            <div className="text-left">
+              <span className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight block leading-tight">
                 KGHS Alumni
               </span>
-              <p className="text-sm text-primary/80 font-medium -mt-1">Foundation</p>
+              <span className="text-base sm:text-lg md:text-xl text-primary/80 font-medium block -mt-1">
+                Foundation
+              </span>
             </div>
           </Link>
 
@@ -97,7 +91,11 @@ const Navbar = () => {
               </button>
             ) : (
               <>
-                <Link to="/login" className="text-lg font-medium hover:text-primary transition">
+                {/* Updated Login Button - Soft Pink Outline */}
+                <Link 
+                  to="/login" 
+                  className="text-lg font-medium text-primary border-2 border-primary px-8 py-3 rounded-full hover:bg-primary hover:text-white transition shadow-md"
+                >
                   Login
                 </Link>
                 <Link
@@ -121,11 +119,10 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* NEW: Beautiful Full-Screen Mobile Menu */}
+      {/* Full-Screen Mobile Menu - Unchanged (Beautiful as is) */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Dark Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -134,7 +131,6 @@ const Navbar = () => {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
             />
 
-            {/* Sliding Panel from Right */}
             <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
@@ -142,17 +138,16 @@ const Navbar = () => {
               transition={{ type: 'tween', duration: 0.4 }}
               className="fixed right-0 top-0 h-full w-full max-w-md bg-gradient-to-br from-white via-primary/5 to-primary/10 shadow-2xl z-50 flex flex-col"
             >
-              {/* Header with Logo & Close */}
               <div className="p-8 border-b border-primary/20 flex justify-between items-center">
                 <div className="flex items-center space-x-4">
                   <img 
                     src="https://i.imgur.com/7ROR0Ka.png" 
                     alt="KGHS Logo"
-                    className="h-16 w-16 rounded-full border-4 border-primary bg-white p-1 shadow-xl"
+                    className="h-16 w-16 object-contain shadow-lg"
                   />
                   <div>
                     <p className="text-2xl font-extrabold text-primary">KGHS Alumni</p>
-                    <p className="text-sm text-primary/80">Foundation</p>
+                
                   </div>
                 </div>
                 <button
@@ -163,7 +158,6 @@ const Navbar = () => {
                 </button>
               </div>
 
-              {/* Navigation Links */}
               <nav className="flex-1 px-10 py-12 space-y-8">
                 {token ? (
                   <>
@@ -208,7 +202,6 @@ const Navbar = () => {
                 )}
               </nav>
 
-              {/* Social & Footer */}
               <div className="p-10 border-t border-primary/20 text-center">
                 <p className="text-lg text-textDark/70 mb-6">Connect with us</p>
                 <div className="flex justify-center space-x-10">
