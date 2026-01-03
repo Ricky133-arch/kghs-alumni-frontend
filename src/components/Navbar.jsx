@@ -129,71 +129,71 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Dropdown */}
+        {/* Mobile Menu Dropdown - Fixed: Full Height & Scrollable */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="md:hidden bg-white/95 backdrop-blur-lg shadow-2xl border-t border-primary/20"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-x-0 top-[88px] bottom-0 md:hidden bg-white/95 backdrop-blur-lg shadow-2xl z-40 overflow-y-auto"
             >
-              <div className="px-6 py-8 space-y-6 text-center">
-                {token ? (
-                  <>
-                    {navLinks.map((link) => (
-                      <Link
-                        key={link.to}
-                        to={link.to}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block text-xl text-textDark font-medium hover:text-primary transition py-3"
+              <div className="px-6 py-10 min-h-full flex flex-col justify-between">
+                <div className="space-y-8 text-center">
+                  {token ? (
+                    <>
+                      {navLinks.map((link) => (
+                        <Link
+                          key={link.to}
+                          to={link.to}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block text-2xl text-textDark font-medium hover:text-primary transition py-4"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                      <button
+                        onClick={() => {
+                          localStorage.clear();
+                          window.location.href = '/';
+                          setMobileMenuOpen(false);
+                        }}
+                        className="w-full bg-primary text-white py-5 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
                       >
-                        {link.label}
+                        Logout
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block text-2xl text-textDark font-medium hover:text-primary transition py-4"
+                      >
+                        Login
                       </Link>
-                    ))}
-                    <button
-                      onClick={() => {
-                        localStorage.clear();
-                        window.location.href = '/';
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full bg-primary text-white py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block text-xl text-textDark font-medium hover:text-primary transition py-3"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/signup"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full bg-primary text-white py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
-                    >
-                      Join Now
-                    </Link>
-                  </>
-                )}
+                      <Link
+                        to="/signup"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block w-full bg-primary text-white py-5 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
+                      >
+                        Join Now
+                      </Link>
+                    </>
+                  )}
+                </div>
 
-                {/* Social Icons in Mobile Menu */}
-                <div className="pt-8 border-t border-primary/20">
-                  <p className="text-textDark/60 mb-4">Connect with us</p>
-                  <div className="flex justify-center space-x-6">
+                {/* Social Icons Section - Always Visible at Bottom */}
+                <div className="pt-12 pb-8 border-t border-primary/20">
+                  <p className="text-textDark/60 mb-6 text-lg">Connect with us</p>
+                  <div className="flex justify-center space-x-10">
                     {socialLinks.map((social, index) => (
                       <a
                         key={index}
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary hover:text-pink-600 transition text-3xl"
-                        aria-label={social.label}
+                        className="text-primary hover:text-pink-600 transition text-5xl"
                       >
                         <social.icon />
                       </a>
