@@ -50,6 +50,21 @@ const Home = () => {
     arrows: false,
   };
 
+  const memorySliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 1000,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    fade: true,
+    cssEase: 'ease-in-out',
+    arrows: false,
+    pauseOnHover: true,
+    adaptiveHeight: true,
+  };
+
   return (
     <div className="min-h-screen bg-secondary">
       {/* Hero Section with Continuous Animation */}
@@ -247,6 +262,59 @@ const Home = () => {
                 With the achievement of reinstatement, the goal is to instill competence and confidence in the girls’ to compete worldwide.
               </p>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Auto-Playing Memory Slider - Our Journey in Pictures */}
+      <section className="py-16 md:py-28 bg-gradient-to-b from-bg-cream to-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-6">
+              Our Journey in Pictures
+            </h2>
+            <p className="text-xl md:text-2xl text-textDark/70 max-w-4xl mx-auto leading-relaxed">
+              From the past to the present — moments of resilience, joy, and unbreakable sisterhood.
+            </p>
+          </motion.div>
+
+          {/* Full-Width Auto-Slider */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <Slider {...memorySliderSettings}>
+              <div>
+                <img src="https://i.imgur.com/FirPFti.png" alt="KGHS Memory 1" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/btooXVa.png" alt="KGHS Memory 2" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/rfQHhcY.png" alt="KGHS Memory 3" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/lH6VwVI.png" alt="KGHS Memory 4" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/CzoC1tm.png" alt="KGHS Memory 5" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/y5xmhUZ.png" alt="KGHS Memory 6" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/L39Jcv0.png" alt="KGHS Memory 7" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/BtgxtFw.png" alt="KGHS Memory 8" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+              <div>
+                <img src="https://i.imgur.com/amqhNNQ.png" alt="KGHS Memory 9" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+              </div>
+            </Slider>
           </div>
         </div>
       </section>
