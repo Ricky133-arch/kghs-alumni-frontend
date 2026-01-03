@@ -16,6 +16,7 @@ import Donations from './pages/Donations';
 import DonationSuccess from './pages/DonationSuccess';
 import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/donations" element={<Donations />} />
           <Route path="/donations/success" element={<DonationSuccess />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </AnimatePresence>
     </Router>
