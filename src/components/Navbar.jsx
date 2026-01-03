@@ -39,13 +39,23 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src="https://i.imgur.com/7ROR0Ka.png" 
-              alt="KGHS Alumni Foundation Logo"
-              className="h-12 w-12 md:h-16 md:w-16 object-contain rounded-full shadow-md transition-transform duration-300 hover:scale-110"
-            />
+          {/* Logo - Made More Visible & Prominent */}
+          <Link to="/" className="flex items-center space-x-4">
+            <div className="relative">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+                className="relative"
+              >
+                <img 
+                  src="https://i.imgur.com/7ROR0Ka.png" 
+                  alt="KGHS Alumni Foundation Logo"
+                  className="h-14 w-14 md:h-20 md:w-20 object-contain rounded-full shadow-xl border-4 border-primary/30 p-1 bg-white transition-all duration-300"
+                />
+                {/* Subtle glow ring */}
+                <div className="absolute inset-0 rounded-full shadow-2xl shadow-primary/20 blur-xl -z-10"></div>
+              </motion.div>
+            </div>
             <span className="text-2xl md:text-3xl font-extrabold text-primary hover:text-pink-600 transition">
               KGHS Alumni
             </span>
@@ -199,7 +209,7 @@ const Navbar = () => {
       </motion.nav>
 
       {/* Padding below navbar */}
-      <div className="pt-20 md:pt-24" />
+      <div className="pt-24 md:pt-28" />
     </>
   );
 };
