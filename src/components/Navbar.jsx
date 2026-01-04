@@ -39,7 +39,7 @@ const Navbar = () => {
         className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          {/* Logo - Enhanced Visibility & Clarity */}
+          {/* Logo - Made Almost as Big as the Circular Border */}
           <Link to="/" className="flex items-center space-x-4">
             <motion.div
               whileHover={{ scale: 1.1 }}
@@ -49,7 +49,7 @@ const Navbar = () => {
               <img 
                 src="https://i.imgur.com/WwrdAkS.png" 
                 alt="KGHS Alumni Foundation Logo"
-                className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 object-contain rounded-full bg-white p-3 shadow-2xl border-4 border-primary/40 transition-all duration-300"
+                className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 object-contain rounded-full bg-white p-1 shadow-2xl border-4 border-primary/40 transition-all duration-300"
               />
               {/* Subtle pink glow on hover */}
               <div className="absolute inset-0 rounded-full shadow-2xl shadow-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
