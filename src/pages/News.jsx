@@ -14,7 +14,7 @@ const News = () => {
   useEffect(() => {
     // Fetch News
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/news`)  // ← Fixed: backticks
+      .get(`${import.meta.env.VITE_API_URL}/api/news`)
       .then((res) => {
         setNews(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
       })
@@ -22,7 +22,7 @@ const News = () => {
 
     // Fetch Board Minutes
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/board-minutes`)  // ← Already correct
+      .get(`${import.meta.env.VITE_API_URL}/api/board-minutes`)
       .then((res) => {
         setMinutes(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
       })
@@ -40,7 +40,7 @@ const News = () => {
     setPosting(true);
     const token = localStorage.getItem('token');
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/news`, formData, {  // ← Fixed: backticks
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/news`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       window.location.reload();
@@ -69,14 +69,15 @@ const News = () => {
     data.append('file', minutesForm.file);
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/board-minutes`, data, {  // ← Already correct
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/board-minutes`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
+          // ✅ Let Axios set Content-Type automatically for FormData
         },
       });
       window.location.reload();
     } catch (err) {
+      console.error('Upload error:', err.response || err);
       alert('Failed to upload minutes.');
       setUploadingMinutes(false);
     }
