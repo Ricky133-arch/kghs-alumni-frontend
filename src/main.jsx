@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
-import Preloader from './components/Preloader.jsx'; // ← Import the preloader
+import Preloader from './components/Preloader.jsx';
 
 const Root = () => {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    // Minimum loading time for polish (prevents flash on fast connections)
-    const timer = setTimeout(() => {
+    // Minimum loading time - set to 6 seconds for a more deliberate, luxurious entrance
+    const minTimer = setTimeout(() => {
       setShowLoader(false);
-    }, 1800); // 1.8 seconds – feels luxurious but not too long
+    }, 6000); // ← 6 seconds
 
-    // Also hide when everything is fully loaded (images, etc.)
+    // Also hide when page is fully loaded (images, fonts, etc.) - with extra buffer
     const handleLoad = () => {
-      setTimeout(() => setShowLoader(false), 400);
+      setTimeout(() => setShowLoader(false), 1000); // extra 1s after full load
     };
 
     if (document.readyState === 'complete') {
@@ -25,7 +25,7 @@ const Root = () => {
     }
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(minTimer);
       window.removeEventListener('load', handleLoad);
     };
   }, []);
