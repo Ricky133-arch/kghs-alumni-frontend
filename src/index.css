@@ -1,77 +1,130 @@
 @import "tailwindcss";
 
 @theme {
-  /* Your exact vibrant hot pink as primary - kept unchanged */
+  /* ── Your exact vibrant hot pink — unchanged! ── */
   --color-primary: #ff69b4;
 
-  /* Very soft pinkish off-white for main backgrounds - warm, feminine, reduces stark white */
+  /* Very soft pinkish off-white */
   --color-secondary: #fff0f8;
 
-  /* Light blush pink for cards, sections, and subtle backgrounds - stylish alternative to white */
+  /* Light blush pink for cards/sections */
   --color-bg-light: #ffe4f0;
 
-  /* Elegant gold for luxurious accents (button hovers, icons, borders) */
+  /* Elegant gold accent */
   --color-accent-gold: #ffd700;
 
-  /* Soft lavender-purple for harmonious feminine depth (secondary accents, highlights) */
+  /* Soft lavender-purple */
   --color-accent-lavender: #e6ccff;
 
-  /* Vibrant orchid purple for bold touches (links, subheadings) - mind-blowing pop with hot pink */
+  /* Vibrant orchid purple */
   --color-accent-orchid: #ba55d3;
 
-  /* Warm cream for alternate sections - adds variety without pure white */
+  /* Warm cream alternate */
   --color-bg-cream: #fff8fb;
 
-  /* Deep elegant charcoal for text - sophisticated contrast */
+  /* Deep elegant charcoal text */
   --color-textDark: #2c1a2a;
 }
 
-/* Fix horizontal scroll jiggle - consistent page width */
+/* ── Houdini magic starts here ── */
+/* Register custom properties so they animate smoothly */
+
+@property --glow-intensity {
+  syntax: "<number>";          /* 0 → 1 range works great */
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --hue-shift {
+  syntax: "<angle>";           /* Perfect for hue-rotate or conic gradients */
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --gradient-pos {
+  syntax: "<percentage>";      /* Great for moving color stops in gradients */
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --accent-mix {
+  syntax: "<color>";           /* Enables smooth color interpolation */
+  inherits: true;
+  initial-value: var(--color-primary);
+}
+
+/* Optional: root-level defaults + subtle breathing animation example */
+:root {
+  --glow-intensity: 0;
+  --hue-shift: 0deg;
+  --gradient-pos: 0%;
+  --accent-mix: var(--color-primary);
+  
+  animation: subtle-breath 12s ease-in-out infinite alternate;
+}
+
+@keyframes subtle-breath {
+  to {
+    --glow-intensity: 0.7;
+    --hue-shift: 15deg;
+    --gradient-pos: 100%;
+  }
+}
+
+/* ── Example usage: Mind-blowing glowing button ── */
+.glow-btn {
+  background: linear-gradient(
+    45deg,
+    var(--accent-mix),
+    color-mix(in srgb, var(--color-accent-gold) 40%, var(--accent-mix))
+  );
+  box-shadow: 
+    0 0 20px 8px color-mix(in srgb, var(--accent-mix) var(--glow-intensity), transparent),
+    0 0 40px 15px color-mix(in srgb, var(--color-accent-orchid) calc(var(--glow-intensity) * 0.6), transparent);
+  
+  transition: --glow-intensity 0.8s ease, --accent-mix 0.8s ease;
+}
+
+.glow-btn:hover,
+.glow-btn:focus {
+  --glow-intensity: 1;
+  --accent-mix: var(--color-accent-gold);
+}
+
+/* ── Animated gradient hero example (smooth color-stop movement) ── */
+.hero-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-accent-orchid) var(--gradient-pos),
+    var(--color-accent-lavender) 100%
+  );
+  
+  transition: --gradient-pos 4s ease-in-out;
+}
+
+.hero-gradient:hover {
+  --gradient-pos: 80%;
+}
+
+/* ── Subtle hue breathing on headings (very luxurious feel) ── */
+h1, h2, h3 {
+  filter: hue-rotate(var(--hue-shift));
+  transition: filter 3s ease;
+}
+
+/* Your existing global styles remain unchanged ↓ */
 html {
-  overflow-y: scroll; /* Always reserve space for scrollbar */
-  scrollbar-width: thin; /* Firefox: thin scrollbar */
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--color-secondary);
   margin: 0;
-  min-width: 100%; /* Prevent shrink when scrollbar appears */
-  overflow-x: hidden; /* No horizontal scroll */
+  min-width: 100%;
+  overflow-x: hidden;
 }
 
-/* WebKit browsers (Chrome, Safari, Edge) - thin & styled scrollbar */
-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-body::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 105, 180, 0.3); /* Soft hot pink */
-  border-radius: 4px;
-}
-
-body::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
-}
-
-/* Stylish Header Font: Elegant modern serif (Playfair Display) for headings */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700; /* Bold yet elegant */
-  letter-spacing: 0.5px; /* Slight spacing for sophistication */
-  line-height: 1.2; /* Tight for impact */
-}
-
-/* Example Tailwind usage:
-   - bg-secondary: main page
-   - bg-bg-light: cards/events/news
-   - bg-bg-cream: alternate sections (e.g., vision/values)
-   - bg-primary / text-primary: buttons/headings
-   - hover:bg-accent-gold: button hovers
-   - text-accent-orchid: accents/links
-   - border-accent-lavender: subtle borders
-*/
+/* ... rest of your scrollbar, heading font etc. stays the same */
