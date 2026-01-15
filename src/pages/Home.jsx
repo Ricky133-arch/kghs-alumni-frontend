@@ -13,7 +13,15 @@ const Home = () => {
   const [totalDonated, setTotalDonated] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
   const [loadingFinance, setLoadingFinance] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false); // State for dropdown
+  const [isExpanded, setIsExpanded] = useState(false); // State for scholarship dropdown
+
+  // State for collapsible executives sections
+  const [openSection, setOpenSection] = useState('trustees'); // Default: Board of Trustees open
+
+  // Toggle function for executives sections
+  const toggleSection = (section) => {
+    setOpenSection(openSection === section ? null : section);
+  };
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_API_URL}/api/news`)
@@ -431,182 +439,141 @@ const Home = () => {
         </div>
       </section>
 
-{/* MEET OUR EXECUTIVES - Added Here */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-white to-primary/5">
+      {/* MEET OUR EXECUTIVES - Clean & Classic Version */}
+      <section className="py-20 md:py-28 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
               Meet Our Executives
             </h2>
-            <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto">
-              The visionary leaders guiding the KGHS Alumni Foundation with wisdom, dedication, and love.
+            <p className="text-xl md:text-2xl text-textDark/80 max-w-3xl mx-auto leading-relaxed">
+              The dedicated leaders guiding the KGHS Alumni Foundation with wisdom, experience, and deep commitment.
             </p>
           </motion.div>
 
-          {/* Collapsible Executive Sections */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             {/* Board of Trustees */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-primary/10 overflow-hidden">
+            <div>
               <button
                 onClick={() => toggleSection('trustees')}
-                className="w-full px-10 py-8 flex justify-between items-center text-left bg-gradient-to-r from-primary/5 to-transparent hover:bg-primary/10 transition-colors"
+                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
               >
-                <h3 className="text-3xl md:text-4xl font-bold text-primary">Board of Trustees</h3>
-                <span className="text-3xl text-primary">{openSection === 'trustees' ? '▲' : '▼'}</span>
+                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Board of Trustees</h3>
+                <span className="text-3xl font-bold text-primary">
+                  {openSection === 'trustees' ? '▲' : '▼'}
+                </span>
               </button>
 
               <AnimatePresence>
                 {openSection === 'trustees' && (
-                  <motion.div
+                  <motion.ul
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
+                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
                   >
-                    <div className="p-10 md:p-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {[
-                        { name: "Dr. Alaro Lawson", role: "BOT/Foundation Chair", age: 80 },
-                        { name: "Dr. Margaret George Kennedy", role: "Vice Chair", age: 83 },
-                        { name: "Oris Samuel", role: "Secretary", age: 96 },
-                        { name: "Harrisonba Sam Sam Jaja", role: "Treasurer", age: 79 },
-                        { name: "Minini MacBarango", role: "Financial Secretary", age: 92 },
-                        { name: "Ereminawari Ibama", role: "", age: 91 },
-                        { name: "Obaraemi Warmate", role: "", age: 79 },
-                        { name: "Biobele Iseleye Amachree", role: "", age: 85 },
-                        { name: "Tammy Barango", role: "", age: 84 },
-                        { name: "Victoria Sergeant-Awuse", role: "General Trustee", age: 82 },
-                        { name: "Advocate Abiegbe-Tomzine's", role: "Membership/Welfare Chair", age: 92 },
-                        { name: "Taire Emmanuel Bailey", role: "Publicity Chair", age: 92 },
-                        { name: "Omiete Farrell", role: "Fundraising Chair", age: 80 },
-                      ].map((member, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="bg-white rounded-2xl p-6 shadow-lg border border-primary/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                        >
-                          <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
-                          <p className="text-textDark/80 font-medium">{member.role || 'Member'}</p>
-                          <p className="text-sm text-textDark/60 mt-1">{member.age} years</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
+                    <li>Dr. Alaro Lawson (BOT/Foundation Chair), 80</li>
+                    <li>Dr. Margaret George Kennedy (Vice Chair), 83</li>
+                    <li>Oris Samuel (Secretary), 96</li>
+                    <li>Harrisonba Sam Sam Jaja (Treasurer), 79</li>
+                    <li>Minini MacBarango (Financial Secretary), 92</li>
+                    <li>Ereminawari Ibama, 91</li>
+                    <li>Obaraemi Warmate, 79</li>
+                    <li>Biobele Iseleye Amachree, 85</li>
+                    <li>Tammy Barango, 84</li>
+                    <li>Victoria Sergeant-Awuse (General Trustee), 82</li>
+                    <li>Advocate Abiegbe-Tomzine's (Membership/Welfare Chair), 92</li>
+                    <li>Taire Emmanuel Bailey (Publicity Chair), 92</li>
+                    <li>Omiete Farrell (Fundraising Chair), 80</li>
+                  </motion.ul>
                 )}
               </AnimatePresence>
             </div>
 
             {/* Fundraising and Event Committee */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-primary/10 overflow-hidden">
+            <div>
               <button
                 onClick={() => toggleSection('fundraising')}
-                className="w-full px-10 py-8 flex justify-between items-center text-left bg-gradient-to-r from-primary/5 to-transparent hover:bg-primary/10 transition-colors"
+                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
               >
-                <h3 className="text-3xl md:text-4xl font-bold text-primary">Fundraising and Event Committee</h3>
-                <span className="text-3xl text-primary">{openSection === 'fundraising' ? '▲' : '▼'}</span>
+                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Fundraising and Event Committee</h3>
+                <span className="text-3xl font-bold text-primary">
+                  {openSection === 'fundraising' ? '▲' : '▼'}
+                </span>
               </button>
 
               <AnimatePresence>
                 {openSection === 'fundraising' && (
-                  <motion.div
+                  <motion.ul
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
+                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
                   >
-                    <div className="p-10 md:p-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {[
-                        { name: "Omiete Farrell", role: "Chair", age: 80 },
-                        { name: "Opakiriba Ofuani", role: "", age: 80 },
-                        { name: "Oribi Isokariari-Higgwe", role: "", age: 80 },
-                        { name: "Obaraemi Warmate", role: "", age: 79 },
-                        { name: "Asolimaa Onyenwuzor", role: "", age: 81 },
-                        { name: "Ene Taylor", role: "", age: 80 },
-                        { name: "Kienma Inifie", role: "", age: 82 },
-                        { name: "Hon. Alaso Johnbull-Obi", role: "", age: 80 },
-                      ].map((member, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="bg-white rounded-2xl p-6 shadow-lg border border-primary/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                        >
-                          <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
-                          <p className="text-textDark/80 font-medium">{member.role || 'Member'}</p>
-                          <p className="text-sm text-textDark/60 mt-1">{member.age} years</p>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
+                    <li>Omiete Farrell (Chair), 80</li>
+                    <li>Opakiriba Ofuani, 80</li>
+                    <li>Oribi Isokariari-Higgwe, 80</li>
+                    <li>Obaraemi Warmate, 79</li>
+                    <li>Asolimaa Onyenwuzor, 81</li>
+                    <li>Ene Taylor, 80</li>
+                    <li>Kienma Inifie, 82</li>
+                    <li>Hon. Alaso Johnbull-Obi, 80</li>
+                  </motion.ul>
                 )}
               </AnimatePresence>
             </div>
 
             {/* Publicity and Communication Committee */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-primary/10 overflow-hidden">
+            <div>
               <button
                 onClick={() => toggleSection('publicity')}
-                className="w-full px-10 py-8 flex justify-between items-center text-left bg-gradient-to-r from-primary/5 to-transparent hover:bg-primary/10 transition-colors"
+                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
               >
-                <h3 className="text-3xl md:text-4xl font-bold text-primary">Publicity and Communication Committee</h3>
-                <span className="text-3xl text-primary">{openSection === 'publicity' ? '▲' : '▼'}</span>
+                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Publicity and Communication Committee</h3>
+                <span className="text-3xl font-bold text-primary">
+                  {openSection === 'publicity' ? '▲' : '▼'}
+                </span>
               </button>
 
               <AnimatePresence>
                 {openSection === 'publicity' && (
-                  <motion.div
+                  <motion.ul
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
+                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
                   >
-                    <div className="p-10 md:p-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {[
-                        { name: "Taire Emmanuel Baile", role: "Chair", age: 92 },
-                        { name: "Alaere Idoniboye-obu", role: "Secretary" },
-                        { name: "Ese Hart", role: "" },
-                        { name: "Soiboma lyai-Sokari", role: "" },
-                        { name: "Mary Samuel-Allasseh", role: "", age: 88 },
-                        { name: "Tonye Dokubo", role: "" },
-                        { name: "Ibiba Wariboko", role: "", age: 80 },
-                      ].map((member, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.05 }}
-                          className="bg-white rounded-2xl p-6 shadow-lg border border-primary/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-                        >
-                          <h4 className="text-xl font-bold text-primary mb-2">{member.name}</h4>
-                          <p className="text-textDark/80 font-medium">{member.role || 'Member'}</p>
-                          {member.age && <p className="text-sm text-textDark/60 mt-1">{member.age} years</p>}
-                        </motion.div>
-                      ))}
-                    </div>
-                  </motion.div>
+                    <li>Taire Emmanuel Baile (Chair), 92</li>
+                    <li>Alaere Idoniboye-obu (Secretary)</li>
+                    <li>Ese Hart</li>
+                    <li>Soiboma lyai-Sokari</li>
+                    <li>Mary Samuel-Allasseh, 88</li>
+                    <li>Tonye Dokubo</li>
+                    <li>Ibiba Wariboko, 80</li>
+                  </motion.ul>
                 )}
               </AnimatePresence>
             </div>
 
-            {/* Other Key Roles & Committees */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-primary/10 overflow-hidden">
+            {/* Other Key Roles */}
+            <div>
               <button
                 onClick={() => toggleSection('other')}
-                className="w-full px-10 py-8 flex justify-between items-center text-left bg-gradient-to-r from-primary/5 to-transparent hover:bg-primary/10 transition-colors"
+                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
               >
-                <h3 className="text-3xl md:text-4xl font-bold text-primary">Other Key Roles & Committees</h3>
-                <span className="text-3xl text-primary">{openSection === 'other' ? '▲' : '▼'}</span>
+                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Other Key Roles & Committees</h3>
+                <span className="text-3xl font-bold text-primary">
+                  {openSection === 'other' ? '▲' : '▼'}
+                </span>
               </button>
 
               <AnimatePresence>
@@ -616,44 +583,34 @@ const Home = () => {
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="overflow-hidden"
+                    className="overflow-hidden pt-6 space-y-8 text-lg text-textDark/90"
                   >
-                    <div className="p-10 md:p-16 space-y-12">
-                      <div>
-                        <h4 className="text-2xl font-bold text-primary mb-4">Historian</h4>
-                        <p className="text-textDark/80 text-lg">Okorite Martina Akoko, 80</p>
-                      </div>
+                    <div>
+                      <strong className="text-2xl text-primary block mb-2">Historian</strong>
+                      <p>Okorite Martina Akoko, 80</p>
+                    </div>
 
-                      <div>
-                        <h4 className="text-2xl font-bold text-primary mb-4">Archivist</h4>
-                        <p className="text-textDark/80 text-lg">Courageous Manners, 96</p>
-                      </div>
+                    <div>
+                      <strong className="text-2xl text-primary block mb-2">Archivist</strong>
+                      <p>Courageous Manners, 96</p>
+                    </div>
 
-                      <div>
-                        <h4 className="text-2xl font-bold text-primary mb-4">Legal Counsel</h4>
-                        <p className="text-textDark/80 text-lg">Anonymous (preferred)</p>
-                      </div>
+                    <div>
+                      <strong className="text-2xl text-primary block mb-2">Legal Counsel</strong>
+                      <p>Anonymous (preferred)</p>
+                    </div>
 
-                      <div>
-                        <h4 className="text-2xl font-bold text-primary mb-4">Membership and Social Welfare Committee</h4>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                          {[
-                            { name: "Advocate Abiegbe-Tomzine's", role: "Chair", age: 92 },
-                            { name: "Courageous Manners", role: "Secretary", age: 96 },
-                            { name: "Daboingi Erekosima", role: "", age: 83 },
-                            { name: "Gialba Ngeribia", role: "", age: 83 },
-                            { name: "Iwoba Igobo", role: "", age: 82 },
-                            { name: "Christina Erekosima", role: "", age: 83 },
-                            { name: "Ibiye George", role: "", age: 91 },
-                          ].map((member, idx) => (
-                            <div key={idx} className="bg-white rounded-xl p-5 border border-primary/10">
-                              <p className="font-bold text-primary">{member.name}</p>
-                              <p className="text-textDark/80">{member.role}</p>
-                              {member.age && <p className="text-sm text-textDark/60">{member.age} years</p>}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
+                    <div>
+                      <strong className="text-2xl text-primary block mb-2">Membership and Social Welfare Committee</strong>
+                      <ul className="space-y-3 mt-4 pl-8 list-disc">
+                        <li>Advocate Abiegbe-Tomzine's (Chair), 92</li>
+                        <li>Courageous Manners (Secretary), 96</li>
+                        <li>Daboingi Erekosima, 83</li>
+                        <li>Gialba Ngeribia, 83</li>
+                        <li>Iwoba Igobo, 82</li>
+                        <li>Christina Erekosima, 83</li>
+                        <li>Ibiye George, 91</li>
+                      </ul>
                     </div>
                   </motion.div>
                 )}
