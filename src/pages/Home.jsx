@@ -620,6 +620,40 @@ const Home = () => {
         </div>
       </section>
 
+{/* Organizational Structure Diagram */}
+<section className="py-16 md:py-24 bg-white/50">
+  <div className="max-w-6xl mx-auto px-6">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="text-center mb-12"
+    >
+      <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+        Our Organizational Structure
+      </h3>
+      <p className="text-xl text-textDark/70">
+        How our Board, Committees, and Key Roles work together to support KGHS girls and the alumni community.
+      </p>
+    </motion.div>
+
+    <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-primary/10 bg-white">
+      <img 
+        src="https://i.imgur.com/tT2v6Qs.jpg" 
+        alt="KGHS Alumni Foundation Organizational Structure"
+        loading="lazy"
+        className="w-full h-auto object-contain"
+      />
+    </div>
+
+    {/* Optional caption */}
+    <p className="text-center text-textDark/60 mt-6 text-lg italic">
+      Clear leadership and dedicated committees driving our mission forward
+    </p>
+  </div>
+</section>
+
       {/* Finance Showcase - Breathing Cards */}
       <section className="py-20 md:py-28 bg-gradient-to-b from-white to-primary/5">
         <div className="max-w-6xl mx-auto px-6">
