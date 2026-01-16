@@ -68,12 +68,9 @@ const Signup = () => {
         <div className="text-center mb-10">
           <h2 className="text-4xl font-bold text-primary mb-2">Join KGHS Alumni</h2>
           <p className="text-textDark/70">Become part of our vibrant sisterhood</p>
-          <p className="text-lg text-textDark/80 mt-6 font-medium">
-            Membership requires a one-time payment via bank transfer
-          </p>
         </div>
 
-        {/* Success Message with Bank Details Always Shown */}
+        {/* Success Message */}
         {success && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -82,31 +79,10 @@ const Signup = () => {
           >
             <h3 className="text-3xl font-bold mb-4">Thank You, {formData.name}! ❤️</h3>
             <p className="text-xl leading-relaxed mb-6">
-              Your account has been created and is now <strong>pending approval</strong>.
+              Your account has been created successfully and is now <strong>pending approval</strong>.
             </p>
-            <p className="text-lg mb-8">
-              To complete your membership, please make the required payment via bank transfer.
-              Once confirmed, your account will be approved and you'll receive a welcome email.
-            </p>
-
-            {/* Bank Details - Always Visible */}
-            <div className="mt-10 p-8 bg-white rounded-2xl border-2 border-primary/30">
-              <h4 className="text-2xl font-bold text-primary mb-6">Bank Transfer Details</h4>
-              <div className="space-y-5 text-left text-lg">
-                <p><strong>Bank:</strong> Zenith Bank Plc</p>
-                <p><strong>Account Name:</strong> KALABARI GIRLS</p>
-                <p><strong>Account Number:</strong> <span className="text-2xl font-bold text-primary">1226557765</span></p>
-              </div>
-              <p className="text-textDark/70 mt-6 italic">
-                Please use your name or email as the transfer description for easy identification.
-              </p>
-            </div>
-
-            <p className="mt-10 text-lg text-textDark/70">
-              You will receive a welcome email once your payment is confirmed and account approved.
-            </p>
-            <p className="mt-6 text-sm">
-              Redirecting to login in 5 seconds...
+            <p className="text-lg">
+              We'll review your application shortly. Once approved, you'll receive a welcome email with login instructions.
             </p>
           </motion.div>
         )}
@@ -204,7 +180,7 @@ const Signup = () => {
         </p>
 
         <p className="text-center mt-4 text-textDark/60 text-sm">
-          Membership is exclusive to verified KGHS graduates. Payment required via bank transfer. All applications are reviewed by admin.
+          Membership is exclusive to verified KGHS graduates. All applications are reviewed by admin.
         </p>
       </motion.div>
     </div>
