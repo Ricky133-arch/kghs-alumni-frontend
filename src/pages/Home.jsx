@@ -961,7 +961,7 @@ const Home = () => {
     <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
       <div className="text-center">
         <img
-          src="https://res.cloudinary.com/djkrjogje/image/upload/v1769431016/image_u7adyi.jpg"  // ← Replace with actual image URL of Nderiya & Okorite
+          src="https://i.imgur.com/c1BMWAL.jpg"  // ← Replace with actual image URL of Nderiya & Okorite
           alt="Signature - Nderiya B. Harry"
           className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
         />
