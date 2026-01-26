@@ -920,6 +920,79 @@ const Home = () => {
         </div>
       </section>
 
+{/* Official Constitution & Signatures */}
+<section className="py-16 md:py-24 bg-gradient-to-b from-white to-primary/5 border-t border-primary/10">
+  <div className="max-w-6xl mx-auto px-6">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+      className="text-center mb-12"
+    >
+      <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+        Our Foundation's Constitution
+      </h3>
+      
+      <p className="text-xl md:text-2xl text-textDark/80 mb-10 max-w-3xl mx-auto leading-relaxed">
+        Transparency and good governance are at the heart of our work. Download the full constitution below, ratified and signed by the Board.
+      </p>
+
+      {/* Download Constitution */}
+      <a
+        href="https://res.cloudinary.com/djkrjogje/raw/upload/v1769426295/KGHS_CONSTITUTION_xmvg7b.docx"  // ← REPLACE WITH YOUR CONSTITUTION PDF URL
+        download="KGHS-Alumni-Foundation-Constitution.pdf"
+        className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 mb-12"
+      >
+        <span>Download Constitution (PDF)</span>
+        <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+      </a>
+    </motion.div>
+
+    {/* First Signature (inside constitution PDF) */}
+    <div className="text-center mb-16">
+      <p className="text-lg text-textDark/70 mb-4">
+        Ratified and signed by the Board of Trustees
+      </p>
+      <p className="text-xl font-medium text-primary">
+        Nderiya B. Harry & Okorite Akoko
+      </p>
+      <p className="text-sm text-textDark/60 mt-2">
+        Chairwoman & Secretary (as per constitution document)
+      </p>
+      <img
+        src="https://res.cloudinary.com/djkrjogje/image/upload/v1769427007/secondSIG.PNG_ep4puc.jpg"  // ← REPLACE WITH YOUR UPLOADED IMAGE URL
+        alt="Official Signature - Nderiya B. Harry"
+        className="mx-auto max-h-40 md:max-h-56 object-contain shadow-lg rounded-lg border border-primary/20 bg-white p-6"
+      />
+    </div>
+
+    {/* Second Signature (standalone image) */}
+    <div className="text-center">
+      <p className="text-lg text-textDark/70 mb-6">
+        Additional Official Approval Signature
+      </p>
+      <img
+        src="https://res.cloudinary.com/djkrjogje/image/upload/v1769426315/Document_hmopqk.pdf"  // ← REPLACE WITH YOUR UPLOADED IMAGE URL
+        alt="Official Signature - N.B. Harry"
+        className="mx-auto max-h-40 md:max-h-56 object-contain shadow-lg rounded-lg border border-primary/20 bg-white p-6"
+      />
+      <p className="mt-6 text-xl font-medium text-primary">
+        N.B. Harry
+      </p>
+      <p className="text-sm text-textDark/60 mt-2">
+        BOT/Foundation Chair
+      </p>
+    </div>
+
+    <p className="text-center text-textDark/60 mt-12 text-lg italic">
+      All documents are official records of the Kalabari Girls’ High School Alumni Foundation.
+    </p>
+  </div>
+</section>
+
       {/* Modern, Sleek Footer - Email Centered */}
       <footer className="bg-gradient-to-t from-primary/30 via-primary/10 to-transparent py-20 border-t-0">
         <div className="max-w-6xl mx-auto px-6">
