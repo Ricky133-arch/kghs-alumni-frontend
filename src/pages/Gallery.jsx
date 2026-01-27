@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 const Gallery = () => {
@@ -11,7 +11,7 @@ const Gallery = () => {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/gallery`)  // ← Fixed: backticks
+      .get(`${import.meta.env.VITE_API_URL}/api/gallery`)
       .then((res) => {
         // Sort by newest first
         setImages(res.data.sort((a, b) => new Date(b.date) - new Date(a.date)));
@@ -48,7 +48,7 @@ const Gallery = () => {
 
     try {
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/gallery`,  // ← Fixed: backticks
+        `${import.meta.env.VITE_API_URL}/api/gallery`,
         data,
         {
           headers: {
@@ -71,7 +71,7 @@ const Gallery = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
@@ -107,20 +107,25 @@ const Gallery = () => {
             {images.map((img, index) => (
               <motion.div
                 key={img._id}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05, duration: 0.6 }}
-                whileHover={{ scale: 1.05, y: -12, boxShadow: "0 30px 60px rgba(255,192,203,0.3)" }}
-                className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary/20"
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ delay: index * 0.04, duration: 0.5 }}
+                whileHover={{ 
+                  scale: 1.03, 
+                  y: -8, 
+                  boxShadow: "0 20px 40px rgba(255,192,203,0.25)" 
+                }}
+                className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary/20 will-change-transform"
               >
                 <div className="aspect-square relative">
                   <img
                     src={img.url}
                     alt={img.caption || 'KGHS Memory'}
+                    loading="lazy"
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-400 flex items-end p-6">
                     <p className="text-white text-lg font-medium drop-shadow-lg">
                       {img.caption || 'A moment to remember'}
                     </p>
@@ -148,7 +153,7 @@ const Gallery = () => {
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
           className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/20 max-w-4xl mx-auto"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-primary text-center mb-10">
@@ -162,6 +167,7 @@ const Gallery = () => {
                 <img
                   src={preview}
                   alt="Preview"
+                  loading="lazy"
                   className="w-80 h-80 rounded-2xl object-cover mx-auto shadow-2xl border-4 border-primary/30"
                 />
               </div>
@@ -193,7 +199,7 @@ const Gallery = () => {
 
             <div className="text-center">
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(255,192,203,0.3)" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
                 disabled={uploading}
