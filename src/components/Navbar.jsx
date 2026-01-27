@@ -35,15 +35,16 @@ const Navbar = () => {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.4, ease: "easeOut" }} // Faster entrance
+        viewport={{ once: true }}
         className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
           {/* Logo - Made Almost as Big as the Circular Border */}
           <Link to="/" className="flex items-center space-x-4">
             <motion.div
-              whileHover={{ scale: 1.1 }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.08 }} // Slightly less aggressive scale
+              transition={{ duration: 0.2 }} // Quicker hover
               className="relative"
             >
               <img 
@@ -84,7 +85,8 @@ const Navbar = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.2 }}
+                  whileHover={{ scale: 1.08 }}
+                  transition={{ duration: 0.2 }}
                   className="text-primary hover:text-pink-600 transition text-xl"
                   aria-label={social.label}
                 >
@@ -136,8 +138,8 @@ const Navbar = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="md:hidden bg-white/95 backdrop-blur-lg shadow-2xl border-t border-primary/20"
+              transition={{ duration: 0.3, ease: 'easeOut' }} // Faster open/close
+              className="md:hidden bg-white/95 backdrop-blur-lg shadow-2xl border-t border-primary/20 will-change-transform"
             >
               <div className="px-6 py-8 space-y-6 text-center">
                 {token ? (
