@@ -137,7 +137,8 @@ const Home = () => {
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
           >
             Latest News
@@ -148,6 +149,7 @@ const Home = () => {
                 <div key={item._id} className="px-4">
                   <motion.div
                     whileHover={{ y: -10 }}
+                    transition={{ duration: 0.3 }}
                     className="bg-white rounded-2xl shadow-xl p-10 text-center border border-pink-100"
                   >
                     <h3 className="text-2xl font-semibold mb-4 text-textDark">{item.title}</h3>
@@ -169,7 +171,8 @@ const Home = () => {
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
           >
             Upcoming Events
@@ -181,8 +184,9 @@ const Home = () => {
                   key={event._id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
                   whileHover={{ y: -15, scale: 1.03 }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.4 }}
                   className="bg-white rounded-2xl shadow-xl overflow-hidden"
                 >
                   <div className="bg-primary/20 h-40 flex items-center justify-center">
@@ -223,7 +227,9 @@ const Home = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/i4njBNR.jpg" 
+                  src="https://i.imgur.com/i4njBNR.jpg?w=800" 
+                  srcSet="https://i.imgur.com/i4njBNR.jpg?w=400 400w, https://i.imgur.com/i4njBNR.jpg?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Story - Journey to Reinstatement"
                   loading="lazy"
                   className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
@@ -235,7 +241,7 @@ const Home = () => {
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.7 }}
               className="order-1 md:order-2 space-y-5"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Story: Journey to Reinstatement</h2>
@@ -281,7 +287,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-6">
@@ -296,31 +302,94 @@ const Home = () => {
           <div className="relative rounded-3xl overflow-hidden shadow-2xl">
             <Slider {...memorySliderSettings}>
               <div>
-                <img src="https://i.imgur.com/FirPFti.png" alt="KGHS Memory 1" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/FirPFti.png?w=800" 
+                  srcSet="https://i.imgur.com/FirPFti.png?w=400 400w, https://i.imgur.com/FirPFti.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 1" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/btooXVa.png" alt="KGHS Memory 2" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/btooXVa.png?w=800" 
+                  srcSet="https://i.imgur.com/btooXVa.png?w=400 400w, https://i.imgur.com/btooXVa.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 2" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/rfQHhcY.png" alt="KGHS Memory 3" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/rfQHhcY.png?w=800" 
+                  srcSet="https://i.imgur.com/rfQHhcY.png?w=400 400w, https://i.imgur.com/rfQHhcY.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 3" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/lH6VwVI.png" alt="KGHS Memory 4" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/lH6VwVI.png?w=800" 
+                  srcSet="https://i.imgur.com/lH6VwVI.png?w=400 400w, https://i.imgur.com/lH6VwVI.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 4" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/CzoC1tm.png" alt="KGHS Memory 5" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/CzoC1tm.png?w=800" 
+                  srcSet="https://i.imgur.com/CzoC1tm.png?w=400 400w, https://i.imgur.com/CzoC1tm.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 5" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/y5xmhUZ.png" alt="KGHS Memory 6" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/y5xmhUZ.png?w=800" 
+                  srcSet="https://i.imgur.com/y5xmhUZ.png?w=400 400w, https://i.imgur.com/y5xmhUZ.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 6" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/L39Jcv0.png" alt="KGHS Memory 7" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/L39Jcv0.png?w=800" 
+                  srcSet="https://i.imgur.com/L39Jcv0.png?w=400 400w, https://i.imgur.com/L39Jcv0.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 7" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/BtgxtFw.png" alt="KGHS Memory 8" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/BtgxtFw.png?w=800" 
+                  srcSet="https://i.imgur.com/BtgxtFw.png?w=400 400w, https://i.imgur.com/BtgxtFw.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 8" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
               <div>
-                <img src="https://i.imgur.com/amqhNNQ.png" alt="KGHS Memory 9" className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover" />
+                <img 
+                  src="https://i.imgur.com/amqhNNQ.png?w=800" 
+                  srcSet="https://i.imgur.com/amqhNNQ.png?w=400 400w, https://i.imgur.com/amqhNNQ.png?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  alt="KGHS Memory 9" 
+                  loading="lazy"
+                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
+                />
               </div>
             </Slider>
           </div>
@@ -333,20 +402,17 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               className="order-2"
-              animate={{ 
-                y: [0, -22, 0],
-                rotate: [0, -2, 3, 0]
-              }}
-              transition={{ 
-                duration: 14,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/exBHuj1.jpg" 
+                  src="https://i.imgur.com/exBHuj1.jpg?w=800" 
+                  srcSet="https://i.imgur.com/exBHuj1.jpg?w=400 400w, https://i.imgur.com/exBHuj1.jpg?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Vision"
                   loading="lazy"
                   className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
@@ -357,8 +423,8 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
               className="order-1 space-y-5"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Vision</h2>
@@ -379,20 +445,17 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               className="order-2 md:order-1"
-              animate={{ 
-                scale: [1, 1.02, 1],
-                rotate: [0, 1.5, -1.5, 0]
-              }}
-              transition={{ 
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/aJBkxMS.jpg" 
+                  src="https://i.imgur.com/aJBkxMS.jpg?w=800" 
+                  srcSet="https://i.imgur.com/aJBkxMS.jpg?w=400 400w, https://i.imgur.com/aJBkxMS.jpg?w=800 800w" 
+                  sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Core Values"
                   loading="lazy"
                   className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
@@ -403,8 +466,8 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7 }}
               className="order-1 md:order-2 space-y-6"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Core Values</h2>
@@ -446,7 +509,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             className="text-center mb-12"
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
@@ -620,39 +683,38 @@ const Home = () => {
         </div>
       </section>
 
-{/* Organizational Structure Diagram */}
-<section className="py-16 md:py-24 bg-white/50">
-  <div className="max-w-6xl mx-auto px-6">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="text-center mb-12"
-    >
-      <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-        Our Organizational Structure
-      </h3>
-      <p className="text-xl text-textDark/70">
-        How our Board, Committees, and Key Roles work together to support KGHS girls and the alumni community.
-      </p>
-    </motion.div>
+      {/* Organizational Structure Diagram */}
+      <section className="py-16 md:py-24 bg-white/50">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-12"
+          >
+            <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+              Our Organizational Structure
+            </h3>
+            <p className="text-xl text-textDark/70">
+              How our Board, Committees, and Key Roles work together to support KGHS girls and the alumni community.
+            </p>
+          </motion.div>
 
-    <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-primary/10 bg-white">
-      <img 
-        src="https://i.imgur.com/tT2v6Qs.jpg" 
-        alt="KGHS Alumni Foundation Organizational Structure"
-        loading="lazy"
-        className="w-full h-auto object-contain"
-      />
-    </div>
+          <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-primary/10 bg-white">
+            <img 
+              src="https://i.imgur.com/tT2v6Qs.jpg" 
+              alt="KGHS Alumni Foundation Organizational Structure"
+              loading="lazy"
+              className="w-full h-auto object-contain"
+            />
+          </div>
 
-    {/* Optional caption */}
-    <p className="text-center text-textDark/60 mt-6 text-lg italic">
-      Clear leadership and dedicated committees driving our mission forward
-    </p>
-  </div>
-</section>
+          <p className="text-center text-textDark/60 mt-6 text-lg italic">
+            Clear leadership and dedicated committees driving our mission forward
+          </p>
+        </div>
+      </section>
 
       {/* Finance Showcase - Breathing Cards */}
       <section className="py-20 md:py-28 bg-gradient-to-b from-white to-primary/5">
@@ -661,6 +723,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
@@ -738,7 +801,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.7 }}
             className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/20"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-primary mb-8">
@@ -770,7 +833,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.9 }}
+            transition={{ duration: 0.7 }}
             className="text-center mb-20"
           >
             <h3 className="text-5xl md:text-6xl font-bold text-primary mb-6">
@@ -786,7 +849,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-accent-lavender/30"
           >
             {/* Teaser Header */}
@@ -841,7 +904,7 @@ const Home = () => {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.7, ease: "easeInOut" }}
+                  transition={{ duration: 0.5 }}
                   className="overflow-hidden"
                 >
                   <div className="px-10 md:px-16 pb-16 pt-8 bg-bg-light/50 border-t border-accent-lavender/20">
@@ -920,75 +983,93 @@ const Home = () => {
         </div>
       </section>
 
-{/* Official Constitution & Signatures */}
-<section className="py-16 md:py-24 bg-gradient-to-b from-white to-primary/5 border-t border-primary/10">
-  <div className="max-w-6xl mx-auto px-6">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="text-center mb-12"
-    >
-      <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-        Our Foundation's Constitution
-      </h3>
-      
-      <p className="text-xl md:text-2xl text-textDark/80 mb-10 max-w-3xl mx-auto leading-relaxed">
-        Transparency and good governance are at the heart of our work. Download the full constitution below, ratified and signed by the Board.
-      </p>
+      {/* Official Constitution & Signatures */}
+      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-primary/5 border-t border-primary/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-12"
+          >
+            <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+              Our Foundation's Constitution
+            </h3>
+            
+            <p className="text-xl md:text-2xl text-textDark/80 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Transparency and good governance are at the heart of our work. Download the full constitution below, ratified and signed by the Board.
+            </p>
 
-      {/* Download Constitution */}
-      <a
-        href="https://res.cloudinary.com/djkrjogje/raw/upload/v1769426295/KGHS_CONSTITUTION_xmvg7b.docx"  // ← REPLACE WITH YOUR CONSTITUTION PDF URL
-        download="KGHS-Alumni-Foundation-Constitution.pdf"
-        className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 mb-12"
-      >
-        <span>Download Constitution (PDF)</span>
-        <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-      </a>
-    </motion.div>
+            {/* Download Constitution */}
+            <a
+              href="https://res.cloudinary.com/djkrjogje/raw/upload/v1769426295/KGHS_CONSTITUTION_xmvg7b.docx"
+              download="KGHS-Alumni-Foundation-Constitution.pdf"
+              className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 mb-12"
+            >
+              <span>Download Constitution (PDF)</span>
+              <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+            </a>
+          </motion.div>
 
-   {/* Signatures Section */}
-<div className="mt-16 space-y-20">
-  {/* Constitution Signatures (Chairwoman & Secretary) */}
-  <div className="text-center">
-    <p className="text-2xl font-bold text-primary mb-6">
-      Ratified by the Board of Trustees
-    </p>
-    <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
-      <div className="text-center">
-        <img
-          src="https://i.imgur.com/c1BMWAL.jpg"  // ← Replace with actual image URL of Nderiya & Okorite
-          alt="Signature - Nderiya B. Harry"
-          className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
-        />
-        <p className="mt-4 text-lg font-medium text-textDark/90">
-          Nderiya B. Harry (Chairperson)
-        </p>
-      </div>
+          {/* Signatures Section */}
+          <div className="mt-16 space-y-20">
+            {/* Constitution Signatures (Chairwoman & Secretary) */}
+            <div className="text-center">
+              <p className="text-2xl font-bold text-primary mb-6">
+                Ratified by the Board of Trustees
+              </p>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
+                <div className="text-center">
+                  <img
+                    src="https://res.cloudinary.com/djkrjogje/image/upload/v1769431016/image_u7adyi.jpg"
+                    alt="Signature - Nderiya B. Harry"
+                    className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <p className="mt-4 text-lg font-medium text-textDark/90">
+                    Nderiya B. Harry (Chairperson)
+                  </p>
+                </div>
 
-      <div className="text-center">
-        <img
-          src="https://res.cloudinary.com/djkrjogje/image/upload/v1769427007/secondSIG.PNG_ep4puc.jpg"  // ← Replace with actual image URL of Okorite Akoko
-          alt="Signature - Okorite Akoko"
-          className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
-        />
-        <p className="mt-4 text-lg font-medium text-textDark/90">
-          Okorite Akoko (Secretary)
-        </p>
-      </div>
-    </div>
-  </div>
+                <div className="text-center">
+                  <img
+                    src="https://res.cloudinary.com/djkrjogje/image/upload/v1769427007/secondSIG.PNG_ep4puc.jpg"
+                    alt="Signature - Okorite Akoko"
+                    className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <p className="mt-4 text-lg font-medium text-textDark/90">
+                    Okorite Akoko (Secretary)
+                  </p>
+                </div>
+              </div>
+            </div>
 
-</div>
-    <p className="text-center text-textDark/60 mt-12 text-lg italic">
-      All documents are official records of the Kalabari Girls’ High School Alumni Foundation.
-    </p>
-  </div>
-</section>
+            {/* Second Signature - N.B. Harry */}
+            <div className="text-center bg-gray-50 py-16 rounded-3xl border border-primary/10">
+              <p className="text-2xl font-bold text-primary mb-6">
+                Official Approval Signature
+              </p>
+              <img
+                src="https://i.imgur.com/c1BMWAL.jpg"
+                alt="Signature - N.B. Harry"
+                className="mx-auto max-w-xs md:max-w-md h-auto object-contain shadow-xl rounded-xl border-4 border-primary/20 bg-white p-8 hover:shadow-2xl transition-shadow duration-300"
+              />
+              <p className="mt-8 text-2xl font-bold text-primary">
+                N.B. Harry
+              </p>
+              <p className="text-lg text-textDark/70 mt-2">
+                BOT/Foundation Chair
+              </p>
+            </div>
+          </div>
+
+          <p className="text-center text-textDark/60 mt-12 text-lg italic">
+            All documents are official records of the Kalabari Girls’ High School Alumni Foundation.
+          </p>
+        </div>
+      </section>
 
       {/* Modern, Sleek Footer - Email Centered */}
       <footer className="bg-gradient-to-t from-primary/30 via-primary/10 to-transparent py-20 border-t-0">
@@ -999,7 +1080,7 @@ const Home = () => {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.7 }}
               className="md:text-left"
             >
               <h4 className="text-4xl md:text-5xl font-bold text-primary mb-4">
@@ -1015,7 +1096,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
             >
               <p className="text-xl md:text-2xl text-textDark/80 italic mb-6">
                 Building legacies of leadership,<br />
@@ -1037,7 +1118,7 @@ const Home = () => {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.7 }}
               className="md:text-right"
             >
               <p className="text-textDark/60">
