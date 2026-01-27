@@ -13,12 +13,10 @@ const Home = () => {
   const [totalDonated, setTotalDonated] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
   const [loadingFinance, setLoadingFinance] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false); // State for scholarship dropdown
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // State for collapsible executives sections
-  const [openSection, setOpenSection] = useState('trustees'); // Default: Board of Trustees open
+  const [openSection, setOpenSection] = useState('trustees');
 
-  // Toggle function for executives sections
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
@@ -121,7 +119,7 @@ const Home = () => {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.9, duration: 0.8 }}
-              whileHover={{ scale: 1.1, boxShadow: "0 20px 40px rgba(255,192,203,0.6)" }}
+              whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-primary text-white px-10 py-5 rounded-full text-xl font-semibold shadow-2xl hover:bg-pink-600 transition duration-300"
             >
@@ -214,15 +212,10 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
             <motion.div
               className="order-2 md:order-1"
-              animate={{ 
-                y: [0, -18, 0],
-                rotate: [0, 2, -2, 0]
-              }}
-              transition={{ 
-                duration: 16,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
@@ -240,8 +233,8 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
               className="order-1 md:order-2 space-y-5"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Story: Journey to Reinstatement</h2>
@@ -287,7 +280,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-6">
@@ -405,7 +398,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
@@ -424,7 +417,7 @@ const Home = () => {
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
               className="order-1 space-y-5"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Vision</h2>
@@ -448,7 +441,7 @@ const Home = () => {
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
             >
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
@@ -467,7 +460,7 @@ const Home = () => {
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
               className="order-1 md:order-2 space-y-6"
             >
               <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Core Values</h2>
@@ -509,7 +502,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
@@ -690,7 +683,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
             <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
@@ -703,7 +696,9 @@ const Home = () => {
 
           <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-primary/10 bg-white">
             <img 
-              src="https://i.imgur.com/tT2v6Qs.jpg" 
+              src="https://i.imgur.com/tT2v6Qs.jpg?w=800" 
+              srcSet="https://i.imgur.com/tT2v6Qs.jpg?w=400 400w, https://i.imgur.com/tT2v6Qs.jpg?w=800 800w" 
+              sizes="(max-width: 768px) 100vw, 800px"
               alt="KGHS Alumni Foundation Organizational Structure"
               loading="lazy"
               className="w-full h-auto object-contain"
@@ -723,7 +718,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
             <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
@@ -801,7 +796,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/20"
           >
             <h2 className="text-4xl md:text-5xl font-extrabold text-primary mb-8">
@@ -812,7 +807,7 @@ const Home = () => {
             </p>
             <Link to="/donations">
               <motion.button
-                whileHover={{ scale: 1.1, boxShadow: "0 30px 60px rgba(255,192,203,0.4)" }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-primary text-white px-16 py-6 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300"
               >
@@ -833,7 +828,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-20"
           >
             <h3 className="text-5xl md:text-6xl font-bold text-primary mb-6">
@@ -849,7 +844,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-accent-lavender/30"
           >
             {/* Teaser Header */}
@@ -889,7 +884,7 @@ const Home = () => {
                 {isExpanded ? 'Show Less' : 'Read Full Details'}
                 <motion.span
                   animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.3 }}
                   className="inline-block"
                 >
                   ↓
@@ -990,7 +985,7 @@ const Home = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
             <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
@@ -1026,6 +1021,7 @@ const Home = () => {
                   <img
                     src="https://res.cloudinary.com/djkrjogje/image/upload/v1769431016/image_u7adyi.jpg"
                     alt="Signature - Nderiya B. Harry"
+                    loading="lazy"
                     className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
                   />
                   <p className="mt-4 text-lg font-medium text-textDark/90">
@@ -1037,6 +1033,7 @@ const Home = () => {
                   <img
                     src="https://res.cloudinary.com/djkrjogje/image/upload/v1769427007/secondSIG.PNG_ep4puc.jpg"
                     alt="Signature - Okorite Akoko"
+                    loading="lazy"
                     className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
                   />
                   <p className="mt-4 text-lg font-medium text-textDark/90">
@@ -1054,6 +1051,7 @@ const Home = () => {
               <img
                 src="https://i.imgur.com/c1BMWAL.jpg"
                 alt="Signature - N.B. Harry"
+                loading="lazy"
                 className="mx-auto max-w-xs md:max-w-md h-auto object-contain shadow-xl rounded-xl border-4 border-primary/20 bg-white p-8 hover:shadow-2xl transition-shadow duration-300"
               />
               <p className="mt-8 text-2xl font-bold text-primary">
@@ -1080,7 +1078,7 @@ const Home = () => {
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
               className="md:text-left"
             >
               <h4 className="text-4xl md:text-5xl font-bold text-primary mb-4">
@@ -1096,7 +1094,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
             >
               <p className="text-xl md:text-2xl text-textDark/80 italic mb-6">
                 Building legacies of leadership,<br />
@@ -1118,7 +1116,7 @@ const Home = () => {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
               className="md:text-right"
             >
               <p className="text-textDark/60">
