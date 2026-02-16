@@ -1010,9 +1010,7 @@ const Home = () => {
           </motion.div>
 
         
-          <p className="text-center text-textDark/60 mt-12 text-lg italic">
-            All documents are official records of the Kalabari Girls’ High School Alumni Foundation.
-          </p>
+        
         </div>
       </section>
 
