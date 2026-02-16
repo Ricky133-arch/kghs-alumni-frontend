@@ -998,7 +998,7 @@ const Home = () => {
 
             {/* Download Constitution */}
             <a
-              href="https://res.cloudinary.com/djkrjogje/raw/upload/v1769426295/KGHS_CONSTITUTION_xmvg7b.docx"
+              href="https://res.cloudinary.com/djkrjogje/raw/upload/v1771269676/THE_CONSTITUTIONAL_BYELAWS_OF_KGHS_27.08.2025-2_dsqmy3.docx"
               download="KGHS-Alumni-Foundation-Constitution.pdf"
               className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 mb-12"
             >
