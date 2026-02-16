@@ -80,7 +80,7 @@ const Home = () => {
           animate={{ scale: [1.1, 1.15, 1.1] }}
           transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
           style={{
-            backgroundImage: `url('https://i.imgur.com/wY9ZpTO.jpg')`,
+            backgroundImage: `url('https://res.cloudinary.com/djkrjogje/image/upload/v1771271342/KGHS_DAY1_15_1_jdblve.jpg')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
