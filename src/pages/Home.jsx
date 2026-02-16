@@ -1008,7 +1008,63 @@ const Home = () => {
               </svg>
             </a>
           </motion.div>
+{/* Signatures Section */}
+          <div className="mt-16 space-y-20">
+            {/* Constitution Signatures (Chairwoman & Secretary) */}
+            <div className="text-center">
+              <p className="text-2xl font-bold text-primary mb-6">
+                Ratified by the Board of Trustees
+              </p>
+              <div className="flex flex-col md:flex-row justify-center items-center gap-12 md:gap-20">
+                <div className="text-center">
+                  <img
+                    src="https://res.cloudinary.com/djkrjogje/image/upload/v1769431016/image_u7adyi.jpg"
+                    alt="Signature - Nderiya B. Harry"
+                    loading="lazy"
+                    className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <p className="mt-4 text-lg font-medium text-textDark/90">
+                    Nderiya B. Harry (Chairperson)
+                  </p>
+                </div>
 
+                <div className="text-center">
+                  <img
+                    src="https://res.cloudinary.com/djkrjogje/image/upload/v1769427007/secondSIG.PNG_ep4puc.jpg"
+                    alt="Signature - Okorite Akoko"
+                    loading="lazy"
+                    className="mx-auto max-w-[220px] md:max-w-[280px] h-auto object-contain shadow-md rounded-lg border border-primary/20 bg-white p-6 hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <p className="mt-4 text-lg font-medium text-textDark/90">
+                    Okorite Akoko (Secretary)
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Second Signature - N.B. Harry */}
+            <div className="text-center bg-gray-50 py-16 rounded-3xl border border-primary/10">
+              <p className="text-2xl font-bold text-primary mb-6">
+                Official Approval Signature
+              </p>
+              <img
+                src="https://i.imgur.com/c1BMWAL.jpg"
+                alt="Signature - N.B. Harry"
+                loading="lazy"
+                className="mx-auto max-w-xs md:max-w-md h-auto object-contain shadow-xl rounded-xl border-4 border-primary/20 bg-white p-8 hover:shadow-2xl transition-shadow duration-300"
+              />
+              <p className="mt-8 text-2xl font-bold text-primary">
+                N.B. Harry
+              </p>
+              <p className="text-lg text-textDark/70 mt-2">
+                BOT/Foundation Chair
+              </p>
+            </div>
+          </div>
+
+          <p className="text-center text-textDark/60 mt-12 text-lg italic">
+            All documents are official records of the Kalabari Girls’ High School Alumni Foundation.
+          </p>
         
         
         </div>
