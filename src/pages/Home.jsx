@@ -620,9 +620,46 @@ const Home = () => {
               </AnimatePresence>
             </div>
 
-           {/* Other Key Roles & Committees – split into separate sections */}
+         {/* Other Key Roles & Committees – split into separate sections */}
 <div className="space-y-10">
-  {/* Standalone: Other Key Roles (Historian, Archivist, Legal Counsel) */}
+  {/* Standalone: Membership and Social Welfare Committee (appears earlier in list) */}
+  <div>
+    <button
+      onClick={() => toggleSection('membership')}
+      className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
+    >
+      <h3 className="text-3xl md:text-4xl font-bold text-textDark">
+        Membership and Social Welfare Committee
+      </h3>
+      <span className="text-3xl font-bold text-primary">
+        {openSection === 'membership' ? '▲' : '▼'}
+      </span>
+    </button>
+
+    <AnimatePresence>
+      {openSection === 'membership' && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }}
+          animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="overflow-hidden pt-6 space-y-8 text-lg text-textDark/90"
+        >
+          <ul className="space-y-3 mt-4 pl-8 list-disc">
+            <li>Advocate Abiegbe-Tomzine's (Chair), 92</li>
+            <li>Courageous Manners (Secretary), 96</li>
+            <li>Daboingi Erekosima, 83</li>
+            <li>Gialba Ngeribia, 83</li>
+            <li>Iwoba Igobo, 82</li>
+            <li>Christina Erekosima, 83</li>
+            <li>Ibiye George, 91</li>
+          </ul>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+
+  {/* Standalone: Other Key Roles – now last */}
   <div>
     <button
       onClick={() => toggleSection('other')}
@@ -655,45 +692,8 @@ const Home = () => {
 
           <div>
             <strong className="text-2xl text-primary block mb-2">Legal Counsel</strong>
-            <p>OJU ALAIYI GEORGE,  PhD</p>
+            <p>OJU ALAIYI GEORGE, PhD</p>
           </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-
-  {/* Standalone: Membership and Social Welfare Committee */}
-  <div>
-    <button
-      onClick={() => toggleSection('membership')}
-      className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-    >
-      <h3 className="text-3xl md:text-4xl font-bold text-textDark">
-        Membership and Social Welfare Committee
-      </h3>
-      <span className="text-3xl font-bold text-primary">
-        {openSection === 'membership' ? '▲' : '▼'}
-      </span>
-    </button>
-
-    <AnimatePresence>
-      {openSection === 'membership' && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="overflow-hidden pt-6 space-y-8 text-lg text-textDark/90"
-        >
-          <ul className="space-y-3 mt-4 pl-8 list-disc">
-            <li>Advocate Abiegbe-Tomzine's (Chair), 92</li>
-            <li>Courageous Manners (Secretary), 96</li>
-            <li>Daboingi Erekosima, 83</li>
-            <li>Gialba Ngeribia, 83</li>
-            <li>Iwoba Igobo, 82</li>
-            <li>Christina Erekosima, 83</li>
-            <li>Ibiye George, 91</li>
-          </ul>
         </motion.div>
       )}
     </AnimatePresence>
