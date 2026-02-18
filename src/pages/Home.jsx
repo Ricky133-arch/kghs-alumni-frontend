@@ -220,8 +220,8 @@ const Home = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/i4njBNR.jpg?w=800" 
-                  srcSet="https://i.imgur.com/i4njBNR.jpg?w=400 400w, https://i.imgur.com/i4njBNR.jpg?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Story - Journey to Reinstatement"
                   loading="lazy"
@@ -296,8 +296,8 @@ const Home = () => {
             <Slider {...memorySliderSettings}>
               <div>
                 <img 
-                  src="https://i.imgur.com/FirPFti.png?w=800" 
-                  srcSet="https://i.imgur.com/FirPFti.png?w=400 400w, https://i.imgur.com/FirPFti.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 1" 
                   loading="lazy"
@@ -306,8 +306,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/btooXVa.png?w=800" 
-                  srcSet="https://i.imgur.com/btooXVa.png?w=400 400w, https://i.imgur.com/btooXVa.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 2" 
                   loading="lazy"
@@ -316,8 +316,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/rfQHhcY.png?w=800" 
-                  srcSet="https://i.imgur.com/rfQHhcY.png?w=400 400w, https://i.imgur.com/rfQHhcY.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 3" 
                   loading="lazy"
@@ -326,8 +326,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/lH6VwVI.png?w=800" 
-                  srcSet="https://i.imgur.com/lH6VwVI.png?w=400 400w, https://i.imgur.com/lH6VwVI.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 4" 
                   loading="lazy"
@@ -336,8 +336,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/CzoC1tm.png?w=800" 
-                  srcSet="https://i.imgur.com/CzoC1tm.png?w=400 400w, https://i.imgur.com/CzoC1tm.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 5" 
                   loading="lazy"
@@ -346,8 +346,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/y5xmhUZ.png?w=800" 
-                  srcSet="https://i.imgur.com/y5xmhUZ.png?w=400 400w, https://i.imgur.com/y5xmhUZ.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 6" 
                   loading="lazy"
@@ -356,8 +356,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/L39Jcv0.png?w=800" 
-                  srcSet="https://i.imgur.com/L39Jcv0.png?w=400 400w, https://i.imgur.com/L39Jcv0.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 7" 
                   loading="lazy"
@@ -366,8 +366,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/BtgxtFw.png?w=800" 
-                  srcSet="https://i.imgur.com/BtgxtFw.png?w=400 400w, https://i.imgur.com/BtgxtFw.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 8" 
                   loading="lazy"
@@ -376,8 +376,8 @@ const Home = () => {
               </div>
               <div>
                 <img 
-                  src="https://i.imgur.com/amqhNNQ.png?w=800" 
-                  srcSet="https://i.imgur.com/amqhNNQ.png?w=400 400w, https://i.imgur.com/amqhNNQ.png?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="KGHS Memory 9" 
                   loading="lazy"
@@ -403,8 +403,8 @@ const Home = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/exBHuj1.jpg?w=800" 
-                  srcSet="https://i.imgur.com/exBHuj1.jpg?w=400 400w, https://i.imgur.com/exBHuj1.jpg?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Vision"
                   loading="lazy"
@@ -446,8 +446,8 @@ const Home = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
                 <img 
-                  src="https://i.imgur.com/aJBkxMS.jpg?w=800" 
-                  srcSet="https://i.imgur.com/aJBkxMS.jpg?w=400 400w, https://i.imgur.com/aJBkxMS.jpg?w=800 800w" 
+                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=800" 
+                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=800 800w" 
                   sizes="(max-width: 768px) 100vw, 800px"
                   alt="Our Core Values"
                   loading="lazy"
