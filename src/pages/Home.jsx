@@ -130,39 +130,107 @@ const Home = () => {
       </section>
 
       {/* Latest News Carousel */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
-          >
-            Latest News
-          </motion.h2>
-          {news.length > 0 ? (
-            <Slider {...sliderSettings}>
-              {news.map(item => (
-                <div key={item._id} className="px-4">
-                  <motion.div
-                    whileHover={{ y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-2xl shadow-xl p-10 text-center border border-pink-100"
-                  >
-                    <h3 className="text-2xl font-semibold mb-4 text-textDark">{item.title}</h3>
-                    <p className="text-textDark/70 leading-relaxed">{item.content}</p>
-                    <p className="text-sm text-primary mt-4">By {item.author?.name || 'Admin'} • {new Date(item.date).toLocaleDateString()}</p>
-                  </motion.div>
-                </div>
-              ))}
-            </Slider>
-          ) : (
-            <p className="text-center text-textDark/60">No news yet. Check back soon!</p>
-          )}
-        </div>
-      </section>
+<section className="py-16 md:py-20 bg-white">
+  <div className="max-w-6xl mx-auto px-6">
+    <motion.h2
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+      className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
+    >
+      Latest News
+    </motion.h2>
 
+    {news.length > 0 ? (
+      <Slider {...sliderSettings}>
+        {news.map(item => (
+          <div key={item._id} className="px-4">
+            <motion.div
+              whileHover={{ y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white rounded-2xl shadow-xl p-10 border border-pink-100 h-full flex flex-col"
+            >
+              <h3 className="text-2xl font-semibold mb-6 text-textDark line-clamp-2">
+                {item.title}
+              </h3>
+
+              {/* Shortened preview with line clamp */}
+              <p className="text-textDark/70 leading-relaxed flex-1 line-clamp-6 mb-8">
+                {item.content}
+              </p>
+
+              <div className="mt-auto pt-6 border-t border-pink-100 flex justify-between items-center">
+                <p className="text-sm text-primary">
+                  By {item.author?.name || 'Admin'} • {new Date(item.date).toLocaleDateString()}
+                </p>
+
+                <a
+                  href="#full-news"
+                  className="text-primary hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors"
+                >
+                  Read Full Story →
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        ))}
+      </Slider>
+    ) : (
+      <p className="text-center text-textDark/60">No news yet. Check back soon!</p>
+    )}
+  </div>
+</section>
+
+{/* Full News Section - All Stories */}
+<section id="full-news" className="py-20 bg-white/50">
+  <div className="max-w-6xl mx-auto px-6">
+    <motion.h2
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-4xl md:text-5xl font-bold text-center mb-16 text-primary"
+    >
+      All News & Stories
+    </motion.h2>
+
+    <div className="space-y-12">
+      {news.map((item) => (
+        <motion.div
+          key={item._id}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="bg-white rounded-3xl shadow-2xl p-10 md:p-16 border border-pink-100"
+        >
+          <h3 className="text-3xl md:text-4xl font-bold text-textDark mb-8 leading-tight">
+            {item.title}
+          </h3>
+
+          {/* Full content - properly formatted with paragraphs */}
+          <div className="prose prose-lg max-w-none text-textDark/80 leading-relaxed">
+            {item.content.split('\n').map((paragraph, index) => (
+              paragraph.trim() && (
+                <p key={index} className="mb-6">
+                  {paragraph}
+                </p>
+              )
+            ))}
+          </div>
+
+          <div className="mt-12 pt-8 border-t border-primary/10 text-sm text-primary/70">
+            By {item.author?.name || 'Admin'} •{' '}
+            {new Date(item.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
       {/* Upcoming Events Grid */}
       <section className="py-16 md:py-20 bg-secondary">
         <div className="max-w-6xl mx-auto px-6">
