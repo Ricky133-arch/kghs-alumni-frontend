@@ -242,7 +242,7 @@ const News = () => {
                     className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 flex items-center gap-4"
                   >
                     <span>Download PDF</span>
-                    <span className="text-3xl">↓</span>
+                    <span className="text-3xl">&#8595;</span>
                   </a>
                 </motion.div>
               ))}
