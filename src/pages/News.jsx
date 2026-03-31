@@ -299,6 +299,36 @@ const News = () => {
                 />
               </div>
 
+              {/* ✅ Image Upload Field */}
+              <div>
+                <label className="block text-textDark font-semibold mb-4 text-xl">
+                  Add a Photo <span className="text-textDark/50 font-normal">(optional)</span>
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full px-8 py-6 rounded-2xl border-2 border-primary/30 bg-white/80 focus:border-primary focus:outline-none transition text-xl file:mr-6 file:py-5 file:px-10 file:rounded-full file:border-0 file:text-xl file:font-medium file:bg-primary file:text-white hover:file:bg-pink-600 cursor-pointer"
+                />
+                {/* ✅ Image Preview */}
+                {newsImagePreview && (
+                  <div className="mt-6 relative">
+                    <img
+                      src={newsImagePreview}
+                      alt="Preview"
+                      className="w-full max-h-72 object-cover rounded-2xl border-2 border-primary/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => { setNewsImage(null); setNewsImagePreview(null); }}
+                      className="absolute top-4 right-4 bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold hover:bg-red-600 transition"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <div className="text-center">
                 <motion.button
                   whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(255,192,203,0.3)" }}
