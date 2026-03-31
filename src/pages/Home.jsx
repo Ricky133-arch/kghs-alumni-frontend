@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Link from 'next/link';
 
 const Home = () => {
   const [news, setNews] = useState([]);
