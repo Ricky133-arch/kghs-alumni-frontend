@@ -166,7 +166,7 @@ const Home = () => {
                 </p>
 
                 <Link
-                  href={`/news/${item._id}`}
+                  to={`/news/${item._id}`}
                   className="text-primary hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors"
                 >
                   Read Full Story →
