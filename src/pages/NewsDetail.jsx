@@ -7,7 +7,6 @@ const renderContent = (content) => {
   return content.split('\n').map((line, index) => {
     const trimmed = line.trim();
 
-    // Detect quotes: lines that start and end with quotation marks
     if (
       (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
       (trimmed.startsWith('\u201c') && trimmed.endsWith('\u201d'))
@@ -19,7 +18,6 @@ const renderContent = (content) => {
       );
     }
 
-    // Detect subheadings: short lines under 60 chars with no sentence-ending punctuation
     if (
       trimmed.length > 0 &&
       trimmed.length < 60 &&
