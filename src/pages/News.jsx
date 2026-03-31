@@ -6,14 +6,13 @@ const News = () => {
   const [news, setNews] = useState([]);
   const [minutes, setMinutes] = useState([]);
   const [formData, setFormData] = useState({ title: '', content: '' });
-  const [newsImage, setNewsImage] = useState(null);
-  const [newsImagePreview, setNewsImagePreview] = useState(null);
   const [minutesForm, setMinutesForm] = useState({ title: '', file: null });
   const [posting, setPosting] = useState(false);
   const [uploadingMinutes, setUploadingMinutes] = useState(false);
   const role = localStorage.getItem('role');
 
   useEffect(() => {
+    // Fetch News
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/news`)
       .then((res) => {
@@ -21,6 +20,7 @@ const News = () => {
       })
       .catch((err) => console.error('News fetch error:', err));
 
+    // Fetch Board Minutes
     axios
       .get(`${import.meta.env.VITE_API_URL}/api/board-minutes`)
       .then((res) => {
@@ -33,31 +33,15 @@ const News = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setNewsImage(file);
-      setNewsImagePreview(URL.createObjectURL(file));
-    }
-  };
-
   const handleNewsSubmit = async (e) => {
     e.preventDefault();
     if (!formData.title || !formData.content) return;
 
     setPosting(true);
     const token = localStorage.getItem('token');
-
     try {
-      const data = new FormData();
-      data.append('title', formData.title);
-      data.append('content', formData.content);
-      if (newsImage) data.append('image', newsImage);
-
-      await axios.post(`${import.meta.env.VITE_API_URL}/api/news`, data, {
-        headers: { 
-          Authorization: `Bearer ${token}`,
-        },
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/news`, formData, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       window.location.reload();
     } catch (err) {
@@ -88,6 +72,7 @@ const News = () => {
       await axios.post(`${import.meta.env.VITE_API_URL}/api/board-minutes`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
+          // ✅ Let Axios set Content-Type automatically for FormData
         },
       });
       window.location.reload();
@@ -109,7 +94,7 @@ const News = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-            Our Voice & Stories ❤️
+            Our Voice & Stories
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed font-light">
             Updates, reflections, and official records from the heart of our sisterhood — keeping every KGHS woman connected, informed, and inspired.
@@ -120,7 +105,7 @@ const News = () => {
         {news.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-3xl text-textDark/60 font-light">
-              No news yet... but our story is always unfolding 🌸
+              No news yet... but our story is always unfolding 
             </p>
           </div>
         ) : (
@@ -135,29 +120,15 @@ const News = () => {
                 whileHover={{ y: -8 }}
                 className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden border border-primary/20"
               >
-                {/* ✅ Show image if available */}
-                {item.image && (
-                  <div className="w-full h-72 overflow-hidden">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-
-                {/* Show date banner only if no image */}
-                {!item.image && (
-                  <div className="bg-gradient-to-r from-primary/20 to-pink-100 p-10 text-center">
-                    <p className="text-3xl font-bold text-primary">
-                      {new Date(item.date).toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })}
-                    </p>
-                  </div>
-                )}
+                <div className="bg-gradient-to-r from-primary/20 to-pink-100 p-10 text-center">
+                  <p className="text-3xl font-bold text-primary">
+                    {new Date(item.date).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </p>
+                </div>
 
                 <div className="p-10 md:p-16">
                   <h2 className="text-4xl md:text-5xl font-extrabold text-textDark mb-8">
@@ -172,11 +143,6 @@ const News = () => {
                       Posted by <span className="font-bold">{item.author?.name || 'Admin'}</span>
                     </p>
                     <p className="text-textDark/60">
-                      {new Date(item.date).toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric',
-                      })} •{' '}
                       {new Date(item.date).toLocaleTimeString('en-GB', {
                         hour: 'numeric',
                         minute: '2-digit',
@@ -201,7 +167,7 @@ const News = () => {
           className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/30 mb-32"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-primary text-center mb-12">
-            Board Meeting Minutes 📜
+            Board Meeting Minutes
           </h2>
           <p className="text-center text-textDark/70 text-xl mb-16 max-w-3xl mx-auto leading-relaxed">
             Official records of our Foundation's governance — shared with love and transparency for all sisters to stay informed.
@@ -232,7 +198,7 @@ const News = () => {
                       })}
                     </p>
                   </div>
-                  
+                  <a
                     href={minute.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -333,36 +299,6 @@ const News = () => {
                 />
               </div>
 
-              {/* ✅ Image Upload Field */}
-              <div>
-                <label className="block text-textDark font-semibold mb-4 text-xl">
-                  Add a Photo <span className="text-textDark/50 font-normal">(optional)</span>
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full px-8 py-6 rounded-2xl border-2 border-primary/30 bg-white/80 focus:border-primary focus:outline-none transition text-xl file:mr-6 file:py-5 file:px-10 file:rounded-full file:border-0 file:text-xl file:font-medium file:bg-primary file:text-white hover:file:bg-pink-600 cursor-pointer"
-                />
-                {/* ✅ Image Preview */}
-                {newsImagePreview && (
-                  <div className="mt-6 relative">
-                    <img
-                      src={newsImagePreview}
-                      alt="Preview"
-                      className="w-full max-h-72 object-cover rounded-2xl border-2 border-primary/20"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => { setNewsImage(null); setNewsImagePreview(null); }}
-                      className="absolute top-4 right-4 bg-red-500 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold hover:bg-red-600 transition"
-                    >
-                      ×
-                    </button>
-                  </div>
-                )}
-              </div>
-
               <div className="text-center">
                 <motion.button
                   whileHover={{ scale: 1.05, boxShadow: "0 30px 60px rgba(255,192,203,0.3)" }}
@@ -371,7 +307,7 @@ const News = () => {
                   disabled={posting}
                   className="bg-primary text-white px-20 py-7 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300 disabled:opacity-70"
                 >
-                  {posting ? 'Posting...' : 'Publish to Our Sisters ❤️'}
+                  {posting ? 'Posting...' : 'Publish to Our Sisters'}
                 </motion.button>
               </div>
             </form>
