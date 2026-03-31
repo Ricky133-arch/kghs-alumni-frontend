@@ -17,8 +17,7 @@ import DonationSuccess from './pages/DonationSuccess';
 import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import ResetPassword from './pages/ResetPassword';
-import NewsDetail from './pages/NewsDetail';
-
+import NewsDetail from './pages/NewsDetail.jsx';
 
 function App() {
   return (
