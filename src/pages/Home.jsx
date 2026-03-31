@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Home = () => {
   const [news, setNews] = useState([]);
@@ -129,7 +130,7 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Latest News Carousel */}
+     {/* Latest News Carousel */}
 <section className="py-16 md:py-20 bg-white">
   <div className="max-w-6xl mx-auto px-6">
     <motion.h2
@@ -155,7 +156,7 @@ const Home = () => {
                 {item.title}
               </h3>
 
-              {/* Shortened preview with line clamp */}
+              {/* Shortened preview */}
               <p className="text-textDark/70 leading-relaxed flex-1 line-clamp-6 mb-8">
                 {item.content}
               </p>
@@ -165,12 +166,12 @@ const Home = () => {
                   By {item.author?.name || 'Admin'} • {new Date(item.date).toLocaleDateString()}
                 </p>
 
-                <a
-                  href="#full-news"
+                <Link
+                  href={`/news/${item._id}`}
                   className="text-primary hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors"
                 >
                   Read Full Story →
-                </a>
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -182,55 +183,6 @@ const Home = () => {
   </div>
 </section>
 
-{/* Full News Section - All Stories */}
-<section id="full-news" className="py-20 bg-white/50">
-  <div className="max-w-6xl mx-auto px-6">
-    <motion.h2
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-4xl md:text-5xl font-bold text-center mb-16 text-primary"
-    >
-      All News & Stories
-    </motion.h2>
-
-    <div className="space-y-12">
-      {news.map((item) => (
-        <motion.div
-          key={item._id}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="bg-white rounded-3xl shadow-2xl p-10 md:p-16 border border-pink-100"
-        >
-          <h3 className="text-3xl md:text-4xl font-bold text-textDark mb-8 leading-tight">
-            {item.title}
-          </h3>
-
-          {/* Full content - properly formatted with paragraphs */}
-          <div className="prose prose-lg max-w-none text-textDark/80 leading-relaxed">
-            {item.content.split('\n').map((paragraph, index) => (
-              paragraph.trim() && (
-                <p key={index} className="mb-6">
-                  {paragraph}
-                </p>
-              )
-            ))}
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-primary/10 text-sm text-primary/70">
-            By {item.author?.name || 'Admin'} •{' '}
-            {new Date(item.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</section>
       {/* Upcoming Events Grid */}
       <section className="py-16 md:py-20 bg-secondary">
         <div className="max-w-6xl mx-auto px-6">
