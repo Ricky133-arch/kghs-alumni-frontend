@@ -109,7 +109,7 @@ const News = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-            Our Voice & Stories ❤️
+            Our Voice & Stories 
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed font-light">
             Updates, reflections, and official records from the heart of our sisterhood — keeping every KGHS woman connected, informed, and inspired.
@@ -120,7 +120,7 @@ const News = () => {
         {news.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-3xl text-textDark/60 font-light">
-              No news yet... but our story is always unfolding 🌸
+              No news yet... but our story is always unfolding 
             </p>
           </div>
         ) : (
@@ -201,7 +201,7 @@ const News = () => {
           className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/30 mb-32"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-primary text-center mb-12">
-            Board Meeting Minutes 📜
+            Board Meeting Minutes 
           </h2>
           <p className="text-center text-textDark/70 text-xl mb-16 max-w-3xl mx-auto leading-relaxed">
             Official records of our Foundation's governance — shared with love and transparency for all sisters to stay informed.
@@ -232,7 +232,7 @@ const News = () => {
                       })}
                     </p>
                   </div>
-                  
+                  <a>
                     href={minute.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -371,7 +371,7 @@ const News = () => {
                   disabled={posting}
                   className="bg-primary text-white px-20 py-7 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300 disabled:opacity-70"
                 >
-                  {posting ? 'Posting...' : 'Publish to Our Sisters ❤️'}
+                  {posting ? 'Posting...' : 'Publish to Our Sisters '}
                 </motion.button>
               </div>
             </form>
