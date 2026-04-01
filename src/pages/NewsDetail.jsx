@@ -5,38 +5,23 @@ import { motion } from 'framer-motion';
 
 const renderContent = (content) => {
   return content.split('\n').map((line, index) => {
-    const trimmed = line.trim();
-
-    if (
-      (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
-      (trimmed.startsWith('\u201c') && trimmed.endsWith('\u201d'))
-    ) {
-      return (
-        <blockquote key={index} className="border-l-8 border-black pl-6 my-6 text-textDark font-bold text-xl italic">
-          {trimmed}
-        </blockquote>
-      );
-    }
-
-    if (
-      trimmed.length > 0 &&
-      trimmed.length < 60 &&
-      !trimmed.endsWith('.') &&
-      !trimmed.endsWith(',') &&
-      !trimmed.endsWith('!') &&
-      !trimmed.endsWith('?')
-    ) {
+    if (line.startsWith('## ')) {
       return (
         <h2 key={index} className="text-2xl md:text-3xl font-extrabold text-textDark mt-10 mb-4">
-          {trimmed}
+          {line.replace('## ', '')}
         </h2>
       );
     }
-
-    if (trimmed === '') {
+    if (line.startsWith('> ')) {
+      return (
+        <blockquote key={index} className="border-l-8 border-black pl-6 my-6 text-textDark font-bold text-xl italic">
+          {line.replace('> ', '')}
+        </blockquote>
+      );
+    }
+    if (line.trim() === '') {
       return <br key={index} />;
     }
-
     return (
       <p key={index} className="text-textDark/80 leading-relaxed text-lg mb-2">
         {line}
