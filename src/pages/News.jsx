@@ -165,39 +165,46 @@ const News = () => {
           <p className="text-center text-textDark/70 text-xl mb-16 max-w-3xl mx-auto leading-relaxed">
             Official records of our Foundation's governance shared with love and transparency.
           </p>
-
+          
           {minutes.length === 0 ? (
-            <p className="text-center text-2xl text-textDark/60 py-12">No minutes available yet.</p>
-          ) : (
-            <div className="space-y-10">
-              {minutes.map((minute, index) => (
-                <motion.div
-                  key={minute._id}
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ x: 10 }}
-                  className="bg-primary/5 rounded-2xl p-8 flex flex-col md:flex-row justify-between items-center gap-8 border border-primary/20"
-                >
-                  <div>
-                    <h3 className="text-3xl font-bold text-textDark mb-3">{minute.title}</h3>
-                    <p className="text-primary font-medium text-lg">
-                      {new Date(minute.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
-                    </p>
-                  </div>
-                  
-                    href={minute.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300"
-                  >
-                    Download PDF
-                  </a>
-                </motion.div>
-              ))}
-            </div>
-          )}
+  <p className="text-center text-2xl text-textDark/60 py-12">
+    No minutes available yet. They will be posted after each board meeting.
+  </p>
+) : (
+  <div className="space-y-10">
+    {minutes.map((minute, index) => (
+      <motion.div
+        key={minute._id}
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ delay: index * 0.1 }}
+        whileHover={{ x: 10 }}
+        className="bg-primary/5 rounded-2xl p-8 flex flex-col md:flex-row justify-between items-center gap-8 border border-primary/20"
+      >
+        <div>
+          <h3 className="text-3xl font-bold text-textDark mb-3">{minute.title}</h3>
+          <p className="text-primary font-medium text-lg">
+            {new Date(minute.date).toLocaleDateString('en-GB', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </p>
+        </div>
 
+        <a
+          href={minute.fileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 flex items-center gap-4"
+        >
+          <span>Download PDF</span>
+          <span className="text-3xl">↓</span>
+        </a>
+      </motion.div>
+    ))}
+  </div>
+)}
           {role === 'admin' && (
             <div className="mt-20 pt-16 border-t-4 border-primary/20">
               <h3 className="text-3xl md:text-4xl font-bold text-primary text-center mb-12">Upload New Board Minutes</h3>
