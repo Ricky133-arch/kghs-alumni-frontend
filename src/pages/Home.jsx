@@ -601,6 +601,7 @@ const Home = () => {
                     <li>Ene Taylor, 80</li>
                     <li>Kienma Inifie, 82</li>
                     <li>Hon. Alaso Johnbull-Obi, 80</li>
+                     <li>Dr. Oribi</li>
                   </motion.ul>
                 )}
               </AnimatePresence>
