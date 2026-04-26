@@ -181,49 +181,245 @@ const Home = () => {
     )}
   </div>
 </section>
+// ─── Drop this into your Home.jsx ───────────────────────────────────────────
+// Replace your entire "Upcoming Events Grid" <section> with this block.
+// Also add this import at the top of Home.jsx if not already present:
+//   import { useEffect, useRef, useState } from 'react';
+//   (motion should already be imported from framer-motion)
 
-      {/* Upcoming Events Grid */}
-      <section className="py-16 md:py-20 bg-secondary">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
+// ── EVENT_TYPES map (must match Events.jsx) ──────────────────────────────────
+const EVENT_TYPES = {
+  gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
+  birthday:  { label: 'Birthday',  color: '#f97316', bg: '#fff7ed' },
+  reunion:   { label: 'Reunion',   color: '#8b5cf6', bg: '#f5f3ff' },
+  memorial:  { label: 'Memorial',  color: '#0ea5e9', bg: '#f0f9ff' },
+};
+
+// ── Paste this <section> into your Home.jsx render ───────────────────────────
+/*
+  PREREQUISITES — add near your other useState/useRef hooks at the top of Home():
+
+    const [activeIdx, setActiveIdx] = useState(0);
+    const carouselTimer = useRef(null);
+
+  Then add this useEffect (after your existing events fetch useEffect):
+
+    useEffect(() => {
+      const upcoming = events
+        .filter(e => new Date(e.date) >= new Date())
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 6);
+
+      if (upcoming.length <= 1) return;
+
+      carouselTimer.current = setInterval(() => {
+        setActiveIdx(prev => (prev + 1) % upcoming.length);
+      }, 3500);
+
+      return () => clearInterval(carouselTimer.current);
+    }, [events]);
+*/
+
+// ── The section JSX ──────────────────────────────────────────────────────────
+export const UpcomingEventsSection = ({ events }) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const timerRef = useRef(null);
+
+  const upcoming = events
+    .filter(e => new Date(e.date) >= new Date())
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .slice(0, 6);
+
+  // auto-rotate
+  useEffect(() => {
+    if (upcoming.length <= 1) return;
+    timerRef.current = setInterval(() => {
+      setActiveIdx(prev => (prev + 1) % upcoming.length);
+    }, 3500);
+    return () => clearInterval(timerRef.current);
+  }, [upcoming.length]);
+
+  const pause  = () => clearInterval(timerRef.current);
+  const resume = () => {
+    if (upcoming.length <= 1) return;
+    timerRef.current = setInterval(() =>
+      setActiveIdx(prev => (prev + 1) % upcoming.length), 3500);
+  };
+
+  return (
+    <section className="py-16 md:py-24 bg-secondary overflow-hidden">
+      {/* Google Font (same as Events.jsx) */}
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap');`}</style>
+
+      <div className="max-w-6xl mx-auto px-6">
+
+        {/* heading */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
+          <h2
+            className="text-4xl md:text-5xl font-bold text-primary mb-3"
+            style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Upcoming Events
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {events.length > 0 ? (
-              events.map(event => (
-                <motion.div
-                  key={event._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -15, scale: 1.03 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white rounded-2xl shadow-xl overflow-hidden"
-                >
-                  <div className="bg-primary/20 h-40 flex items-center justify-center">
-                    <p className="text-3xl font-bold text-primary">{new Date(event.date).getDate()}</p>
-                  </div>
-                  <div className="p-8">
-                    <h3 className="text-2xl font-semibold mb-3 text-textDark">{event.title}</h3>
-                    <p className="text-textDark/70 mb-4">{event.description || 'Join us for this exciting event!'}</p>
-                    <p className="text-sm text-primary font-medium">
-                      {new Date(event.date).toLocaleDateString()} • {event.location || 'Location TBD'}
-                    </p>
-                  </div>
-                </motion.div>
-              ))
-            ) : (
-              <p className="col-span-3 text-center text-textDark/60 text-xl">No upcoming events. Stay tuned!</p>
+          </h2>
+          <p className="text-textDark/50 text-base font-medium"
+             style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            {upcoming.length > 0
+              ? `${upcoming.length} moment${upcoming.length !== 1 ? 's' : ''} to look forward to`
+              : 'Stay tuned for upcoming gatherings'}
+          </p>
+        </motion.div>
+
+        {upcoming.length === 0 ? (
+          <p className="text-center text-textDark/50 text-xl py-16"
+             style={{ fontFamily: "'DM Sans', sans-serif" }}>
+            No upcoming events yet — but the next one will be magical.
+          </p>
+        ) : upcoming.length === 1 ? (
+          /* ── single card (no carousel needed) ── */
+          <SingleCard event={upcoming[0]} />
+        ) : (
+          /* ── multi-card carousel ── */
+          <div
+            className="relative"
+            onMouseEnter={pause}
+            onMouseLeave={resume}
+          >
+            {/* cards track */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {upcoming.slice(0, 3).map((event, i) => {
+                const offset = (i - activeIdx % 3 + 3) % 3;
+                return (
+                  <EventCard
+                    key={event._id}
+                    event={event}
+                    isActive={i === activeIdx % 3}
+                    delay={offset * 0.08}
+                  />
+                );
+              })}
+            </div>
+
+            {/* dot indicators */}
+            {upcoming.length > 1 && (
+              <div className="flex justify-center gap-2 mt-10">
+                {upcoming.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => { setActiveIdx(i); pause(); setTimeout(resume, 4000); }}
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      width: i === activeIdx ? 24 : 8,
+                      height: 8,
+                      background: i === activeIdx ? '#e8587a' : '#e8587a44',
+                    }}
+                  />
+                ))}
+              </div>
             )}
+
+            {/* arrow controls */}
+            <button
+              onClick={() => { setActiveIdx(p => (p - 1 + upcoming.length) % upcoming.length); pause(); setTimeout(resume, 4000); }}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg border border-rose-100 text-rose-400 hover:bg-rose-50 transition-all z-10"
+            >‹</button>
+            <button
+              onClick={() => { setActiveIdx(p => (p + 1) % upcoming.length); pause(); setTimeout(resume, 4000); }}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg border border-rose-100 text-rose-400 hover:bg-rose-50 transition-all z-10"
+            >›</button>
           </div>
+        )}
+
+
+      </div>
+    </section>
+  );
+};
+
+/* ── sub-components ─────────────────────────────────────────────────────────── */
+
+const EventCard = ({ event, isActive, delay = 0 }) => {
+  const type = EVENT_TYPES[event.type] || EVENT_TYPES.gathering;
+  const date = new Date(event.date);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ y: -8, boxShadow: '0 24px 48px rgba(232,88,122,0.15)' }}
+      className="bg-white rounded-3xl overflow-hidden shadow-lg border transition-all duration-300 cursor-pointer"
+      style={{
+        borderColor: isActive ? type.color + '44' : '#f3e8ec',
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
+      {/* colour bar + date badge */}
+      <div
+        className="relative h-28 flex flex-col items-center justify-center"
+        style={{ background: `linear-gradient(135deg, ${type.color}18, ${type.color}30)` }}
+      >
+        <span
+          className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
+          style={{ background: type.color + '20', color: type.color }}
+        >
+          {type.label}
+        </span>
+        {/* accent top bar */}
+        <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
+             style={{ background: type.color }} />
+      </div>
+
+      <div className="p-6">
+        {/* date row */}
+        <p className="text-xs font-semibold mb-3 flex items-center gap-1.5"
+           style={{ color: type.color }}>
+          {date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}
+          {event.date?.includes('T') && !event.date?.endsWith('T00:00:00.000Z') && (
+            <> · {date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</>
+          )}
+        </p>
+
+        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug"
+            style={{ fontFamily: "'Playfair Display', serif" }}>
+          {event.title}
+        </h3>
+
+        {event.description && (
+          <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-3">
+            {event.description}
+          </p>
+        )}
+
+        {event.location && (
+          <p className="text-xs text-gray-400 flex items-center gap-1 font-medium">
+            <span>📍</span> {event.location}
+          </p>
+        )}
+      </div>
+
+      <div className="px-6 pb-5">
+        <div
+          className="w-full text-center py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest"
+          style={{ background: type.color + '12', color: type.color }}
+        >
+          A Time for Sisters
         </div>
-      </section>
+      </div>
+    </motion.div>
+  );
+};
+
+const SingleCard = ({ event }) => (
+  <div className="max-w-md mx-auto">
+    <EventCard event={event} isActive={true} delay={0} />
+  </div>
+);
 
       {/* Our Story Section - Continuous Float */}
       <section className="py-16 md:py-20 bg-white">
