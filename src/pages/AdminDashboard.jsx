@@ -97,7 +97,7 @@ const AdminDashboard = () => {
 
             {pendingUsers.length === 0 ? (
               <p className="text-center text-textDark/60 text-xl py-12">
-                No new sisters awaiting approval. All current requests have been reviewed. 🌸
+                No new sisters awaiting approval. All current requests have been reviewed. 
               </p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
                       onClick={() => handleApprove(user._id)}
                       className="bg-primary text-white px-10 py-4 rounded-full font-bold shadow-lg hover:bg-pink-600 transition"
                     >
-                      Welcome Her In ❤️
+                      Welcome Her In 
                     </motion.button>
                   </motion.div>
                 ))}
