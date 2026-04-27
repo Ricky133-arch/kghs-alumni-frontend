@@ -75,7 +75,7 @@ const Gallery = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-            Our Cherished Memories ❤️
+            Our Cherished Memories 
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-4xl mx-auto leading-relaxed font-light">
             A gallery of joy, laughter, and unbreakable bonds — moments captured forever in the heart of KGHS sisterhood.
@@ -93,7 +93,7 @@ const Gallery = () => {
         {!loading && images.length === 0 && (
           <div className="text-center py-32">
             <p className="text-3xl text-textDark/60 font-light">
-              The gallery is waiting for its first memory 🌸
+              The gallery is waiting for its first memory 
             </p>
             <p className="text-xl text-textDark/50 mt-6">
               Be the first to share a moment from our sisterhood.
@@ -205,7 +205,7 @@ const Gallery = () => {
                 disabled={uploading}
                 className="bg-primary text-white px-16 py-6 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300 disabled:opacity-70"
               >
-                {uploading ? 'Uploading Memory...' : 'Share This Memory ❤️'}
+                {uploading ? 'Uploading Memory...' : 'Share This Memory '}
               </motion.button>
             </div>
           </form>
