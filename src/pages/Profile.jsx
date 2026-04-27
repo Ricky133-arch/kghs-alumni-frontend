@@ -93,7 +93,7 @@ const Profile = () => {
           className="text-center mb-12"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-4">
-            Welcome Back, {user.name} ❤️
+            Welcome Back, {user.name} 
           </h1>
           <p className="text-xl text-textDark/70">Class of {user.graduationYear}</p>
         </motion.div>
@@ -152,7 +152,7 @@ const Profile = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-8 p-6 bg-green-50 border border-green-200 text-green-800 rounded-2xl text-center"
                 >
-                  <p className="text-xl font-bold">Profile updated successfully! ❤️</p>
+                  <p className="text-xl font-bold">Profile updated successfully! </p>
                 </motion.div>
               )}
 
