@@ -97,7 +97,7 @@ const Forums = () => {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-            Our Circle of Voices ❤️
+            Our Circle of Voices 
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed font-light">
             A safe, loving space where KGHS sisters share wisdom, seek support, celebrate joy, and lift one another up — always with kindness and grace.
@@ -108,7 +108,7 @@ const Forums = () => {
         {threads.length === 0 ? (
           <div className="text-center py-32">
             <p className="text-3xl text-textDark/60 font-light">
-              The circle is quiet for now... but ready for your voice 🌸
+              The circle is quiet for now... but ready for your voice 
             </p>
             <p className="text-xl text-textDark/50 mt-6">
               Start a conversation — your sisters are listening.
@@ -200,7 +200,7 @@ const Forums = () => {
                         disabled={replying[thread._id]}
                         className="bg-primary text-white px-12 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 disabled:opacity-70"
                       >
-                        {replying[thread._id] ? 'Sending...' : 'Send Reply ❤️'}
+                        {replying[thread._id] ? 'Sending...' : 'Send Reply '}
                       </motion.button>
                     </div>
                   </form>
@@ -256,7 +256,7 @@ const Forums = () => {
                 disabled={creating}
                 className="bg-primary text-white px-20 py-7 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300 disabled:opacity-70"
               >
-                {creating ? 'Opening the Circle...' : 'Begin This Conversation ❤️'}
+                {creating ? 'Opening the Circle...' : 'Begin This Conversation '}
               </motion.button>
             </div>
           </form>
