@@ -46,7 +46,7 @@ const Directory = () => {
           className="text-center mb-20"
         >
           <h1 className="text-5xl md:text-7xl font-extrabold text-primary mb-6 leading-tight">
-            Our Eternal Sisterhood ❤️
+            Our Eternal Sisterhood 
           </h1>
           <p className="text-xl md:text-2xl text-textDark/70 max-w-4xl mx-auto leading-relaxed font-light">
             A sacred space to reconnect with the remarkable women of Kalabari Girls’ High School — 
