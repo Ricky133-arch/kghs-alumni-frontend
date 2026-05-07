@@ -308,27 +308,12 @@ const Home = () => {
     )}
   </div>
 </section>
-{/* Upcoming Events Grid */}
-      <section className="py-16 md:py-20 bg-secondary">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
-          >
-            Upcoming Events
-          </motion.h2>
+
         <UpcomingEventsSection events={events} />
                   <div className="p-8">
                     <h3 className="text-2xl font-semibold mb-3 text-textDark">{event.title}</h3>
-                    <p className="text-textDark/70 mb-4">{event.description || 'Join us for this exciting event!'}</p>
-                    <p className="text-sm text-primary font-medium">
-                      {new Date([event.date](http://event.date)).toLocaleDateString()} • {event.location || 'Location TBD'}
-                    </p>
-                  </div>
-                </motion.div>
+                    
+              </motion.div>
               ))
             ) : (
               <p className="col-span-3 text-center text-textDark/60 text-xl">No upcoming events. Stay tuned!</p>
