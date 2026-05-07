@@ -5,6 +5,18 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import React, { useEffect, useRef, useState } from 'react';
+
+const EVENT_TYPES = {
+  gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
+  birthday:  { label: 'Birthday',  color: '#f97316', bg: '#fff7ed' },
+  reunion:   { label: 'Reunion',   color: '#8b5cf6', bg: '#f5f3ff' },
+  memorial:  { label: 'Memorial',  color: '#0ea5e9', bg: '#f0f9ff' },
+};
+
+const EventCard = ({ event, isActive, delay = 0 }) => { ... };
+const SingleCard = ({ event }) => ( ... );
+const UpcomingEventsSection = ({ events }) => { ... };
 
 const Home = () => {
   const [news, setNews] = useState([]);
@@ -193,21 +205,7 @@ const Home = () => {
           >
             Upcoming Events
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {events.length > 0 ? (
-              [events.map](http://events.map)(event => (
-                <motion.div
-                  key={event._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -15, scale: 1.03 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white rounded-2xl shadow-xl overflow-hidden"
-                >
-                  <div className="bg-primary/20 h-40 flex items-center justify-center">
-                    <p className="text-3xl font-bold text-primary">{new Date([event.date](http://event.date)).getDate()}</p>
-                  </div>
+        <UpcomingEventsSection events={events} />
                   <div className="p-8">
                     <h3 className="text-2xl font-semibold mb-3 text-textDark">{event.title}</h3>
                     <p className="text-textDark/70 mb-4">{event.description || 'Join us for this exciting event!'}</p>
