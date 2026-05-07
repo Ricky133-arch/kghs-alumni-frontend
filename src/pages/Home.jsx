@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import React, { useEffect, useRef, useState } from 'react';
 
 const EVENT_TYPES = {
   gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
