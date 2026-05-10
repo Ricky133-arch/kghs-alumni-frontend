@@ -310,17 +310,7 @@ const Home = () => {
 </section>
 
         <UpcomingEventsSection events={events} />
-                  <div className="p-8">
-                    <h3 className="text-2xl font-semibold mb-3 text-textDark">{event.title}</h3>
-                    
-              </motion.div>
-              ))
-            ) : (
-              <p className="col-span-3 text-center text-textDark/60 text-xl">No upcoming events. Stay tuned!</p>
-            )}
-          </div>
-        </div>
-      </section>
+                  
       {/* Our Story Section - Continuous Float */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
