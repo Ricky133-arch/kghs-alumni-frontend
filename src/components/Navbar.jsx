@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram } from 'react-icons/fa';
@@ -181,7 +182,10 @@ const Navbar = () => {
           </div>
         </nav>
 
-        {/* ── Mobile drawer ── */}
+      </header>
+
+      {/* ── Mobile drawer — rendered in a portal so the header never clips it ── */}
+      {createPortal(
         <AnimatePresence>
           {open && (
             <>
@@ -268,8 +272,9 @@ const Navbar = () => {
               </motion.div>
             </>
           )}
-        </AnimatePresence>
-      </header>
+        </AnimatePresence>,
+        document.body
+      )}
 
       {/* Spacer */}
       <div className="nav-spacer" aria-hidden="true" />
