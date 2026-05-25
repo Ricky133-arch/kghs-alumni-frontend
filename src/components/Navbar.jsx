@@ -48,9 +48,19 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
 
-  const token = localStorage.getItem('token');
-  const role  = localStorage.getItem('role');
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [role,  setRole]  = useState(() => localStorage.getItem('role'));
   const navLinks = getNavLinks(role);
+
+  // Stay in sync if another tab logs in/out
+  useEffect(() => {
+    const sync = () => {
+      setToken(localStorage.getItem('token'));
+      setRole(localStorage.getItem('role'));
+    };
+    window.addEventListener('storage', sync);
+    return () => window.removeEventListener('storage', sync);
+  }, []);
 
   // Scroll shadow
   useEffect(() => {
@@ -83,6 +93,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
+    setToken(null);
+    setRole(null);
     setOpen(false);
     window.location.href = '/';
   };
@@ -397,9 +409,9 @@ const styles = `
   .nav-btn-outline:hover { background: var(--rose-pale); }
   .nav-btn-full { width: 100%; }
 
-  /* Logout — desktop only */
-  .nav-header > nav .nav-btn-outline { display: none; }
-  @media (min-width: 900px) { .nav-header > nav .nav-btn-outline { display: inline-flex; } }
+  /* Logout — desktop only, scoped to the top nav bar not the drawer */
+  .nav-inner .nav-btn-outline { display: none; }
+  @media (min-width: 900px) { .nav-inner .nav-btn-outline { display: inline-flex; } }
 
   /* ── Hamburger ── */
   .nav-hamburger {
