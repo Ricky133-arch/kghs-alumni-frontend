@@ -105,7 +105,7 @@ const AdminDashboard = () => {
       const token = localStorage.getItem('token');
       await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { isApproved: true }, { headers: { Authorization: `Bearer ${token}` } });
       setUsers(u => u.map(x => x._id === id ? { ...x, isApproved: true } : x));
-      showToast('Sister welcomed into the family! 💕');
+      showToast('Sister welcomed into the family! ');
     } catch { showToast('Approval failed. Try again.', 'error'); }
     setActionLoading(s => ({ ...s, [id + '_approve']: false }));
   };
@@ -198,17 +198,17 @@ const AdminDashboard = () => {
           {/* Stat cards */}
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 28 }}>
-            <StatCard emoji="⏳" label="Pending" value={pendingUsers.length} highlight={pendingUsers.length > 0} />
-            <StatCard emoji="👩‍👩‍👧" label="Approved" value={approvedUsers.length} />
-            <StatCard emoji="💝" label="Donations" value={donations.length} />
-            <StatCard emoji="💰" label="Total raised" value={`₦${totalDonations.toLocaleString()}`} />
+            <StatCard emoji="" label="Pending" value={pendingUsers.length} highlight={pendingUsers.length > 0} />
+            <StatCard emoji="" label="Approved" value={approvedUsers.length} />
+            <StatCard emoji="" label="Donations" value={donations.length} />
+            <StatCard emoji="" label="Total raised" value={`₦${totalDonations.toLocaleString()}`} />
           </motion.div>
 
           {/* ── Pending approvals ── */}
           <Section title="Pending Membership Requests" count={pendingUsers.length} delay={0.15}>
             {pendingUsers.length === 0 ? (
               <p className="text-textDark/50" style={{ margin: 0, textAlign: 'center', padding: '20px 0', fontSize: '1rem' }}>
-                All caught up — no new requests waiting. ✅
+                All caught up — no new requests waiting. 
               </p>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: 14 }}>
@@ -231,7 +231,7 @@ const AdminDashboard = () => {
                       {actionLoading[user._id + '_approve']
                         ? <span style={{ width: 14, height: 14, border: '2px solid rgba(255,255,255,0.4)', borderTopColor: '#fff', borderRadius: '50%', animation: 'adm-spin 0.8s linear infinite', display: 'inline-block' }} />
                         : null}
-                      Welcome Her In 💕
+                      Welcome Her In 
                     </motion.button>
                   </motion.div>
                 ))}
