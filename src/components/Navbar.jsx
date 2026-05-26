@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaInstagram } from 'react-icons/fa';
@@ -10,8 +10,14 @@ const Navbar = () => {
   const [role, setRole] = useState(localStorage.getItem('role'));
   const location = useLocation();
 
-  // Close mobile menu on route change
-  useEffect(() => { setMobileMenuOpen(false); }, [location.pathname]);
+  // Close mobile menu + re-sync auth on every route change
+  // This is the key fix: after login redirects, location.pathname changes
+  // and we re-read localStorage so the nav links appear immediately.
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setToken(localStorage.getItem('token'));
+    setRole(localStorage.getItem('role'));
+  }, [location.pathname]);
 
   // Detect scroll for navbar shadow
   useEffect(() => {
@@ -20,7 +26,7 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  // Sync auth state (handles logout from other tabs / same session)
+  // Also sync when localStorage changes in another tab
   useEffect(() => {
     const sync = () => { setToken(localStorage.getItem('token')); setRole(localStorage.getItem('role')); };
     window.addEventListener('storage', sync);
