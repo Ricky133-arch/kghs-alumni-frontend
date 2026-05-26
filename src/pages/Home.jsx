@@ -1148,7 +1148,7 @@ const Home = () => {
         </div>
       </section>
 
-    {/* Footer */}
+   {/* Footer */}
 <footer style={{
   background: 'linear-gradient(to top, rgba(255,192,203,0.22) 0%, rgba(255,192,203,0.06) 60%, transparent 100%)',
   borderTop: '1px solid rgba(255,192,203,0.25)',
@@ -1166,41 +1166,13 @@ const Home = () => {
             style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'contain', border: '2px solid rgba(255,192,203,0.5)', background: '#fff', padding: 2 }} />
           <span className="text-primary" style={{ fontWeight: 800, fontSize: '1.15rem' }}>KGHS Alumni</span>
         </div>
-        <p className="text-textDark/60" style={{ fontSize: '0.88rem', lineHeight: 1.65, margin: '0 0 14px', maxWidth: 220 }}>
+        <p className="text-textDark/60" style={{ fontSize: '0.88rem', lineHeight: 1.65, margin: 0, maxWidth: 220 }}>
           Connecting generations of Kalabari Girls' High School graduates across the world.
         </p>
-        <p className="text-primary/60" style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
-          Connect · Share · Inspire
-        </p>
-      </motion.div>
-
-      {/* Quick links */}
-      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-        <p style={{ margin: '0 0 14px', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(160,60,100,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-          Quick Links
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {[
-            { to: '/news',      label: 'News'      },
-            { to: '/events',    label: 'Events'    },
-            { to: '/gallery',   label: 'Gallery'   },
-            { to: '/forums',    label: 'Forums'    },
-            { to: '/donations', label: 'Donate'    },
-            { to: '/directory', label: 'Directory' },
-          ].map(l => (
-            <Link key={l.to} to={l.to}
-              className="text-textDark/65"
-              style={{ fontSize: '0.9rem', textDecoration: 'none', fontWeight: 500, width: 'fit-content' }}
-              onMouseEnter={e => e.target.style.color = 'var(--color-primary,#ff69b4)'}
-              onMouseLeave={e => e.target.style.color = ''}>
-              {l.label}
-            </Link>
-          ))}
-        </div>
       </motion.div>
 
       {/* Contact */}
-      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
         <p style={{ margin: '0 0 14px', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(160,60,100,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
           Get In Touch
         </p>
