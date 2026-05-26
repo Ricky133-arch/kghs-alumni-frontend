@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Footer from './Footer';
 
 const EVENT_TYPES = {
   gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
@@ -1147,64 +1148,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Modern, Sleek Footer - Email Centered */}
-      <footer className="bg-gradient-to-t from-primary/30 via-primary/10 to-transparent py-20 border-t-0">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center text-center">
-            {/* Left: Brand */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="md:text-left"
-            >
-              <h4 className="text-4xl md:text-5xl font-bold text-primary mb-4">
-                KGHS Alumni
-              </h4>
-              <p className="text-lg text-textDark/70">
-                Connect • Share • Inspire
-              </p>
-            </motion.div>
-
-            {/* Center: Tagline & Email - Perfectly Centered */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <p className="text-xl md:text-2xl text-textDark/80 italic mb-6">
-                Building legacies of leadership,<br />
-                one sister at a time.
-              </p>
-              <div className="bg-white/70 backdrop-blur-lg rounded-2xl py-6 px-10 inline-block shadow-xl border border-accent-lavender/20">
-                <p className="text-textDark/70 mb-2 text-lg">Contact us</p>
-                <a
-                  href="mailto:alumnuskghs@gmail.com"
-                  className="text-2xl font-semibold text-primary hover:text-accent-orchid transition duration-300 underline decoration-accent-gold/50 underline-offset-4"
-                >
-                  alumnuskghs@gmail.com
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Right: Copyright */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="md:text-right"
-            >
-              <p className="text-textDark/60">
-                © {new Date().getFullYear()} KGHS Alumni Foundation<br />
-                All rights reserved.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </footer>
+    <Footer />
     </div>
   );
 };
