@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Footer from './Footer';
+import { FaInstagram } from 'react-icons/fa';
 
 const EVENT_TYPES = {
   gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
@@ -1148,7 +1148,96 @@ const Home = () => {
         </div>
       </section>
 
-    <Footer />
+    {/* Footer */}
+<footer style={{
+  background: 'linear-gradient(to top, rgba(255,192,203,0.22) 0%, rgba(255,192,203,0.06) 60%, transparent 100%)',
+  borderTop: '1px solid rgba(255,192,203,0.25)',
+  padding: 'clamp(40px,6vw,64px) clamp(16px,4vw,32px) clamp(20px,3vw,32px)',
+}}>
+  <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+    {/* Top grid */}
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(28px,5vw,48px)', marginBottom: 'clamp(28px,4vw,44px)' }}>
+
+      {/* Brand */}
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <img src="https://i.imgur.com/WwrdAkS.png" alt="KGHS"
+            style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'contain', border: '2px solid rgba(255,192,203,0.5)', background: '#fff', padding: 2 }} />
+          <span className="text-primary" style={{ fontWeight: 800, fontSize: '1.15rem' }}>KGHS Alumni</span>
+        </div>
+        <p className="text-textDark/60" style={{ fontSize: '0.88rem', lineHeight: 1.65, margin: '0 0 14px', maxWidth: 220 }}>
+          Connecting generations of Kalabari Girls' High School graduates across the world.
+        </p>
+        <p className="text-primary/60" style={{ fontSize: '0.78rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
+          Connect · Share · Inspire
+        </p>
+      </motion.div>
+
+      {/* Quick links */}
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
+        <p style={{ margin: '0 0 14px', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(160,60,100,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          Quick Links
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {[
+            { to: '/news',      label: 'News'      },
+            { to: '/events',    label: 'Events'    },
+            { to: '/gallery',   label: 'Gallery'   },
+            { to: '/forums',    label: 'Forums'    },
+            { to: '/donations', label: 'Donate'    },
+            { to: '/directory', label: 'Directory' },
+          ].map(l => (
+            <Link key={l.to} to={l.to}
+              className="text-textDark/65"
+              style={{ fontSize: '0.9rem', textDecoration: 'none', fontWeight: 500, width: 'fit-content' }}
+              onMouseEnter={e => e.target.style.color = 'var(--color-primary,#ff69b4)'}
+              onMouseLeave={e => e.target.style.color = ''}>
+              {l.label}
+            </Link>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Contact */}
+      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }}>
+        <p style={{ margin: '0 0 14px', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(160,60,100,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+          Get In Touch
+        </p>
+        <p style={{ margin: '0 0 10px', fontSize: '0.85rem', color: 'rgba(80,40,60,0.6)', lineHeight: 1.6 }}>
+          Questions, feedback, or just want to say hello?
+        </p>
+        <a href="mailto:alumnuskghs@gmail.com" className="text-primary"
+          style={{ fontSize: '0.92rem', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid rgba(255,192,203,0.6)', paddingBottom: 2, display: 'inline-block' }}>
+          alumnuskghs@gmail.com
+        </a>
+        <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(160,80,100,0.5)', fontWeight: 500 }}>Follow us</p>
+          <a href="https://www.instagram.com/kghs.alumnae?igsh=OHY1bDEyM2EycHE1"
+            target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+            className="text-primary" style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
+            <FaInstagram />
+          </a>
+        </div>
+      </motion.div>
+
+    </div>
+
+    {/* Divider */}
+    <div style={{ height: 1, background: 'rgba(255,192,203,0.25)', margin: '0 0 20px' }} />
+
+    {/* Bottom bar */}
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+      <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(120,60,80,0.5)' }}>
+        © {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.
+      </p>
+      <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(120,60,80,0.4)', fontStyle: 'italic' }}>
+        Building legacies of leadership, one sister at a time.
+      </p>
+    </div>
+
+  </div>
+</footer>
     </div>
   );
 };
