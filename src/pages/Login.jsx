@@ -98,7 +98,7 @@ const Login = () => {
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.22 }}>
                 <h1 className="text-primary" style={{ fontSize: 'clamp(1.7rem,5vw,2.2rem)', fontWeight: 800, margin: '0 0 6px', lineHeight: 1.1 }}>
-                  {isForgotMode ? 'Reset Password' : 'Welcome Back 💕'}
+                  {isForgotMode ? 'Reset Password' : 'Welcome Back '}
                 </h1>
                 <p className="text-textDark/60" style={{ fontSize: '0.9rem', margin: 0 }}>
                   {isForgotMode ? 'Enter your email to receive a reset link' : 'Log in to your KGHS Alumni account'}
