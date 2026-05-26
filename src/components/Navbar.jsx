@@ -1,27 +1,53 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaFacebookF, 
-  FaTwitter, 
-  FaInstagram, 
-  FaLinkedinIn, 
-  FaEnvelope 
-} from 'react-icons/fa';
+import { FaInstagram } from 'react-icons/fa';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
+  const [scrolled, setScrolled] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [role, setRole] = useState(localStorage.getItem('role'));
+  const location = useLocation();
+
+  // Close mobile menu on route change
+  useEffect(() => { setMobileMenuOpen(false); }, [location.pathname]);
+
+  // Detect scroll for navbar shadow
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 8);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  // Sync auth state (handles logout from other tabs / same session)
+  useEffect(() => {
+    const sync = () => { setToken(localStorage.getItem('token')); setRole(localStorage.getItem('role')); };
+    window.addEventListener('storage', sync);
+    return () => window.removeEventListener('storage', sync);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
+
+  const handleLogout = () => {
+    localStorage.clear();
+    setToken(null);
+    setRole(null);
+    window.location.href = '/';
+  };
 
   const navLinks = token ? [
-    { to: '/profile', label: 'Profile' },
-    { to: '/directory', label: 'Directory' },
-    { to: '/events', label: 'Events' },
-    { to: '/news', label: 'News' },
-    { to: '/forums', label: 'Forums' },
-    { to: '/gallery', label: 'Gallery' },
-    { to: '/donations', label: 'Donate' },
+    { to: '/profile',   label: 'Profile'    },
+    { to: '/directory', label: 'Directory'  },
+    { to: '/events',    label: 'Events'     },
+    { to: '/news',      label: 'News'       },
+    { to: '/forums',    label: 'Forums'     },
+    { to: '/gallery',   label: 'Gallery'    },
+    { to: '/donations', label: 'Donate'     },
     ...(role === 'admin' ? [{ to: '/admin', label: 'Admin' }] : []),
   ] : [];
 
@@ -29,187 +55,177 @@ const Navbar = () => {
     { icon: FaInstagram, href: 'https://www.instagram.com/kghs.alumnae?igsh=OHY1bDEyM2EycHE1', label: 'Instagram' },
   ];
 
+  const isActive = (to) => location.pathname === to;
+
   return (
     <>
-      {/* Fixed Navbar */}
+      <style>{`
+        .nav-link { position: relative; font-weight: 500; font-size: 0.88rem; color: rgba(40,20,30,0.75); text-decoration: none; transition: color 0.2s; white-space: nowrap; padding: 4px 0; }
+        .nav-link:hover { color: var(--color-primary, #ff69b4); }
+        .nav-link.active { color: var(--color-primary, #ff69b4); font-weight: 700; }
+        .nav-link.active::after { content:''; position:absolute; bottom:-2px; left:0; right:0; height:2px; border-radius:2px; background:var(--color-primary,#ff69b4); }
+        .mob-link { display:block; padding: 13px 0; font-size: 1.05rem; font-weight: 600; color: rgba(40,20,30,0.8); text-decoration: none; border-bottom: 1px solid rgba(255,192,203,0.2); transition: color 0.2s; }
+        .mob-link:hover, .mob-link.active { color: var(--color-primary,#ff69b4); }
+        .mob-link:last-of-type { border-bottom: none; }
+      `}</style>
+
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }} // Faster entrance
-        viewport={{ once: true }}
-        className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md shadow-lg"
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        style={{
+          position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+          background: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(14px)',
+          borderBottom: scrolled ? '1px solid rgba(255,192,203,0.3)' : '1px solid transparent',
+          boxShadow: scrolled ? '0 4px 24px rgba(255,150,180,0.1)' : 'none',
+          transition: 'box-shadow 0.3s, border-color 0.3s',
+        }}
       >
-        <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-          {/* Logo - Made Almost as Big as the Circular Border */}
-          <Link to="/" className="flex items-center space-x-4">
-            <motion.div
-              whileHover={{ scale: 1.08 }} // Slightly less aggressive scale
-              transition={{ duration: 0.2 }} // Quicker hover
-              className="relative"
-            >
-              <img 
-                src="https://i.imgur.com/WwrdAkS.png" 
-                alt="KGHS Alumni Foundation Logo"
-                className="h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 object-contain rounded-full bg-white p-1 shadow-2xl border-4 border-primary/40 transition-all duration-300"
-              />
-              {/* Subtle pink glow on hover */}
-              <div className="absolute inset-0 rounded-full shadow-2xl shadow-primary/30 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-            </motion.div>
-            <span className="text-2xl md:text-3xl font-extrabold text-primary hover:text-pink-600 transition">
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(14px,3vw,24px)', height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+
+          {/* Logo */}
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
+            <motion.img
+              src="https://i.imgur.com/WwrdAkS.png"
+              alt="KGHS Alumni Foundation Logo"
+              whileHover={{ scale: 1.06 }}
+              transition={{ duration: 0.2 }}
+              style={{ width: 46, height: 46, borderRadius: '50%', objectFit: 'contain', border: '3px solid rgba(255,192,203,0.5)', background: '#fff', padding: 2, boxShadow: '0 2px 12px rgba(255,150,180,0.15)' }}
+            />
+            <span className="text-primary" style={{ fontWeight: 800, fontSize: 'clamp(1rem,2.5vw,1.25rem)', letterSpacing: '-0.01em' }}>
               KGHS Alumni
             </span>
           </Link>
 
-          {/* Desktop Menu + Social Icons */}
-          <div className="hidden md:flex items-center space-x-8">
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-8">
-              {token ? (
-                navLinks.map((link) => (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    className="text-textDark font-medium hover:text-primary transition"
-                  >
-                    {link.label}
-                  </Link>
-                ))
-              ) : null}
-            </div>
+          {/* Desktop nav */}
+          <div className="hidden md:flex" style={{ alignItems: 'center', gap: 'clamp(14px,2vw,28px)', flex: 1, justifyContent: 'center', overflow: 'hidden' }}>
+            {navLinks.map(link => (
+              <Link key={link.to} to={link.to} className={`nav-link${isActive(link.to) ? ' active' : ''}`}>
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-            {/* Social Icons - Subtle & Integrated */}
-            <div className="flex items-center space-x-4 border-l border-primary/20 pl-8">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.08 }}
-                  transition={{ duration: 0.2 }}
-                  className="text-primary hover:text-pink-600 transition text-xl"
-                  aria-label={social.label}
-                >
-                  <social.icon />
-                </motion.a>
-              ))}
-            </div>
+          {/* Right side: social + auth */}
+          <div className="hidden md:flex" style={{ alignItems: 'center', gap: 12, flexShrink: 0 }}>
+            {socialLinks.map((s, i) => (
+              <motion.a key={i} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
+                whileHover={{ scale: 1.15 }} transition={{ duration: 0.18 }}
+                className="text-primary" style={{ fontSize: '1.15rem', display: 'flex', alignItems: 'center' }}>
+                <s.icon />
+              </motion.a>
+            ))}
 
-            {/* Auth Buttons */}
             {token ? (
-              <button
-                onClick={() => {
-                  localStorage.clear();
-                  window.location.href = '/';
-                }}
-                className="bg-primary text-white px-6 py-3 rounded-full font-semibold hover:bg-pink-600 transition shadow-md"
-              >
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={handleLogout}
+                className="bg-primary text-white"
+                style={{ padding: '8px 20px', borderRadius: 999, border: 'none', fontWeight: 700, fontSize: '0.85rem', cursor: 'pointer', letterSpacing: '0.02em' }}>
                 Logout
-              </button>
+              </motion.button>
             ) : (
-              <>
-                <Link to="/login" className="text-textDark font-medium hover:text-primary transition">
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-pink-600 transition shadow-md"
-                >
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                <Link to="/login" className="nav-link" style={{ fontSize: '0.88rem' }}>Login</Link>
+                <Link to="/signup"
+                  style={{ padding: '8px 20px', borderRadius: 999, background: 'var(--color-primary,#ff69b4)', color: '#fff', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none', letterSpacing: '0.02em' }}>
                   Join Now
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
-          {/* Mobile Hamburger */}
+          {/* Mobile hamburger */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-3xl text-primary focus:outline-none"
+            onClick={() => setMobileMenuOpen(o => !o)}
             aria-label="Toggle menu"
+            style={{ display: 'flex', flexDirection: 'column', gap: 5, background: 'none', border: 'none', cursor: 'pointer', padding: 6, flexShrink: 0 }}
+            className="md:hidden"
           >
-            {mobileMenuOpen ? '✕' : '☰'}
+            {[0, 1, 2].map(i => (
+              <motion.span key={i}
+                animate={mobileMenuOpen
+                  ? i === 0 ? { rotate: 45, y: 7 }
+                  : i === 1 ? { opacity: 0, scaleX: 0 }
+                  : { rotate: -45, y: -7 }
+                  : { rotate: 0, y: 0, opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.22 }}
+                style={{ display: 'block', width: 24, height: 2.5, borderRadius: 99, background: 'var(--color-primary,#ff69b4)', transformOrigin: 'center' }}
+              />
+            ))}
           </button>
         </div>
-
-        {/* Mobile Menu Dropdown */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }} // Faster open/close
-              className="md:hidden bg-white/95 backdrop-blur-lg shadow-2xl border-t border-primary/20 will-change-transform"
-            >
-              <div className="px-6 py-8 space-y-6 text-center">
-                {token ? (
-                  <>
-                    {navLinks.map((link) => (
-                      <Link
-                        key={link.to}
-                        to={link.to}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="block text-xl text-textDark font-medium hover:text-primary transition py-3"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                    <button
-                      onClick={() => {
-                        localStorage.clear();
-                        window.location.href = '/';
-                        setMobileMenuOpen(false);
-                      }}
-                      className="w-full bg-primary text-white py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block text-xl text-textDark font-medium hover:text-primary transition py-3"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/signup"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full bg-primary text-white py-4 rounded-full text-xl font-semibold hover:bg-pink-600 transition shadow-lg"
-                    >
-                      Join Now
-                    </Link>
-                  </>
-                )}
-
-                {/* Social Icons in Mobile Menu */}
-                <div className="pt-8 border-t border-primary/20">
-                  <p className="text-textDark/60 mb-4">Connect with us</p>
-                  <div className="flex justify-center space-x-6">
-                    {socialLinks.map((social, index) => (
-                      <a
-                        key={index}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:text-pink-600 transition text-3xl"
-                        aria-label={social.label}
-                      >
-                        <social.icon />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </motion.nav>
 
-      {/* Padding below navbar */}
-      <div className="pt-20 md:pt-24" />
+      {/* Mobile menu — full-screen overlay */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+            style={{
+              position: 'fixed', top: 68, right: 0, bottom: 0, width: 'min(320px, 88vw)',
+              zIndex: 999, background: '#fff',
+              borderLeft: '1px solid rgba(255,192,203,0.3)',
+              boxShadow: '-8px 0 40px rgba(255,150,180,0.12)',
+              display: 'flex', flexDirection: 'column',
+              overflowY: 'auto',
+            }}
+          >
+            <div style={{ padding: '20px 24px', flex: 1 }}>
+              {token ? (
+                <>
+                  {navLinks.map(link => (
+                    <Link key={link.to} to={link.to} className={`mob-link${isActive(link.to) ? ' active' : ''}`}
+                      onClick={() => setMobileMenuOpen(false)}>
+                      {link.label}
+                    </Link>
+                  ))}
+                  <div style={{ marginTop: 24 }}>
+                    <button onClick={handleLogout}
+                      className="bg-primary text-white"
+                      style={{ width: '100%', padding: '13px', borderRadius: 999, border: 'none', fontWeight: 700, fontSize: '1rem', cursor: 'pointer' }}>
+                      Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="mob-link" onClick={() => setMobileMenuOpen(false)}>Login</Link>
+                  <div style={{ marginTop: 16 }}>
+                    <Link to="/signup" onClick={() => setMobileMenuOpen(false)}
+                      style={{ display: 'block', textAlign: 'center', padding: '13px', borderRadius: 999, background: 'var(--color-primary,#ff69b4)', color: '#fff', fontWeight: 700, fontSize: '1rem', textDecoration: 'none' }}>
+                      Join Now
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Social row */}
+            <div style={{ padding: '16px 24px', borderTop: '1px solid rgba(255,192,203,0.2)', display: 'flex', alignItems: 'center', gap: 12 }}>
+              <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(160,80,100,0.55)', fontWeight: 500 }}>Follow us</p>
+              {socialLinks.map((s, i) => (
+                <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
+                  className="text-primary" style={{ fontSize: '1.3rem', display: 'flex', alignItems: 'center' }}>
+                  <s.icon />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Backdrop tap-to-close */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setMobileMenuOpen(false)}
+            style={{ position: 'fixed', inset: 0, zIndex: 998, background: 'rgba(30,10,20,0.25)', backdropFilter: 'blur(2px)', top: 68 }} />
+        )}
+      </AnimatePresence>
+
+      {/* Spacer */}
+      <div style={{ height: 68 }} />
     </>
   );
 };
