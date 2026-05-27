@@ -1,132 +1,148 @@
-import React, {  useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaInstagram } from 'react-icons/fa';
 
+// ─── Design tokens (match across all pages) ──────────────────────────
+// --rose #E8547A  --rose-light #F9C6D3  --rose-pale #FDF1F4
+// --rose-mid #F4D0DA  --cream #FFFAF9  --ink #2A1A22
+// --ink-mid #6B4558  --ink-soft #A07090
+
+// ─── Cloudinary helper ────────────────────────────────────────────────
+const cld = (id, w = 800) =>
+  `https://res.cloudinary.com/djkrjogje/image/upload/f_auto,q_auto,w_${w},dpr_auto/${id}`;
+const cldSet = (id) =>
+  `${cld(id, 400)} 400w, ${cld(id, 800)} 800w, ${cld(id, 1200)} 1200w`;
+
+// ─── Fade-in image ────────────────────────────────────────────────────
+const FadeImg = ({ id, alt, className, sizes = '(max-width:768px) 100vw, 800px', eager = false }) => {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div className="h-fade-wrap">
+      {!loaded && <div className="h-img-skel" aria-hidden="true" />}
+      <img
+        src={cld(id, 800)} srcSet={cldSet(id)} sizes={sizes} alt={alt}
+        loading={eager ? 'eager' : 'lazy'} decoding="async"
+        className={`${className} h-img-fade${loaded ? ' h-img-vis' : ''}`}
+        onLoad={() => setLoaded(true)}
+      />
+    </div>
+  );
+};
+
+// ─── EVENT TYPES ──────────────────────────────────────────────────────
 const EVENT_TYPES = {
-  gathering: { label: 'Gathering', color: '#e8587a', bg: '#fdf0f3' },
+  gathering: { label: 'Gathering', color: '#E8547A', bg: '#FDF1F4' },
   birthday:  { label: 'Birthday',  color: '#f97316', bg: '#fff7ed' },
   reunion:   { label: 'Reunion',   color: '#8b5cf6', bg: '#f5f3ff' },
   memorial:  { label: 'Memorial',  color: '#0ea5e9', bg: '#f0f9ff' },
 };
 
+// ─── EVENT CARD ───────────────────────────────────────────────────────
 const EventCard = ({ event, isActive, delay = 0 }) => {
   const type = EVENT_TYPES[event.type] || EVENT_TYPES.gathering;
   const date = new Date(event.date);
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      whileHover={{ y: -8, boxShadow: '0 24px 48px rgba(232,88,122,0.15)' }}
-      className="bg-white rounded-3xl overflow-hidden shadow-lg border transition-all duration-300 cursor-pointer"
-      style={{ borderColor: isActive ? type.color + '44' : '#f3e8ec', fontFamily: "'DM Sans', sans-serif" }}
+      whileHover={{ y: -6 }}
+      className="h-event-card"
+      style={{ '--ec': type.color, borderColor: isActive ? type.color + '55' : 'var(--rose-light)' }}
     >
-      <div className="relative h-28 flex flex-col items-center justify-center"
-        style={{ background: `linear-gradient(135deg, ${type.color}18, ${type.color}30)` }}>
-        <span className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
-          style={{ background: type.color + '20', color: type.color }}>
+      <div className="h-event-band" style={{ background: `linear-gradient(135deg,${type.color}20,${type.color}38)` }}>
+        <div className="h-event-band-bar" style={{ background: type.color }} />
+        <span className="h-event-type-pill" style={{ background: type.color + '22', color: type.color }}>
           {type.label}
         </span>
-        <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background: type.color }} />
       </div>
-      <div className="p-6">
-        <p className="text-xs font-semibold mb-3" style={{ color: type.color }}>
+      <div className="h-event-body">
+        <p className="h-event-date" style={{ color: type.color }}>
           {date.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' })}
           {event.date?.includes('T') && !event.date?.endsWith('T00:00:00.000Z') && (
             <> · {date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}</>
           )}
         </p>
-        <h3 className="text-lg font-bold text-gray-900 mb-2 leading-snug"
-          style={{ fontFamily: "'Playfair Display', serif" }}>
-          {event.title}
-        </h3>
-        {event.description && (
-          <p className="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-3">{event.description}</p>
-        )}
+        <h3 className="h-event-title">{event.title}</h3>
+        {event.description && <p className="h-event-desc">{event.description}</p>}
         {event.location && (
-          <p className="text-xs text-gray-400 flex items-center gap-1 font-medium">
-            <span>📍</span> {event.location}
+          <p className="h-event-loc">
+            <svg width="9" height="11" viewBox="0 0 10 13" fill="none" aria-hidden="true">
+              <path d="M5 0C2.794 0 1 1.794 1 4c0 3 4 9 4 9s4-6 4-9c0-2.206-1.794-4-4-4zm0 5.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" fill="currentColor"/>
+            </svg>
+            {event.location}
           </p>
         )}
       </div>
-      <div className="px-6 pb-5">
-        <div className="w-full text-center py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest"
-          style={{ background: type.color + '12', color: type.color }}>
-          A Time for Sisters
-        </div>
+      <div className="h-event-footer" style={{ background: type.color + '14', color: type.color }}>
+        A Time for Sisters
       </div>
     </motion.div>
   );
 };
 
-const SingleCard = ({ event }) => (
-  <div className="max-w-md mx-auto">
-    <EventCard event={event} isActive={true} delay={0} />
-  </div>
-);
-
-const UpcomingEventsSection = ({ events }) => {
+// ─── UPCOMING EVENTS ──────────────────────────────────────────────────
+const UpcomingEvents = ({ events }) => {
   const [activeIdx, setActiveIdx] = useState(0);
   const timerRef = useRef(null);
   const upcoming = events
     .filter(e => new Date(e.date) >= new Date())
     .sort((a, b) => new Date(a.date) - new Date(b.date))
     .slice(0, 6);
-  useEffect(() => {
+
+  const startTimer = useCallback(() => {
     if (upcoming.length <= 1) return;
-    timerRef.current = setInterval(() => {
-      setActiveIdx(prev => (prev + 1) % upcoming.length);
-    }, 3500);
-    return () => clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => setActiveIdx(p => (p + 1) % upcoming.length), 3500);
   }, [upcoming.length]);
+
+  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current); }, [startTimer]);
+
   const pause = () => clearInterval(timerRef.current);
-  const resume = () => {
-    if (upcoming.length <= 1) return;
-    timerRef.current = setInterval(() =>
-      setActiveIdx(prev => (prev + 1) % upcoming.length), 3500);
-  };
+  const resume = () => { pause(); startTimer(); };
+  const nav = (dir) => { setActiveIdx(p => (p + dir + upcoming.length) % upcoming.length); pause(); setTimeout(resume, 4000); };
+
   return (
-    <section className="py-16 md:py-24 bg-secondary overflow-hidden">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap');`}</style>
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-bold text-primary mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Upcoming Events</h2>
-          <p className="text-textDark/50 text-base font-medium" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            {upcoming.length > 0 ? `${upcoming.length} moment${upcoming.length !== 1 ? 's' : ''} to look forward to` : 'Stay tuned for upcoming gatherings'}
+    <section className="h-section h-section-tinted" aria-labelledby="events-heading">
+      <div className="h-container">
+        <motion.div className="h-section-header"
+          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+          <span className="h-eyebrow">What's Coming</span>
+          <h2 id="events-heading" className="h-heading h-heading-center">Upcoming <em>Events</em></h2>
+          <p className="h-subheading">
+            {upcoming.length > 0
+              ? `${upcoming.length} moment${upcoming.length !== 1 ? 's' : ''} to look forward to`
+              : 'Stay tuned for upcoming gatherings'}
           </p>
         </motion.div>
+
         {upcoming.length === 0 ? (
-          <p className="text-center text-textDark/50 text-xl py-16" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            No upcoming events yet — but the next one will be magical.
-          </p>
+          <p className="h-empty-msg">No upcoming events yet — but the next one will be magical. </p>
         ) : upcoming.length === 1 ? (
-          <SingleCard event={upcoming[0]} />
+          <div style={{ maxWidth: 380, margin: '0 auto' }}>
+            <EventCard event={upcoming[0]} isActive delay={0} />
+          </div>
         ) : (
-          <div className="relative" onMouseEnter={pause} onMouseLeave={resume}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {upcoming.slice(0, 3).map((event, i) => {
-                const offset = (i - activeIdx % 3 + 3) % 3;
-                return <EventCard key={event._id} event={event} isActive={i === activeIdx % 3} delay={offset * 0.08} />;
-              })}
+          <div className="h-events-wrap" onMouseEnter={pause} onMouseLeave={resume}>
+            <div className="h-events-grid">
+              {upcoming.slice(0, 3).map((ev, i) => (
+                <EventCard key={ev._id} event={ev} isActive={i === activeIdx % 3} delay={i * 0.07} />
+              ))}
             </div>
-            {upcoming.length > 1 && (
-              <div className="flex justify-center gap-2 mt-10">
-                {upcoming.map((_, i) => (
-                  <button key={i} onClick={() => { setActiveIdx(i); pause(); setTimeout(resume, 4000); }}
-                    className="rounded-full transition-all duration-300"
-                    style={{ width: i === activeIdx ? 24 : 8, height: 8, background: i === activeIdx ? '#e8587a' : '#e8587a44' }} />
-                ))}
-              </div>
-            )}
-            <button onClick={() => { setActiveIdx(p => (p - 1 + upcoming.length) % upcoming.length); pause(); setTimeout(resume, 4000); }}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg border border-rose-100 text-rose-400 hover:bg-rose-50 transition-all z-10">‹</button>
-            <button onClick={() => { setActiveIdx(p => (p + 1) % upcoming.length); pause(); setTimeout(resume, 4000); }}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 hidden md:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-lg border border-rose-100 text-rose-400 hover:bg-rose-50 transition-all z-10">›</button>
+            <div className="h-dots" role="tablist">
+              {upcoming.map((_, i) => (
+                <button key={i} className={`h-dot${i === activeIdx ? ' h-dot-active' : ''}`}
+                  onClick={() => { setActiveIdx(i); pause(); setTimeout(resume, 4000); }}
+                  role="tab" aria-selected={i === activeIdx} aria-label={`Event ${i + 1}`} />
+              ))}
+            </div>
+            <button className="h-arrow h-arrow-l" onClick={() => nav(-1)} aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+            <button className="h-arrow h-arrow-r" onClick={() => nav(1)} aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
           </div>
         )}
       </div>
@@ -134,1084 +150,796 @@ const UpcomingEventsSection = ({ events }) => {
   );
 };
 
-const Home = () => {
-  const [news, setNews] = useState([]);
-  const [events, setEvents] = useState([]);
-  const [donations, setDonations] = useState([]);
-  const [totalDonated, setTotalDonated] = useState(0);
-  const [donationCount, setDonationCount] = useState(0);
-  const [loadingFinance, setLoadingFinance] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
+// ─── MEMORY SLIDER ────────────────────────────────────────────────────
+const SLIDES = [
+  { id: 'v1771403117/KGHS_DAY3_76_vod3we',  caption: 'Day 3 — Celebrations' },
+  { id: 'v1771403228/KGHS_DAY3_147_nwkgn2', caption: 'Day 3 — Together Again' },
+  { id: 'v1771403303/KGHS_DAY3_183_onoqoy', caption: 'Day 3 — Our Sisters' },
+  { id: 'v1771403366/KGHS_DAY3_219_gbcztp', caption: 'Day 3 — Reunion Joy' },
+  { id: 'v1771403496/KGHS_DAY3_226_vq6m1k', caption: 'Day 3 — Proud Moments' },
+  { id: 'v1771403564/KGHS_DAY3_12_chze2v',  caption: 'Day 3 — Legacy Lives' },
+  { id: 'v1771403635/KGHS_DAY3_25_oj2203',  caption: 'Day 3 — Sisterhood' },
+  { id: 'v1771403739/KGHS_DAY1_10_qtqmo7',  caption: 'Day 1 — Homecoming' },
+  { id: 'v1771403816/KGHS_DAY1_50_s9q13g',  caption: 'Day 1 — Reunited' },
+];
+const SLIDE_MS = 4500;
 
-  const [openSection, setOpenSection] = useState('trustees');
-
-  const toggleSection = (section) => {
-    setOpenSection(openSection === section ? null : section);
-  };
-
+const MemorySlider = () => {
+  const [cur, setCur] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const next = useCallback(() => setCur(c => (c + 1) % SLIDES.length), []);
+  const prev = useCallback(() => setCur(c => (c - 1 + SLIDES.length) % SLIDES.length), []);
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_URL}/api/news`)
-      .then(res => setNews(res.data.slice(0, 5)))
-      .catch(() => setNews([]));
-
-    axios.get(`${import.meta.env.VITE_API_URL}/api/events`)
-      .then(res => setEvents(res.data.slice(0, 5)))
-      .catch(() => setEvents([]));
-
-    axios.get(`${import.meta.env.VITE_API_URL}/api/public/donations`)
-      .then(res => {
-        const data = res.data;
-        setDonations(data);
-        const total = data.reduce((sum, don) => sum + (don.amount || 0), 0);
-        setTotalDonated(total);
-        setDonationCount(data.length);
-        setLoadingFinance(false);
-      })
-      .catch(() => setLoadingFinance(false));
-  }, []);
-
-  const goalAmount = 5000000;
-  const percentage = Math.min((totalDonated / goalAmount) * 100, 100);
-
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    arrows: false,
-  };
-
-  const memorySliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 1000,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    fade: true,
-    cssEase: 'ease-in-out',
-    arrows: false,
-    pauseOnHover: true,
-    adaptiveHeight: true,
-  };
-
+    if (paused) return;
+    const t = setInterval(next, SLIDE_MS);
+    return () => clearInterval(t);
+  }, [paused, next]);
   return (
-    <div className="min-h-screen bg-secondary">
-      {/* Hero Section with Continuous Animation */}
-      <section className="relative bg-cover bg-center bg-no-repeat text-textDark py-32 md:py-40 text-center overflow-hidden">
-        <motion.div
-          className="absolute inset-0"
-          animate={{ scale: [1.1, 1.15, 1.1] }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: "reverse", ease: "linear" }}
-          style={{
-            backgroundImage: `url('https://res.cloudinary.com/djkrjogje/image/upload/v1771271342/KGHS_DAY1_15_1_jdblve.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        />
-
-        <motion.div
-          className="absolute inset-0 bg-black/40"
-          animate={{ opacity: [0.35, 0.5, 0.35] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        <motion.div
-          className="relative z-10 max-w-5xl mx-auto px-6"
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 1 }}
-            className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-lg"
-          >
-            Welcome to KGHS Alumni Foundation
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 1 }}
-            className="text-xl md:text-3xl mb-10 font-light text-white drop-shadow-md"
-          >
-            Connect • Share • Inspire
-          </motion.p>
-
-          <Link to="/signup">
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.9, duration: 0.8 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-primary text-white px-10 py-5 rounded-full text-xl font-semibold shadow-2xl hover:bg-pink-600 transition duration-300"
-            >
-              Join Our Community
-            </motion.button>
-          </Link>
-        </motion.div>
-      </section>
-
-     {/* Latest News Carousel */}
-<section className="py-16 md:py-20 bg-white">
-  <div className="max-w-6xl mx-auto px-6">
-    <motion.h2
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary"
-    >
-      Latest News
-    </motion.h2>
-
-    {news.length > 0 ? (
-      <Slider {...sliderSettings}>
-        {news.map(item => (
-          <div key={item._id} className="px-4">
-            <motion.div
-              whileHover={{ y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="bg-white rounded-2xl shadow-xl p-10 border border-pink-100 h-full flex flex-col"
-            >
-              <h3 className="text-2xl font-semibold mb-6 text-textDark line-clamp-2">
-                {item.title}
-              </h3>
-
-              {/* Shortened preview */}
-              <p className="text-textDark/70 leading-relaxed flex-1 line-clamp-6 mb-8">
-                {item.content}
-              </p>
-
-              <div className="mt-auto pt-6 border-t border-pink-100 flex justify-between items-center">
-                <p className="text-sm text-primary">
-                  By {item.author?.name || 'Admin'} • {new Date(item.date).toLocaleDateString()}
-                </p>
-
-                <Link
-                  to={`/news/${item._id}`}
-                  className="text-primary hover:text-pink-600 font-semibold flex items-center gap-2 transition-colors"
-                >
-                  Read Full Story →
-                </Link>
-              </div>
-            </motion.div>
-          </div>
+    <div className="h-slider" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} role="region" aria-label="Journey in Pictures">
+      {SLIDES.map((s, i) => (
+        <div key={s.id} className={`h-slide${i === cur ? ' h-slide-on' : ''}`} aria-hidden={i !== cur}>
+          <img src={cld(s.id, 1200)} srcSet={cldSet(s.id)} sizes="100vw" alt={s.caption}
+            loading={i === 0 ? 'eager' : 'lazy'} decoding="async" className="h-slide-img" />
+          <span className="h-slide-cap">{s.caption}</span>
+        </div>
+      ))}
+      <button className="h-slider-arrow h-slider-arrow-l" onClick={prev} aria-label="Previous">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
+      <button className="h-slider-arrow h-slider-arrow-r" onClick={next} aria-label="Next">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
+      <div className="h-slider-dots">
+        {SLIDES.map((_, i) => (
+          <button key={i} className={`h-slider-dot${i === cur ? ' h-slider-dot-on' : ''}`}
+            onClick={() => setCur(i)} aria-label={`Slide ${i + 1}`} />
         ))}
-      </Slider>
-    ) : (
-      <p className="text-center text-textDark/60">No news yet. Check back soon!</p>
-    )}
-  </div>
-</section>
-
-        <UpcomingEventsSection events={events} />
-                  
-      {/* Our Story Section - Continuous Float */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-            <motion.div
-              className="order-2 md:order-1"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771402872/KGHS_DAY1_5_ulirrc.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="Our Story - Journey to Reinstatement"
-                  loading="lazy"
-                  className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
-                  onLoad={(e) => e.target.classList.add('opacity-100')}
-                />
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="order-1 md:order-2 space-y-5"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Story: Journey to Reinstatement</h2>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                Deep in the heart of Buguma, Asari Toru Local Government Area, existed a girls’ high school, which produced many girls from across the Niger Delta area and beyond.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                They grew up to become successful women that changed the trajectory of poverty in their respective communities. And then, it was closed.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                The road to reinstatement started from a conversation between a few Ladies…Alaro George-Lawson, Nderiya Princewill Harry and Okorite Akoko at a funeral in Buguma, Rivers State, Nigeria. They shared the idea with Ene Dokiwari-Taylor, whom they knew had always been very passionate about giving back to the school prior to its closure. Together with a few more Ladies, they forged on the reinstatement journey.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                With the use of social media, the concept of the Alumni Foundation was realized in December 2018. This allowed the ladies to seek and invite other alums to attend and engage in the discussion of reinstatement.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                This effort led to a fact-finding mission that revealed the deplorable state of the school site. The effort also discovered that the school was closed in September of 2008 for no good reason, other than the desire by the then State Government to give schools with historical religious background back to religious organizations.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                In the case of Kalabari Girls’ High School, the only girls’ school in the local community, was erroneously handed over to the church. The church soon abandoned the school, giving way to dilapidation and ruins.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                This action created a complete vacuum and total devastation in the community. It left high school age girls with nowhere to go for their education. Instead, the inaction led to a community with very high teen pregnancy, unruly behavior and even criminality.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                The Kalabari Girls’ High School Alumni Foundation is growing in leaps and bounds. With more than 300 vibrant Alumni registered members and still counting, the Foundation has now restored the school with the help of the Rivers State Government.
-              </p>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                Like other girls’ high schools in Rivers State, Kalabari Girls’ High School has produced notable graduates from across the State. Many went on to become very successful women in various endeavors. Among them are accomplished Businesswomen, Lawyers, Government Workers, Medical Doctors, Nurses, Judges and Teachers to name a few.
-              </p>
-              <p className="text-base md:text-lg font-medium text-primary leading-relaxed">
-                With the achievement of reinstatement, the goal is to instill competence and confidence in the girls’ to compete worldwide.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Auto-Playing Memory Slider - Our Journey in Pictures */}
-      <section className="py-16 md:py-28 bg-gradient-to-b from-bg-cream to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-4xl md:text-6xl font-extrabold text-primary mb-6">
-              Our Journey in Pictures
-            </h2>
-            <p className="text-xl md:text-2xl text-textDark/70 max-w-4xl mx-auto leading-relaxed">
-              From the past to the present — moments of resilience, joy, and unbreakable sisterhood.
-            </p>
-          </motion.div>
-
-          {/* Full-Width Auto-Slider */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-            <Slider {...memorySliderSettings}>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403117/KGHS_DAY3_76_vod3we.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 1" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403228/KGHS_DAY3_147_nwkgn2.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 2" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403303/KGHS_DAY3_183_onoqoy.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 3" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403366/KGHS_DAY3_219_gbcztp.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 4" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403496/KGHS_DAY3_226_vq6m1k.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 5" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403564/KGHS_DAY3_12_chze2v.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 6" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403635/KGHS_DAY3_25_oj2203.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 7" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403739/KGHS_DAY1_10_qtqmo7.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 8" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-              <div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403816/KGHS_DAY1_50_s9q13g.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="KGHS Memory 9" 
-                  loading="lazy"
-                  className="w-full h-96 md:h-[600px] lg:h-[700px] object-cover"
-                />
-              </div>
-            </Slider>
-          </div>
-        </div>
-      </section>
-
-      {/* Our Vision Section - Different Animation Pattern */}
-      <section className="py-16 md:py-20 bg-gradient-to-r from-primary/10 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-            <motion.div
-              className="order-2"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771403921/KGHS_DAY1_53_gnrwrj.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="Our Vision"
-                  loading="lazy"
-                  className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
-                  onLoad={(e) => e.target.classList.add('opacity-100')}
-                />
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="order-1 space-y-5"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Vision</h2>
-              <p className="text-base md:text-lg text-textDark/80 leading-relaxed">
-                To cultivate a global sisterhood of empowered Kalabari Girls’ High School alumnae who lead with excellence, compassion, and unwavering confidence — transforming communities, breaking barriers, and inspiring future generations of women to reach their fullest potential.
-              </p>
-              <p className="text-xl italic font-medium text-primary">
-                Building legacies of leadership, one sister at a time.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Our Values Section - Gentle Breathing */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-            <motion.div
-              className="order-2 md:order-1"
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gray-200 rounded-3xl animate-pulse"></div>
-                <img 
-                  src="https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=800" 
-                  srcSet="https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=400 400w, https://res.cloudinary.com/djkrjogje/image/upload/v1771404007/KGHS_DAY1_31_ucwnrp.jpg?w=800 800w" 
-                  sizes="(max-width: 768px) 100vw, 800px"
-                  alt="Our Core Values"
-                  loading="lazy"
-                  className="rounded-3xl shadow-2xl w-full object-cover h-72 md:h-96 relative z-10 transition-opacity duration-700 opacity-0"
-                  onLoad={(e) => e.target.classList.add('opacity-100')}
-                />
-              </div>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
-              className="order-1 md:order-2 space-y-6"
-            >
-              <h2 className="text-3xl md:text-5xl font-bold text-primary">Our Core Values</h2>
-              <ul className="space-y-6 text-base md:text-lg">
-                <li className="flex items-start">
-                  <div>
-                    <strong className="text-textDark text-xl">Sisterhood</strong>
-                    <p className="text-textDark/80 mt-1">Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div>
-                    <strong className="text-textDark text-xl">Excellence</strong>
-                    <p className="text-textDark/80 mt-1">Pursuing the highest standards in education, leadership, and personal achievement.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div>
-                    <strong className="text-textDark text-xl">Compassion & Service</strong>
-                    <p className="text-textDark/80 mt-1">Giving back to our community and uplifting those in need with kindness and generosity.</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div>
-                    <strong className="text-textDark text-xl">Empowerment</strong>
-                    <p className="text-textDark/80 mt-1">Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.</p>
-                  </div>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* MEET OUR EXECUTIVES - Clean & Classic Version */}
-      <section className="py-20 md:py-28 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-              Meet Our Executives
-            </h2>
-            <p className="text-xl md:text-2xl text-textDark/80 max-w-3xl mx-auto leading-relaxed">
-              The dedicated leaders guiding the KGHS Alumni Foundation with wisdom, experience, and deep commitment.
-            </p>
-          </motion.div>
-
-          <div className="space-y-10">
-            {/* Board of Trustees */}
-            <div>
-              <button
-                onClick={() => toggleSection('trustees')}
-                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-              >
-                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Board of Trustees</h3>
-                <span className="text-3xl font-bold text-primary">
-                  {openSection === 'trustees' ? '▲' : '▼'}
-                </span>
-              </button>
-
-              <AnimatePresence>
-                {openSection === 'trustees' && (
-                  <motion.ul
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
-                  >
-                    <li>Dr. Alaro Lawson (BOT/Foundation Chair), 80</li>
-                    <li>Dr. Margaret George Kennedy (Vice Chair), 83</li>
-                    <li>Oris Samuel (Secretary), 96</li>
-                    <li>Harrisonba Sam Sam Jaja (Treasurer), 79</li>
-                    <li>Minini MacBarango (Financial Secretary), 92</li>
-                    <li>Ereminawari Ibama, 91</li>
-                    <li>Obaraemi Warmate, 79</li>
-                    <li>Biobele Iseleye Amachree, 85</li>
-                    <li>Tammy Barango, 84</li>
-                    <li>Victoria Sergeant-Awuse (General Trustee), 82</li>
-                    <li>Advocate Abiegbe-Tomzine's (Membership/Welfare Chair), 92</li>
-                    <li>Taire Emmanuel Bailey (Publicity Chair), 92</li>
-                    <li>Omiete Farrell (Fundraising Chair), 80</li>
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Fundraising and Event Committee */}
-            <div>
-              <button
-                onClick={() => toggleSection('fundraising')}
-                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-              >
-                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Fundraising and Event Committee</h3>
-                <span className="text-3xl font-bold text-primary">
-                  {openSection === 'fundraising' ? '▲' : '▼'}
-                </span>
-              </button>
-
-              <AnimatePresence>
-                {openSection === 'fundraising' && (
-                  <motion.ul
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
-                  >
-                    <li>Omiete Farrell (Chair), 80</li>
-                    <li>Opakiriba Ofuani, 80</li>
-                    <li>Oribi Isokariari-Higgwe, 80</li>
-                    <li>Obaraemi Warmate, 79</li>
-                    <li>Asolimaa Onyenwuzor, 81</li>
-                    <li>Ene Taylor, 80</li>
-                    <li>Kienma Inifie, 82</li>
-                    <li>Hon. Alaso Johnbull-Obi, 80</li>
-                     <li>Dr. Oribi</li>
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Publicity and Communication Committee */}
-            <div>
-              <button
-                onClick={() => toggleSection('publicity')}
-                className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-              >
-                <h3 className="text-3xl md:text-4xl font-bold text-textDark">Publicity and Communication Committee</h3>
-                <span className="text-3xl font-bold text-primary">
-                  {openSection === 'publicity' ? '▲' : '▼'}
-                </span>
-              </button>
-
-              <AnimatePresence>
-                {openSection === 'publicity' && (
-                  <motion.ul
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="pt-6 space-y-4 text-lg text-textDark/90 list-disc pl-8"
-                  >
-                    <li>Taire Emmanuel Baile (Chair), 92</li>
-                    <li>Alaere Idoniboye-obu (Secretary)</li>
-                    <li>Ese Hart</li>
-                    <li>Soiboma lyai-Sokari</li>
-                    <li>Mary Samuel-Allasseh, 88</li>
-                    <li>Tonye Dokubo</li>
-                    <li>Ibiba Wariboko, 80</li>
-                  </motion.ul>
-                )}
-              </AnimatePresence>
-            </div>
-
-         {/* Other Key Roles & Committees – split into separate sections */}
-<div className="space-y-10">
-  {/* Standalone: Membership and Social Welfare Committee (appears earlier in list) */}
-  <div>
-    <button
-      onClick={() => toggleSection('membership')}
-      className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-    >
-      <h3 className="text-3xl md:text-4xl font-bold text-textDark">
-        Membership and Social Welfare Committee
-      </h3>
-      <span className="text-3xl font-bold text-primary">
-        {openSection === 'membership' ? '▲' : '▼'}
-      </span>
-    </button>
-
-    <AnimatePresence>
-      {openSection === 'membership' && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="overflow-hidden pt-6 space-y-8 text-lg text-textDark/90"
-        >
-          <ul className="space-y-3 mt-4 pl-8 list-disc">
-            <li>Advocate Abiegbe-Tomzine's (Chair), 92</li>
-            <li>Courageous Manners (Secretary), 96</li>
-            <li>Daboingi Erekosima, 83</li>
-            <li>Gialba Ngeribia, 83</li>
-            <li>Iwoba Igobo, 82</li>
-            <li>Christina Erekosima, 83</li>
-            <li>Ibiye George, 91</li>
-          </ul>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-
-  {/* Standalone: Other Key Roles – now last */}
-  <div>
-    <button
-      onClick={() => toggleSection('other')}
-      className="w-full text-left py-4 border-b border-gray-300 hover:text-primary transition-colors flex justify-between items-center"
-    >
-      <h3 className="text-3xl md:text-4xl font-bold text-textDark">Other Key Roles</h3>
-      <span className="text-3xl font-bold text-primary">
-        {openSection === 'other' ? '▲' : '▼'}
-      </span>
-    </button>
-
-    <AnimatePresence>
-      {openSection === 'other' && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          className="overflow-hidden pt-6 space-y-8 text-lg text-textDark/90"
-        >
-          <div>
-            <strong className="text-2xl text-primary block mb-2">Historian</strong>
-            <p>Okorite Martina Akoko, 80</p>
-          </div>
-
-          <div>
-            <strong className="text-2xl text-primary block mb-2">Archivist</strong>
-            <p>Courageous Manners, 96</p>
-          </div>
-
-          <div>
-            <strong className="text-2xl text-primary block mb-2">Legal Counsel</strong>
-            <p>OJU ALAIYI GEORGE, PhD</p>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  </div>
-</div>
-          </div>
-        </div>
-      </section>
-
-     {/* Organizational Structure Diagram */}
-<section className="py-16 md:py-24 bg-white/50">
-  <div className="max-w-6xl mx-auto px-6">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="text-center mb-12"
-    >
-      <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-        Our Organizational Structure
-      </h3>
-      <p className="text-xl text-textDark/70">
-        How our Board, Committees, and Key Roles work together to support KGHS girls and the alumni community.
-      </p>
-    </motion.div>
-
-    <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border border-primary/10 bg-white">
-      <img 
-        src="https://i.imgur.com/MXCC7uO.jpg?w=800" 
-        srcSet="https://i.imgur.com/MXCC7uO.jpg?w=400 400w, https://i.imgur.com/MXCC7uO.jpg?w=800 800w" 
-        sizes="(max-width: 768px) 100vw, 800px"
-        alt="KGHS Alumni Foundation Organizational Structure with Official Signatures"
-        loading="lazy"
-        className="w-full h-auto object-contain"
-      />
-    </div>
-
-    <p className="text-center text-textDark/60 mt-6 text-lg italic">
-      Clear leadership and dedicated committees driving our mission forward
-    </p>
-  </div>
-</section>
-
-      {/* Finance Showcase - Breathing Cards */}
-      <section className="py-20 md:py-28 bg-gradient-to-b from-white to-primary/5">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-primary mb-6">
-              Our Impact So Far
-            </h2>
-            <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto">
-              Every contribution brings us closer to empowering more KGHS girls. Thank you for your trust and generosity.
-            </p>
-          </motion.div>
-
-          {loadingFinance ? (
-            <p className="text-center text-textDark/60 text-xl">Loading impact...</p>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16">
-                <motion.div
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 6, repeat: Infinity }}
-                  className="bg-white rounded-3xl shadow-2xl p-12 text-center border border-primary/10"
-                >
-                  <p className="text-5xl md:text-6xl font-extrabold text-primary mb-4">
-                    ₦{totalDonated.toLocaleString()}
-                  </p>
-                  <p className="text-2xl text-textDark/80 font-medium">Total Received</p>
-                </motion.div>
-
-                <motion.div
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 6, repeat: Infinity, delay: 0.5 }}
-                  className="bg-white rounded-3xl shadow-2xl p-12 text-center border border-primary/10"
-                >
-                  <p className="text-5xl md:text-6xl font-extrabold text-primary mb-4">
-                    {donationCount}
-                  </p>
-                  <p className="text-2xl text-textDark/80 font-medium">Generous Gifts</p>
-                </motion.div>
-
-                <motion.div
-                  animate={{ scale: [1, 1.02, 1] }}
-                  transition={{ duration: 6, repeat: Infinity, delay: 1 }}
-                  className="bg-white rounded-3xl shadow-2xl p-12 text-center border border-primary/10"
-                >
-                  <p className="text-5xl md:text-6xl font-extrabold text-primary mb-4">
-                    {percentage.toFixed(0)}%
-                  </p>
-                  <p className="text-2xl text-textDark/80 font-medium">Toward Our Goal</p>
-                </motion.div>
-              </div>
-
-              {/* Progress Bar */}
-              <div className="max-w-4xl mx-auto">
-                <div className="bg-primary/10 rounded-full h-12 overflow-hidden shadow-inner">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${percentage}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 2, ease: "easeOut" }}
-                    className="h-full bg-gradient-to-r from-primary to-pink-600 rounded-full shadow-lg"
-                  />
-                </div>
-                <div className="flex justify-between mt-4 text-textDark/70">
-                  <p className="text-lg font-medium">₦0</p>
-                  <p className="text-lg font-medium">Goal: ₦{goalAmount.toLocaleString()}</p>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </section>
-
-      {/* Support Our Mission Section */}
-      <section className="py-20 md:py-24 bg-gradient-to-b from-primary/20 to-white">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-10 md:p-16 border border-primary/20"
-          >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-primary mb-8">
-              Support Our Mission
-            </h2>
-            <p className="text-lg md:text-2xl text-textDark/80 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Your generous contribution helps empower the next generation of KGHS girls through scholarships, school restoration, mentorship programs, and community initiatives.
-            </p>
-            <Link to="/donations">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary text-white px-16 py-6 rounded-full text-2xl font-bold shadow-2xl hover:bg-pink-600 transition-all duration-300"
-              >
-                Donate Now
-              </motion.button>
-            </Link>
-            <p className="text-textDark/60 mt-8 text-base md:text-lg">
-              All donations go directly to supporting KGHS students and programs. Thank you for believing in the power of education.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Explore Our Foundation - With Animated Dropdown Scholarship Details */}
-      <section className="py-24 md:py-32 bg-gradient-to-b from-transparent via-primary/5 to-bg-cream">
-        <div className="max-w-5xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-20"
-          >
-            <h3 className="text-5xl md:text-6xl font-bold text-primary mb-6">
-              Explore Our Foundation
-            </h3>
-            <p className="text-xl md:text-2xl text-textDark/70 max-w-3xl mx-auto leading-relaxed">
-              Discover our impact, initiatives, and how we're empowering the next generation of KGHS girls.
-            </p>
-          </motion.div>
-
-          {/* Scholarship Card with Dropdown */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="bg-bg-light/80 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-accent-lavender/30"
-          >
-            {/* Teaser Header */}
-            <div className="p-10 md:p-16 text-center">
-              <motion.h4
-                initial={{ scale: 0.9 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                className="text-4xl md:text-5xl font-bold text-primary mb-6"
-              >
-                Annual Merit-Based Scholarship
-              </motion.h4>
-              <p className="text-xl text-accent-gold font-medium mb-10">
-                Empowering Excellence • One Girl at a Time
-              </p>
-
-              {/* Teaser Text */}
-              <div className="space-y-6 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto mb-12">
-                <p>
-                  In partnership with the school, we run an inspiring academic challenge for JSS2 students — designed to spark creativity, critical thinking, and healthy competition.
-                </p>
-                <p>
-                  Top performers earn the <strong>Impact Backpack</strong> — a carefully curated award filled with essential school supplies to support their educational journey.
-                </p>
-                <p className="text-primary font-medium">
-                  In 2024/2025, only three brilliant students qualified — but we're determined to change that. With your support, more girls can shine.
-                </p>
-              </div>
-
-              {/* Read More Button */}
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsExpanded(!isExpanded)}
-                className="bg-primary text-white px-12 py-6 rounded-full text-xl font-bold shadow-xl hover:bg-accent-orchid transition-all duration-300 inline-flex items-center gap-4"
-              >
-                {isExpanded ? 'Show Less' : 'Read Full Details'}
-                <motion.span
-                  animate={{ rotate: isExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="inline-block"
-                >
-                  ↓
-                </motion.span>
-              </motion.button>
-            </div>
-
-            {/* Dropdown Full Details */}
-            <AnimatePresence>
-              {isExpanded && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="overflow-hidden"
-                >
-                  <div className="px-10 md:px-16 pb-16 pt-8 bg-bg-light/50 border-t border-accent-lavender/20">
-                    <div className="space-y-10 text-lg md:text-xl text-textDark/80 leading-relaxed max-w-4xl mx-auto">
-                      <div>
-                        <h5 className="text-2xl font-bold text-primary mb-4">Program Overview</h5>
-                        <p>
-                          The Foundation, in collaboration with the school Principal and a newly established 5-member Scholarship Panel of Judges, will formulate a stimulative and thought-provoking academic exercise for students in Junior Secondary School 2 (JSS2).
-                        </p>
-                        <p className="mt-4">
-                          At the conclusion of each exercise, 10 top finalists will be chosen by the Panel of Judges in a double-blinded format for an award determined by the Foundation’s Board of Trustees.
-                        </p>
-                      </div>
-
-                      <div>
-                        <h5 className="text-2xl font-bold text-primary mb-4">Objective</h5>
-                        <p>
-                          This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in a written form understandable to the reader.
-                        </p>
-                      </div>
-
-                      <div>
-                        <h5 className="text-2xl font-bold text-primary mb-4">Award: Impact Backpack</h5>
-                        <p>
-                          The Foundation will give an award package called <strong>Impact Backpack</strong>, including:
-                        </p>
-                        <ul className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-6">
-                          <li>• Backpacks</li>
-                          <li>• 80-leaf exercise books</li>
-                          <li>• Pack of pens</li>
-                          <li>• Pencils</li>
-                          <li>• Crayons</li>
-                          <li>• Drawing books</li>
-                          <li>• Mathematical sets</li>
-                          <li>• Rulers, etc.</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h5 className="text-2xl font-bold text-primary mb-4">Eligibility Requirement</h5>
-                        <p>
-                          While our goal is to support every student, we establish standards to empower them. Only JSS2 students achieving at least 70% in English and Mathematics qualify — fostering healthy competition where everyone can excel.
-                        </p>
-                      </div>
-
-                      <div>
-                        <h5 className="text-2xl font-bold text-primary mb-4">2024/2025 Academic Year</h5>
-                        <p>
-                          Eligible students wrote a 300-word essay on "My First Day at School." Regrettably, only three met criteria.
-                        </p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-accent-gold">1st Place</p>
-                            <p className="text-lg mt-2">Batubo Charity Sepiribo</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-accent-lavender">2nd Place</p>
-                            <p className="text-lg mt-2">Davidwest Ibiso</p>
-                          </div>
-                          <div className="text-center">
-                            <p className="text-2xl font-bold text-primary">3rd Place</p>
-                            <p className="text-lg mt-2">Batubo Soibifaa</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <p className="text-center text-textDark/70 mt-12 text-xl italic font-medium">
-                        This is what the Foundation hopes to change — more winners, more impact.
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Official Constitution & Signatures */}
-      <section className="py-16 md:py-24 bg-gradient-to-b from-white to-primary/5 border-t border-primary/10">
-        <div className="max-w-6xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h3 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-              Our Foundation's Constitution
-            </h3>
-            
-            <p className="text-xl md:text-2xl text-textDark/80 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Transparency and good governance are at the heart of our work. Download the full constitution below, ratified and signed by the Board.
-            </p>
-
-            {/* Download Constitution */}
-            <a
-              href="https://res.cloudinary.com/djkrjogje/raw/upload/v1771269676/THE_CONSTITUTIONAL_BYELAWS_OF_KGHS_27.08.2025-2_dsqmy3.docx"
-              download="KGHS-Alumni-Foundation-Constitution.pdf"
-              className="inline-flex items-center bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-xl hover:bg-pink-600 transition-all duration-300 mb-12"
-            >
-              <span>Download Constitution (PDF)</span>
-              <svg className="w-6 h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-            </a>
-          </motion.div>
-
-        
-        
-        </div>
-      </section>
-
-   {/* Footer */}
-<footer style={{
-  background: 'linear-gradient(to top, rgba(255,192,203,0.22) 0%, rgba(255,192,203,0.06) 60%, transparent 100%)',
-  borderTop: '1px solid rgba(255,192,203,0.25)',
-  padding: 'clamp(40px,6vw,64px) clamp(16px,4vw,32px) clamp(20px,3vw,32px)',
-}}>
-  <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-
-    {/* Top grid */}
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 'clamp(28px,5vw,48px)', marginBottom: 'clamp(28px,4vw,44px)' }}>
-
-      {/* Brand */}
-      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-          <img src="https://i.imgur.com/WwrdAkS.png" alt="KGHS"
-            style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'contain', border: '2px solid rgba(255,192,203,0.5)', background: '#fff', padding: 2 }} />
-          <span className="text-primary" style={{ fontWeight: 800, fontSize: '1.15rem' }}>KGHS Alumni</span>
-        </div>
-        <p className="text-textDark/60" style={{ fontSize: '0.88rem', lineHeight: 1.65, margin: 0, maxWidth: 220 }}>
-          Connecting generations of Kalabari Girls' High School graduates across the world.
-        </p>
-      </motion.div>
-
-      {/* Contact */}
-      <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}>
-        <p style={{ margin: '0 0 14px', fontSize: '0.75rem', fontWeight: 700, color: 'rgba(160,60,100,0.55)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-          Get In Touch
-        </p>
-        <p style={{ margin: '0 0 10px', fontSize: '0.85rem', color: 'rgba(80,40,60,0.6)', lineHeight: 1.6 }}>
-          Questions, feedback, or just want to say hello?
-        </p>
-        <a href="mailto:alumnuskghs@gmail.com" className="text-primary"
-          style={{ fontSize: '0.92rem', fontWeight: 700, textDecoration: 'none', borderBottom: '1px solid rgba(255,192,203,0.6)', paddingBottom: 2, display: 'inline-block' }}>
-          alumnuskghs@gmail.com
-        </a>
-        <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(160,80,100,0.5)', fontWeight: 500 }}>Follow us</p>
-          <a href="https://www.instagram.com/kghs.alumnae?igsh=OHY1bDEyM2EycHE1"
-            target="_blank" rel="noopener noreferrer" aria-label="Instagram"
-            className="text-primary" style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}>
-            <FaInstagram />
-          </a>
-        </div>
-      </motion.div>
-
-    </div>
-
-    {/* Divider */}
-    <div style={{ height: 1, background: 'rgba(255,192,203,0.25)', margin: '0 0 20px' }} />
-
-    {/* Bottom bar */}
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-      <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(120,60,80,0.5)' }}>
-        © {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.
-      </p>
-      <p style={{ margin: 0, fontSize: '0.78rem', color: 'rgba(120,60,80,0.4)', fontStyle: 'italic' }}>
-        Building legacies of leadership, one sister at a time.
-      </p>
-    </div>
-
-  </div>
-</footer>
+      </div>
+      {!paused && <div className="h-slider-prog" key={cur}><div className="h-slider-prog-bar" style={{ animationDuration: `${SLIDE_MS}ms` }} /></div>}
     </div>
   );
 };
+
+// ─── ACCORDION ────────────────────────────────────────────────────────
+const Accordion = ({ id, title, open, onToggle, children }) => (
+  <div className="h-accordion">
+    <button className="h-accordion-btn" onClick={() => onToggle(id)} aria-expanded={open}>
+      <span className="h-accordion-title">{title}</span>
+      <span className={`h-accordion-icon${open ? ' h-accordion-icon-open' : ''}`}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </span>
+    </button>
+    <AnimatePresence initial={false}>
+      {open && (
+        <motion.div
+          initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+          exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="h-accordion-body" style={{ overflow: 'hidden' }}
+        >
+          <div className="h-accordion-inner">{children}</div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </div>
+);
+
+// ─── MAIN HOME ────────────────────────────────────────────────────────
+const Home = () => {
+  const [news, setNews]                     = useState([]);
+  const [events, setEvents]                 = useState([]);
+  const [totalDonated, setTotalDonated]     = useState(0);
+  const [donationCount, setDonationCount]   = useState(0);
+  const [loadingFinance, setLoadingFinance] = useState(true);
+  const [isExpanded, setIsExpanded]         = useState(false);
+  const [openSection, setOpenSection]       = useState('trustees');
+  const [newsIdx, setNewsIdx]               = useState(0);
+
+  const toggleSection = (s) => setOpenSection(o => o === s ? null : s);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_API_URL}/api/news`).then(r => setNews(r.data.slice(0, 5))).catch(() => {});
+    axios.get(`${import.meta.env.VITE_API_URL}/api/events`).then(r => setEvents(r.data.slice(0, 6))).catch(() => {});
+    axios.get(`${import.meta.env.VITE_API_URL}/api/public/donations`)
+      .then(r => {
+        const total = r.data.reduce((s, d) => s + (d.amount || 0), 0);
+        setTotalDonated(total); setDonationCount(r.data.length); setLoadingFinance(false);
+      }).catch(() => setLoadingFinance(false));
+  }, []);
+
+  const goalAmount = 5_000_000;
+  const pct = Math.min((totalDonated / goalAmount) * 100, 100);
+
+  // news carousel
+  useEffect(() => {
+    if (news.length <= 1) return;
+    const t = setInterval(() => setNewsIdx(p => (p + 1) % news.length), 5000);
+    return () => clearInterval(t);
+  }, [news.length]);
+
+  return (
+    <>
+      <style>{CSS}</style>
+      <div className="h-root">
+
+        {/* ── HERO ── */}
+        <section className="h-hero" aria-label="Welcome">
+          <motion.div className="h-hero-bg"
+            animate={{ scale: [1.08, 1.14, 1.08] }}
+            transition={{ duration: 22, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
+            style={{ backgroundImage: `url('${cld('v1771271342/KGHS_DAY1_15_1_jdblve', 1400)}')` }}
+          />
+          <motion.div className="h-hero-overlay"
+            animate={{ opacity: [0.38, 0.52, 0.38] }}
+            transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <div className="h-hero-content h-hero-float">
+            <motion.span className="h-hero-eyebrow"
+              initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+              Kalabari Girls' High School
+            </motion.span>
+            <motion.h1 className="h-hero-title"
+              initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.9 }}>
+              Welcome to the<br /><em>KGHS Alumni</em><br />Foundation
+            </motion.h1>
+            <motion.p className="h-hero-sub"
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.8 }}>
+              Connect · Share · Inspire
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.7 }}>
+              <Link to="/signup">
+                <motion.button className="h-hero-btn" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Join Our Community
+                </motion.button>
+              </Link>
+            </motion.div>
+          </div>
+          {/* Scroll hint */}
+          <motion.div className="h-hero-scroll"
+            animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </motion.div>
+        </section>
+
+        {/* ── LATEST NEWS ── */}
+        <section className="h-section h-section-white" aria-labelledby="news-heading">
+          <div className="h-container">
+            <motion.div className="h-section-header"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+              <span className="h-eyebrow">Stay Informed</span>
+              <h2 id="news-heading" className="h-heading h-heading-center">Latest <em>News</em></h2>
+            </motion.div>
+
+            {news.length === 0 ? (
+              <p className="h-empty-msg">No news yet — check back soon!</p>
+            ) : (
+              <div className="h-news-wrap">
+                <AnimatePresence mode="wait">
+                  <motion.div key={newsIdx}
+                    initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.4 }}
+                    className="h-news-card">
+                    <div className="h-news-body">
+                      <h3 className="h-news-title">{news[newsIdx]?.title}</h3>
+                      <p className="h-news-preview">{news[newsIdx]?.content}</p>
+                    </div>
+                    <div className="h-news-footer">
+                      <span className="h-news-meta">
+                        By {news[newsIdx]?.author?.name || 'Admin'} · {new Date(news[newsIdx]?.date).toLocaleDateString()}
+                      </span>
+                      <Link to={`/news/${news[newsIdx]?._id}`} className="h-news-link">
+                        Read Full Story
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                      </Link>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                {news.length > 1 && (
+                  <div className="h-news-nav">
+                    <button className="h-news-arrow" onClick={() => setNewsIdx(p => (p - 1 + news.length) % news.length)} aria-label="Previous">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                    <div className="h-dots">
+                      {news.map((_, i) => <button key={i} className={`h-dot${i === newsIdx ? ' h-dot-active' : ''}`} onClick={() => setNewsIdx(i)} aria-label={`News ${i + 1}`} />)}
+                    </div>
+                    <button className="h-news-arrow" onClick={() => setNewsIdx(p => (p + 1) % news.length)} aria-label="Next">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ── EVENTS ── */}
+        <UpcomingEvents events={events} />
+
+        {/* ── OUR STORY ── */}
+        <section className="h-section h-section-white" aria-labelledby="story-heading">
+          <div className="h-container h-two-col">
+            <motion.div className="h-img-col h-order-2 h-md-order-1"
+              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <div className="h-img-frame">
+                <FadeImg id="v1771402872/KGHS_DAY1_5_ulirrc" alt="Our Story" className="h-img" />
+                <div className="h-img-accent" aria-hidden="true" />
+              </div>
+            </motion.div>
+            <motion.div className="h-text-col h-order-1 h-md-order-2"
+              initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <span className="h-eyebrow">Our Story</span>
+              <h2 id="story-heading" className="h-heading">Journey to <em>Reinstatement</em></h2>
+              <div className="h-prose">
+                <p>Deep in the heart of Buguma, Asari Toru Local Government Area, existed a girls' high school which produced many girls from across the Niger Delta area and beyond. They grew up to become successful women that changed the trajectory of poverty in their respective communities. And then, it was closed.</p>
+                <p>The road to reinstatement started from a conversation between a few Ladies — Alaro George-Lawson, Nderiya Princewill Harry and Okorite Akoko at a funeral in Buguma. They shared the idea with Ene Dokiwari-Taylor, whom they knew had always been very passionate about giving back to the school.</p>
+                <p>With the use of social media, the concept of the Alumni Foundation was realized in December 2018. A fact-finding mission revealed the deplorable state of the school site — closed in September 2008 when the then State Government erroneously handed it over to the church, which soon abandoned it to dilapidation and ruins.</p>
+                <p>This action left high school age girls with nowhere to go — leading to high teen pregnancy rates and criminality in the community. The Foundation has now grown to more than 300 vibrant registered members and, with the help of the Rivers State Government, the school has been restored.</p>
+              </div>
+              <p className="h-kicker">With the achievement of reinstatement, the goal is to instil competence and confidence in the girls to compete worldwide.</p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── JOURNEY IN PICTURES ── */}
+        <section className="h-section h-section-tinted" aria-labelledby="gallery-heading">
+          <div className="h-container">
+            <motion.div className="h-section-header"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }}>
+              <span className="h-eyebrow">Our Journey</span>
+              <h2 id="gallery-heading" className="h-heading h-heading-center">In <em>Pictures</em></h2>
+              <p className="h-subheading">From the past to the present — moments of resilience, joy, and unbreakable sisterhood.</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.15 }}>
+              <MemorySlider />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── OUR VISION ── */}
+        <section className="h-section h-section-rose" aria-labelledby="vision-heading">
+          <div className="h-container h-two-col h-two-col-rev">
+            <motion.div className="h-text-col"
+              initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <span className="h-eyebrow">Looking Forward</span>
+              <h2 id="vision-heading" className="h-heading">Our <em>Vision</em></h2>
+              <div className="h-prose">
+                <p>To cultivate a global sisterhood of empowered Kalabari Girls' High School alumnae who lead with excellence, compassion, and unwavering confidence — transforming communities, breaking barriers, and inspiring future generations of women to reach their fullest potential.</p>
+              </div>
+              <blockquote className="h-blockquote">"Building legacies of leadership, one sister at a time."</blockquote>
+            </motion.div>
+            <motion.div className="h-img-col"
+              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <div className="h-img-frame">
+                <FadeImg id="v1771403921/KGHS_DAY1_53_gnrwrj" alt="Our Vision" className="h-img" />
+                <div className="h-img-accent h-img-accent-rose" aria-hidden="true" />
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── CORE VALUES ── */}
+        <section className="h-section h-section-white" aria-labelledby="values-heading">
+          <div className="h-container h-two-col">
+            <motion.div className="h-img-col h-order-2 h-md-order-1"
+              initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <div className="h-img-frame">
+                <FadeImg id="v1771404007/KGHS_DAY1_31_ucwnrp" alt="Our Core Values" className="h-img" />
+                <div className="h-img-accent" aria-hidden="true" />
+              </div>
+            </motion.div>
+            <motion.div className="h-text-col h-order-1 h-md-order-2"
+              initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.65 }}>
+              <span className="h-eyebrow">What We Stand For</span>
+              <h2 id="values-heading" className="h-heading">Our Core <em>Values</em></h2>
+              <ul className="h-values" role="list">
+                {[
+                  { icon: '', t: 'Sisterhood',            b: 'Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.' },
+                  { icon: '', t: 'Excellence',            b: 'Pursuing the highest standards in education, leadership, and personal achievement.' },
+                  { icon: '', t: 'Compassion & Service', b: 'Giving back to our community and uplifting those in need with kindness and generosity.' },
+                  { icon: '', t: 'Empowerment',          b: 'Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.' },
+                ].map((v, i) => (
+                  <motion.li key={v.t} className="h-value-item"
+                    initial={{ opacity: 0, x: 18 }} whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }} transition={{ delay: i * 0.09, duration: 0.45 }}>
+                    <span className="h-value-icon" aria-hidden="true">{v.icon}</span>
+                    <div><strong className="h-value-title">{v.t}</strong><p className="h-value-body">{v.b}</p></div>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── EXECUTIVES ── */}
+        <section className="h-section h-section-white" aria-labelledby="exec-heading">
+          <div className="h-container" style={{ maxWidth: 860 }}>
+            <motion.div className="h-section-header"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+              <span className="h-eyebrow">Leadership</span>
+              <h2 id="exec-heading" className="h-heading h-heading-center">Meet Our <em>Executives</em></h2>
+              <p className="h-subheading">The dedicated leaders guiding the Foundation with wisdom, experience, and deep commitment.</p>
+            </motion.div>
+
+            <div className="h-accordions">
+              <Accordion id="trustees" title="Board of Trustees" open={openSection === 'trustees'} onToggle={toggleSection}>
+                <ul className="h-acc-list">
+                  {['Dr. Alaro Lawson (BOT/Foundation Chair), 80','Dr. Margaret George Kennedy (Vice Chair), 83','Oris Samuel (Secretary), 96','Harrisonba Sam Sam Jaja (Treasurer), 79','Minini MacBarango (Financial Secretary), 92','Ereminawari Ibama, 91','Obaraemi Warmate, 79','Biobele Iseleye Amachree, 85','Tammy Barango, 84','Victoria Sergeant-Awuse (General Trustee), 82','Advocate Abiegbe-Tomzine\'s (Membership/Welfare Chair), 92','Taire Emmanuel Bailey (Publicity Chair), 92','Omiete Farrell (Fundraising Chair), 80'].map(n => <li key={n}>{n}</li>)}
+                </ul>
+              </Accordion>
+              <Accordion id="fundraising" title="Fundraising & Event Committee" open={openSection === 'fundraising'} onToggle={toggleSection}>
+                <ul className="h-acc-list">
+                  {['Omiete Farrell (Chair), 80','Opakiriba Ofuani, 80','Oribi Isokariari-Higgwe, 80','Obaraemi Warmate, 79','Asolimaa Onyenwuzor, 81','Ene Taylor, 80','Kienma Inifie, 82','Hon. Alaso Johnbull-Obi, 80','Dr. Oribi'].map(n => <li key={n}>{n}</li>)}
+                </ul>
+              </Accordion>
+              <Accordion id="publicity" title="Publicity & Communication Committee" open={openSection === 'publicity'} onToggle={toggleSection}>
+                <ul className="h-acc-list">
+                  {['Taire Emmanuel Baile (Chair), 92','Alaere Idoniboye-obu (Secretary)','Ese Hart','Soiboma Iyai-Sokari','Mary Samuel-Allasseh, 88','Tonye Dokubo','Ibiba Wariboko, 80'].map(n => <li key={n}>{n}</li>)}
+                </ul>
+              </Accordion>
+              <Accordion id="membership" title="Membership & Social Welfare Committee" open={openSection === 'membership'} onToggle={toggleSection}>
+                <ul className="h-acc-list">
+                  {['Advocate Abiegbe-Tomzine\'s (Chair), 92','Courageous Manners (Secretary), 96','Daboingi Erekosima, 83','Gialba Ngeribia, 83','Iwoba Igobo, 82','Christina Erekosima, 83','Ibiye George, 91'].map(n => <li key={n}>{n}</li>)}
+                </ul>
+              </Accordion>
+              <Accordion id="other" title="Other Key Roles" open={openSection === 'other'} onToggle={toggleSection}>
+                <div className="h-acc-roles">
+                  {[['Historian','Okorite Martina Akoko, 80'],['Archivist','Courageous Manners, 96'],['Legal Counsel','OJU ALAIYI GEORGE, PhD']].map(([r, n]) => (
+                    <div key={r} className="h-acc-role">
+                      <span className="h-acc-role-label">{r}</span>
+                      <span className="h-acc-role-name">{n}</span>
+                    </div>
+                  ))}
+                </div>
+              </Accordion>
+            </div>
+          </div>
+        </section>
+
+        {/* ── ORG STRUCTURE ── */}
+        <section className="h-section h-section-tinted" aria-labelledby="org-heading">
+          <div className="h-container">
+            <motion.div className="h-section-header"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+              <span className="h-eyebrow">How We Work</span>
+              <h2 id="org-heading" className="h-heading h-heading-center">Our Organizational <em>Structure</em></h2>
+              <p className="h-subheading">How our Board, Committees, and Key Roles work together to support KGHS girls and the alumni community.</p>
+            </motion.div>
+            <motion.div className="h-org-frame"
+              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
+              <img src="https://i.imgur.com/MXCC7uO.jpg" alt="KGHS Alumni Foundation Organizational Structure"
+                loading="lazy" className="h-org-img" />
+            </motion.div>
+            <p className="h-org-caption">Clear leadership and dedicated committees driving our mission forward</p>
+          </div>
+        </section>
+
+        {/* ── IMPACT / FINANCE ── */}
+        <section className="h-section h-section-white" aria-labelledby="impact-heading">
+          <div className="h-container">
+            <motion.div className="h-section-header"
+              initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+              <span className="h-eyebrow">Making a Difference</span>
+              <h2 id="impact-heading" className="h-heading h-heading-center">Our <em>Impact</em> So Far</h2>
+              <p className="h-subheading">Every contribution brings us closer to empowering more KGHS girls. Thank you for your trust and generosity.</p>
+            </motion.div>
+
+            {loadingFinance ? (
+              <div className="h-stats-grid">
+                {[0,1,2].map(i => <div key={i} className="h-stat-skeleton" style={{ animationDelay: `${i*0.1}s` }} />)}
+              </div>
+            ) : (
+              <>
+                <div className="h-stats-grid">
+                  {[
+                    { val: `₦${totalDonated.toLocaleString()}`, label: 'Total Received', delay: 0 },
+                    { val: donationCount,                        label: 'Generous Gifts',  delay: 0.1 },
+                    { val: `${pct.toFixed(0)}%`,                label: 'Toward Our Goal', delay: 0.2 },
+                  ].map((s) => (
+                    <motion.div key={s.label} className="h-stat-card"
+                      initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }} transition={{ delay: s.delay, duration: 0.5 }}
+                      whileHover={{ y: -4, boxShadow: '0 12px 40px rgba(232,84,122,0.18)' }}>
+                      <p className="h-stat-val">{s.val}</p>
+                      <p className="h-stat-label">{s.label}</p>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="h-progress-wrap">
+                  <div className="h-progress-track">
+                    <motion.div className="h-progress-fill"
+                      initial={{ width: 0 }} whileInView={{ width: `${pct}%` }}
+                      viewport={{ once: true }} transition={{ duration: 2, ease: 'easeOut' }} />
+                  </div>
+                  <div className="h-progress-labels">
+                    <span>₦0</span><span>Goal: ₦{goalAmount.toLocaleString()}</span>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+
+        {/* ── SUPPORT / DONATE ── */}
+        <section className="h-section h-section-rose" aria-labelledby="donate-heading">
+          <div className="h-container" style={{ maxWidth: 740 }}>
+            <motion.div className="h-donate-card"
+              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.6 }}>
+              <span className="h-eyebrow">Support the Mission</span>
+              <h2 id="donate-heading" className="h-heading h-heading-center">Help Us <em>Empower</em> More Girls</h2>
+              <p className="h-donate-body">
+                Your generous contribution helps empower the next generation of KGHS girls through scholarships, school restoration, mentorship programs, and community initiatives.
+              </p>
+              <Link to="/donations">
+                <motion.button className="h-hero-btn" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  Donate Now
+                </motion.button>
+              </Link>
+              <p className="h-donate-note">All donations go directly to supporting KGHS students and programs.</p>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── SCHOLARSHIP ── */}
+        <section className="h-section h-section-tinted" aria-labelledby="scholar-heading">
+          <div className="h-container" style={{ maxWidth: 860 }}>
+            <motion.div className="h-scholar-card"
+              initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.6 }}>
+              <span className="h-eyebrow">Explore Our Foundation</span>
+              <h2 id="scholar-heading" className="h-heading h-heading-center">Annual Merit-Based <em>Scholarship</em></h2>
+              <p className="h-scholar-sub">Empowering Excellence · One Girl at a Time</p>
+              <div className="h-prose h-prose-center">
+                <p>In partnership with the school, we run an inspiring academic challenge for JSS2 students — designed to spark creativity, critical thinking, and healthy competition.</p>
+                <p>Top performers earn the <strong>Impact Backpack</strong> — a carefully curated award filled with essential school supplies. In 2024/2025, only three brilliant students qualified — but with your support, more girls can shine.</p>
+              </div>
+              <button className="h-expand-btn" onClick={() => setIsExpanded(e => !e)} aria-expanded={isExpanded}>
+                {isExpanded ? 'Show Less' : 'Read Full Details'}
+                <motion.span animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }} style={{ display: 'inline-block', lineHeight: 1 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </motion.span>
+              </button>
+
+              <AnimatePresence>
+                {isExpanded && (
+                  <motion.div className="h-scholar-detail"
+                    initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45 }}
+                    style={{ overflow: 'hidden' }}>
+                    <div className="h-scholar-inner">
+                      {[
+                        ['Program Overview', 'The Foundation, in collaboration with the school Principal and a 5-member Scholarship Panel of Judges, will formulate a stimulative academic exercise for students in JSS2. At the conclusion, 10 top finalists are chosen by the Panel in a double-blinded format for an award determined by the Board of Trustees.'],
+                        ['Objective', 'This merit-based scholarship aims to create an environment that fosters quality learning and competitiveness, enabling students to unleash their unique creative abilities. It teaches students to gather good data and assemble it in written form understandable to the reader.'],
+                        ['Award: Impact Backpack', 'The Foundation awards an Impact Backpack including: Backpacks · 80-leaf exercise books · Pens · Pencils · Crayons · Drawing books · Mathematical sets · Rulers.'],
+                        ['Eligibility', 'Only JSS2 students achieving at least 70% in English and Mathematics qualify — fostering healthy competition where everyone can excel.'],
+                      ].map(([title, body]) => (
+                        <div key={title} className="h-scholar-block">
+                          <h4 className="h-scholar-block-title">{title}</h4>
+                          <p className="h-scholar-block-body">{body}</p>
+                        </div>
+                      ))}
+                      <div className="h-scholar-block">
+                        <h4 className="h-scholar-block-title">2024/2025 Academic Year</h4>
+                        <p className="h-scholar-block-body">Eligible students wrote a 300-word essay on "My First Day at School." Regrettably, only three met the criteria.</p>
+                        <div className="h-scholar-winners">
+                          {[[' 1st Place','Batubo Charity Sepiribo'],[' 2nd Place','Davidwest Ibiso'],[' 3rd Place','Batubo Soibaa']].map(([rank, name]) => (
+                            <div key={rank} className="h-scholar-winner">
+                              <span className="h-scholar-rank">{rank}</span>
+                              <span className="h-scholar-name">{name}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <p className="h-scholar-coda">This is what the Foundation hopes to change — more winners, more impact.</p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── CONSTITUTION ── */}
+        <section className="h-section h-section-white" aria-labelledby="constitution-heading">
+          <div className="h-container" style={{ maxWidth: 700, textAlign: 'center' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
+              <span className="h-eyebrow">Governance</span>
+              <h2 id="constitution-heading" className="h-heading h-heading-center">Our Foundation's <em>Constitution</em></h2>
+              <p className="h-subheading" style={{ marginBottom: 32 }}>
+                Transparency and good governance are at the heart of our work. Download the full constitution below, ratified and signed by the Board.
+              </p>
+              <a href="https://res.cloudinary.com/djkrjogje/raw/upload/v1771269676/THE_CONSTITUTIONAL_BYELAWS_OF_KGHS_27.08.2025-2_dsqmy3.docx"
+                download="KGHS-Alumni-Foundation-Constitution.docx" className="h-download-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Download Constitution
+              </a>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ── FOOTER ── */}
+        <footer className="h-footer">
+          <div className="h-footer-inner">
+            <div className="h-footer-grid">
+              <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45 }}>
+                <div className="h-footer-brand">
+                  <img src="https://i.imgur.com/WwrdAkS.png" alt="KGHS" className="h-footer-logo" />
+                  <span className="h-footer-name">KGHS Alumni</span>
+                </div>
+                <p className="h-footer-desc">Connecting generations of Kalabari Girls' High School graduates across the world.</p>
+              </motion.div>
+              <motion.div initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.1 }}>
+                <p className="h-footer-col-label">Get In Touch</p>
+                <p className="h-footer-col-body">Questions, feedback, or just want to say hello?</p>
+                <a href="mailto:alumnuskghs@gmail.com" className="h-footer-email">alumnuskghs@gmail.com</a>
+                <div className="h-footer-social">
+                  <span className="h-footer-social-label">Follow us</span>
+                  <a href="https://www.instagram.com/kghs.alumnae?igsh=OHY1bDEyM2EycHE1"
+                    target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="h-footer-ig">
+                    <FaInstagram aria-hidden="true" />
+                  </a>
+                </div>
+              </motion.div>
+            </div>
+            <div className="h-footer-divider" />
+            <div className="h-footer-bottom">
+              <p>© {new Date().getFullYear()} KGHS Alumni Foundation. All rights reserved.</p>
+              <p className="h-footer-tagline">Building legacies of leadership, one sister at a time.</p>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </>
+  );
+};
+
+// ─── CSS ──────────────────────────────────────────────────────────────
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --rose:       #E8547A;
+  --rose-light: #F9C6D3;
+  --rose-pale:  #FDF1F4;
+  --rose-mid:   #F4D0DA;
+  --cream:      #FFFAF9;
+  --ink:        #2A1A22;
+  --ink-mid:    #6B4558;
+  --ink-soft:   #A07090;
+  --white:      #FFFFFF;
+  --shadow:     0 2px 20px rgba(232,84,122,.10), 0 1px 4px rgba(42,26,34,.06);
+  --shadow-lg:  0 12px 48px rgba(232,84,122,.16), 0 4px 16px rgba(42,26,34,.07);
+}
+
+.h-root { font-family:'DM Sans',sans-serif; color:var(--ink); min-height:100vh; background:var(--cream); }
+
+/* ── Sections ── */
+.h-section { padding:80px 0; }
+@media(min-width:768px){.h-section{padding:108px 0;}}
+.h-section-white  { background:var(--white); }
+.h-section-tinted { background:var(--cream); }
+.h-section-rose   { background:linear-gradient(135deg,var(--rose-pale) 0%,var(--white) 55%,var(--rose-pale) 100%); }
+
+.h-container { max-width:1200px; margin:0 auto; padding:0 20px; }
+.h-section-header { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:52px; text-align:center; }
+
+/* ── Typography ── */
+.h-eyebrow {
+  display:inline-block; font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--rose); background:var(--white); border:1px solid var(--rose-light);
+  border-radius:100px; padding:5px 16px;
+}
+.h-heading {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.9rem,4vw,3.1rem); font-weight:800; line-height:1.15;
+  color:var(--ink); margin:0; letter-spacing:-.01em;
+}
+.h-heading em { font-style:italic; color:var(--rose); }
+.h-heading-center { text-align:center; }
+.h-subheading { font-size:clamp(.9rem,1.8vw,1.05rem); color:var(--ink-mid); font-weight:300; line-height:1.7; max-width:560px; text-align:center; }
+.h-prose { display:flex; flex-direction:column; gap:13px; margin-bottom:20px; }
+.h-prose p { font-size:clamp(.86rem,1.5vw,.98rem); color:var(--ink-mid); line-height:1.8; margin:0; }
+.h-prose-center p { text-align:center; }
+.h-kicker { font-size:.97rem; font-weight:500; color:var(--rose); line-height:1.65; border-left:3px solid var(--rose-light); padding-left:16px; }
+.h-blockquote { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.05rem,2vw,1.3rem); color:var(--rose); line-height:1.55; border-left:3px solid var(--rose-light); padding-left:20px; margin:24px 0 0; }
+.h-empty-msg { text-align:center; color:var(--ink-soft); font-size:1rem; padding:48px 0; }
+
+/* ── Two-column grid ── */
+.h-two-col { display:grid; grid-template-columns:1fr; gap:44px; align-items:center; }
+@media(min-width:768px){
+  .h-two-col{ grid-template-columns:1fr 1fr; gap:68px; }
+  .h-two-col-rev{ direction:rtl; }
+  .h-two-col-rev > *{ direction:ltr; }
+  .h-md-order-1{ order:1; } .h-md-order-2{ order:2; }
+}
+.h-order-1{order:1;} .h-order-2{order:2;}
+
+/* ── Image ── */
+.h-img-frame { position:relative; }
+.h-fade-wrap { position:relative; border-radius:22px; overflow:hidden; }
+.h-img-skel {
+  position:absolute; inset:0; border-radius:22px;
+  background:linear-gradient(90deg,var(--rose-pale) 25%,var(--rose-mid) 50%,var(--rose-pale) 75%);
+  background-size:400px 100%; animation:shimmer 1.4s infinite;
+}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+.h-img { width:100%; height:300px; object-fit:cover; border-radius:22px; display:block;
+  box-shadow:0 20px 56px rgba(232,84,122,.14),0 4px 12px rgba(42,26,34,.07); }
+@media(min-width:768px){.h-img{height:420px;}}
+.h-img-fade{opacity:0;transition:opacity .6s ease;}
+.h-img-vis{opacity:1;}
+.h-img-accent { position:absolute; bottom:-14px; right:-14px; width:55%; height:55%; border-radius:22px; background:var(--rose-light); z-index:-1; }
+.h-img-accent-rose { background:var(--rose-mid); }
+
+/* ── Hero ── */
+.h-hero { position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; text-align:center; }
+.h-hero-bg { position:absolute; inset:-10%; background-size:cover; background-position:center; }
+.h-hero-overlay { position:absolute; inset:0; background:rgba(42,26,34,.44); }
+.h-hero-float { animation: heroFloat 9s ease-in-out infinite; }
+@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.h-hero-content { position:relative; z-index:2; max-width:720px; padding:0 24px; }
+.h-hero-eyebrow { display:inline-block; font-size:11px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.75); background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.3); border-radius:100px; padding:5px 16px; margin-bottom:20px; backdrop-filter:blur(8px); }
+.h-hero-title { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,7vw,5rem); font-weight:800; color:#fff; line-height:1.1; margin:0 0 20px; letter-spacing:-.01em; text-shadow:0 2px 20px rgba(42,26,34,.3); }
+.h-hero-title em { font-style:italic; color:var(--rose-light); }
+.h-hero-sub { font-size:clamp(1rem,2.5vw,1.35rem); color:rgba(255,255,255,.8); font-weight:300; letter-spacing:.12em; margin:0 0 36px; }
+.h-hero-btn { display:inline-flex; align-items:center; gap:8px; background:var(--rose); color:#fff; border:none; border-radius:100px; padding:15px 36px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; box-shadow:0 8px 32px rgba(232,84,122,.45); transition:background .2s; letter-spacing:.02em; text-decoration:none; }
+.h-hero-btn:hover { background:#d43f6a; }
+.h-hero-scroll { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); z-index:2; color:rgba(255,255,255,.55); }
+
+/* ── News ── */
+.h-news-wrap { max-width:760px; margin:0 auto; }
+.h-news-card { background:var(--white); border:1.5px solid var(--rose-light); border-radius:20px; box-shadow:var(--shadow); overflow:hidden; }
+.h-news-body { padding:32px 32px 20px; }
+.h-news-title { font-family:'Playfair Display',serif; font-size:clamp(1.15rem,2.5vw,1.5rem); font-weight:700; color:var(--ink); margin:0 0 14px; line-height:1.35; }
+.h-news-preview { font-size:.9rem; color:var(--ink-mid); line-height:1.75; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden; margin:0; }
+.h-news-footer { padding:16px 32px; border-top:1px solid var(--rose-pale); display:flex; align-items:center; justify-content:space-between; background:var(--rose-pale); flex-wrap:wrap; gap:8px; }
+.h-news-meta { font-size:.78rem; color:var(--ink-soft); }
+.h-news-link { display:inline-flex; align-items:center; gap:6px; font-size:.82rem; font-weight:600; color:var(--rose); text-decoration:none; transition:color .18s; }
+.h-news-link:hover { color:#c03060; }
+.h-news-nav { display:flex; align-items:center; justify-content:center; gap:16px; margin-top:20px; }
+.h-news-arrow { width:36px; height:36px; border-radius:50%; background:var(--white); border:1.5px solid var(--rose-light); color:var(--rose); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .18s; }
+.h-news-arrow:hover { background:var(--rose-pale); }
+
+/* ── Events ── */
+.h-events-wrap { position:relative; }
+.h-events-grid { display:grid; grid-template-columns:1fr; gap:20px; }
+@media(min-width:700px){.h-events-grid{grid-template-columns:repeat(3,1fr);}}
+.h-event-card { border-radius:20px; background:var(--white); border:1.5px solid; overflow:hidden; box-shadow:var(--shadow); transition:box-shadow .3s,transform .3s; cursor:pointer; display:flex; flex-direction:column; }
+.h-event-band { position:relative; height:80px; display:flex; align-items:center; justify-content:center; }
+.h-event-band-bar { position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; }
+.h-event-type-pill { font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; padding:4px 12px; border-radius:100px; }
+.h-event-body { padding:18px 20px 12px; flex:1; }
+.h-event-date { font-size:.72rem; font-weight:600; margin:0 0 8px; }
+.h-event-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--ink); margin:0 0 8px; line-height:1.35; }
+.h-event-desc { font-size:.78rem; color:var(--ink-soft); line-height:1.6; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:0 0 8px; }
+.h-event-loc { font-size:.72rem; color:var(--ink-soft); display:flex; align-items:center; gap:4px; margin:0; font-weight:500; }
+.h-event-footer { padding:10px 20px; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; text-align:center; }
+.h-arrow { position:absolute; top:50%; transform:translateY(-50%); width:38px; height:38px; border-radius:50%; background:var(--white); border:1.5px solid var(--rose-light); color:var(--rose); display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--shadow); z-index:5; transition:background .18s; }
+@media(min-width:700px){.h-arrow{display:flex;}}
+.h-arrow:hover{background:var(--rose-pale);}
+.h-arrow-l{left:-20px;} .h-arrow-r{right:-20px;}
+
+/* ── Dots (shared) ── */
+.h-dots { display:flex; justify-content:center; align-items:center; gap:6px; margin-top:20px; }
+.h-dot { width:7px; height:7px; border-radius:100px; background:var(--rose-light); border:none; cursor:pointer; padding:0; transition:width .25s,background .25s; }
+.h-dot-active { width:22px; background:var(--rose); }
+
+/* ── Memory slider ── */
+.h-slider { position:relative; border-radius:22px; overflow:hidden; background:var(--ink); aspect-ratio:16/9; box-shadow:0 28px 72px rgba(42,26,34,.18); }
+@media(max-width:600px){.h-slider{aspect-ratio:4/3;}}
+.h-slide { position:absolute; inset:0; opacity:0; transition:opacity .75s ease; pointer-events:none; }
+.h-slide-on { opacity:1; pointer-events:auto; }
+.h-slide-img { width:100%; height:100%; object-fit:cover; display:block; }
+.h-slide-cap { position:absolute; bottom:48px; left:20px; font-size:.72rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.72); background:rgba(42,26,34,.5); backdrop-filter:blur(8px); padding:5px 14px; border-radius:100px; }
+.h-slider-arrow { position:absolute; top:50%; transform:translateY(-50%); z-index:10; width:42px; height:42px; border-radius:50%; background:rgba(255,250,249,.9); border:none; cursor:pointer; color:var(--rose); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 20px rgba(42,26,34,.2); transition:background .18s,transform .18s; }
+.h-slider-arrow:hover{background:var(--white);transform:translateY(-50%) scale(1.07);}
+.h-slider-arrow-l{left:14px;} .h-slider-arrow-r{right:14px;}
+.h-slider-dots { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:10; }
+.h-slider-dot { width:6px; height:6px; border-radius:100px; background:rgba(255,255,255,.42); border:none; cursor:pointer; padding:0; transition:width .25s,background .25s; }
+.h-slider-dot-on { width:20px; background:#fff; }
+.h-slider-prog { position:absolute; bottom:0; left:0; right:0; height:3px; background:rgba(255,255,255,.15); z-index:10; }
+.h-slider-prog-bar { height:100%; background:var(--rose); animation:prog linear forwards; width:0; }
+@keyframes prog{from{width:0}to{width:100%}}
+
+/* ── Values ── */
+.h-values { list-style:none; padding:0; margin:16px 0 0; display:flex; flex-direction:column; gap:18px; }
+.h-value-item { display:flex; align-items:flex-start; gap:14px; }
+.h-value-icon { width:42px; height:42px; border-radius:11px; background:var(--rose-pale); border:1px solid var(--rose-light); display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; margin-top:2px; }
+.h-value-title { display:block; font-size:.97rem; font-weight:600; color:var(--ink); margin-bottom:3px; }
+.h-value-body { font-size:.84rem; color:var(--ink-mid); line-height:1.7; margin:0; }
+
+/* ── Accordions ── */
+.h-accordions { display:flex; flex-direction:column; gap:4px; }
+.h-accordion { border:1.5px solid var(--rose-light); border-radius:14px; overflow:hidden; background:var(--white); }
+.h-accordion + .h-accordion { margin-top:8px; }
+.h-accordion-btn { width:100%; background:none; border:none; padding:18px 22px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; text-align:left; gap:12px; }
+.h-accordion-btn:hover { background:var(--rose-pale); }
+.h-accordion-title { font-family:'Playfair Display',serif; font-size:clamp(1rem,2vw,1.2rem); font-weight:700; color:var(--ink); }
+.h-accordion-icon { color:var(--rose); flex-shrink:0; transition:transform .28s; }
+.h-accordion-icon-open { transform:rotate(180deg); }
+.h-accordion-body { border-top:1px solid var(--rose-pale); }
+.h-accordion-inner { padding:20px 24px 24px; }
+.h-acc-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.h-acc-list li { font-size:.9rem; color:var(--ink-mid); padding-left:18px; position:relative; line-height:1.6; }
+.h-acc-list li::before { content:'·'; position:absolute; left:4px; color:var(--rose); font-weight:700; font-size:1.1rem; top:-1px; }
+.h-acc-roles { display:flex; flex-direction:column; gap:14px; }
+.h-acc-role { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.h-acc-role-label { font-size:.78rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--rose); background:var(--rose-pale); border:1px solid var(--rose-light); border-radius:100px; padding:3px 12px; flex-shrink:0; }
+.h-acc-role-name { font-size:.92rem; color:var(--ink-mid); }
+
+/* ── Org chart ── */
+.h-org-frame { max-width:800px; margin:0 auto; border-radius:18px; overflow:hidden; box-shadow:var(--shadow-lg); border:1.5px solid var(--rose-light); }
+.h-org-img { width:100%; height:auto; object-fit:contain; display:block; }
+.h-org-caption { text-align:center; font-size:.82rem; color:var(--ink-soft); font-style:italic; margin-top:14px; }
+
+/* ── Stats ── */
+.h-stats-grid { display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:32px; }
+@media(min-width:600px){.h-stats-grid{grid-template-columns:repeat(3,1fr);}}
+.h-stat-card { background:var(--white); border:1.5px solid var(--rose-light); border-radius:20px; padding:36px 24px; text-align:center; box-shadow:var(--shadow); }
+.h-stat-val { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; color:var(--rose); margin:0 0 8px; line-height:1.1; }
+.h-stat-label { font-size:.88rem; color:var(--ink-mid); font-weight:500; margin:0; }
+.h-stat-skeleton { background:linear-gradient(90deg,var(--rose-pale) 25%,var(--rose-mid) 50%,var(--rose-pale) 75%); background-size:400px 100%; animation:shimmer 1.4s infinite; border-radius:20px; height:140px; }
+.h-progress-wrap { max-width:760px; margin:0 auto; }
+.h-progress-track { background:var(--rose-pale); border-radius:100px; height:14px; overflow:hidden; box-shadow:inset 0 2px 6px rgba(232,84,122,.12); }
+.h-progress-fill { height:100%; background:linear-gradient(90deg,var(--rose),#d43f6a); border-radius:100px; }
+.h-progress-labels { display:flex; justify-content:space-between; margin-top:10px; font-size:.8rem; color:var(--ink-soft); }
+
+/* ── Donate card ── */
+.h-donate-card { text-align:center; background:var(--white); border:1.5px solid var(--rose-light); border-radius:24px; padding:48px 32px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; align-items:center; gap:20px; }
+.h-donate-body { font-size:clamp(.9rem,1.8vw,1.05rem); color:var(--ink-mid); max-width:520px; line-height:1.75; margin:0; }
+.h-donate-note { font-size:.78rem; color:var(--ink-soft); margin:0; }
+
+/* ── Scholarship ── */
+.h-scholar-card { background:var(--white); border:1.5px solid var(--rose-light); border-radius:24px; overflow:hidden; box-shadow:var(--shadow-lg); padding:40px 32px; text-align:center; }
+.h-scholar-sub { font-size:.95rem; font-weight:500; color:var(--rose); letter-spacing:.04em; margin:0; }
+.h-expand-btn { display:inline-flex; align-items:center; gap:8px; margin-top:16px; background:var(--rose); color:#fff; border:none; border-radius:100px; padding:12px 28px; font-family:'DM Sans',sans-serif; font-size:.88rem; font-weight:600; cursor:pointer; box-shadow:0 4px 20px rgba(232,84,122,.32); transition:background .2s; }
+.h-expand-btn:hover{background:#d43f6a;}
+.h-scholar-detail { border-top:1px solid var(--rose-pale); margin-top:28px; }
+.h-scholar-inner { padding:28px 0 4px; display:flex; flex-direction:column; gap:24px; text-align:left; }
+.h-scholar-block {}
+.h-scholar-block-title { font-family:'Playfair Display',serif; font-size:1.05rem; font-weight:700; color:var(--rose); margin:0 0 8px; }
+.h-scholar-block-body { font-size:.88rem; color:var(--ink-mid); line-height:1.75; margin:0; }
+.h-scholar-winners { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+@media(max-width:500px){.h-scholar-winners{grid-template-columns:1fr;}}
+.h-scholar-winner { background:var(--rose-pale); border:1px solid var(--rose-light); border-radius:14px; padding:16px; text-align:center; }
+.h-scholar-rank { display:block; font-size:.82rem; font-weight:700; color:var(--rose); margin-bottom:6px; }
+.h-scholar-name { font-size:.88rem; color:var(--ink-mid); }
+.h-scholar-coda { text-align:center; font-style:italic; font-size:.88rem; color:var(--ink-soft); margin:0; }
+
+/* ── Constitution ── */
+.h-download-btn { display:inline-flex; align-items:center; gap:9px; background:var(--rose); color:#fff; border-radius:100px; padding:14px 28px; font-family:'DM Sans',sans-serif; font-size:.9rem; font-weight:600; text-decoration:none; box-shadow:0 4px 20px rgba(232,84,122,.32); transition:background .2s; }
+.h-download-btn:hover{background:#d43f6a;}
+
+/* ── Footer ── */
+.h-footer { background:linear-gradient(to top,rgba(249,198,211,.22) 0%,rgba(249,198,211,.06) 60%,transparent 100%); border-top:1px solid rgba(249,198,211,.35); padding:clamp(40px,5vw,60px) clamp(16px,4vw,28px) clamp(20px,3vw,28px); }
+.h-footer-inner { max-width:1100px; margin:0 auto; }
+.h-footer-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(24px,4vw,44px); margin-bottom:32px; }
+.h-footer-brand { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.h-footer-logo { width:38px; height:38px; border-radius:50%; object-fit:contain; border:2px solid var(--rose-light); background:var(--white); padding:2px; }
+.h-footer-name { font-family:'Playfair Display',serif; font-weight:700; font-size:1.05rem; color:var(--rose); }
+.h-footer-desc { font-size:.83rem; color:var(--ink-soft); line-height:1.65; margin:0; max-width:220px; }
+.h-footer-col-label { font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 10px; }
+.h-footer-col-body { font-size:.83rem; color:var(--ink-soft); line-height:1.6; margin:0 0 8px; }
+.h-footer-email { font-size:.88rem; font-weight:700; color:var(--rose); text-decoration:none; border-bottom:1px solid var(--rose-light); padding-bottom:1px; }
+.h-footer-email:hover { border-color:var(--rose); }
+.h-footer-social { display:flex; align-items:center; gap:10px; margin-top:14px; }
+.h-footer-social-label { font-size:.72rem; color:var(--ink-soft); font-weight:500; }
+.h-footer-ig { color:var(--rose); font-size:1.2rem; display:flex; align-items:center; transition:color .18s; text-decoration:none; }
+.h-footer-ig:hover { color:#c03060; }
+.h-footer-divider { height:1px; background:rgba(249,198,211,.3); margin:0 0 18px; }
+.h-footer-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+.h-footer-bottom p { font-size:.76rem; color:var(--ink-soft); margin:0; }
+.h-footer-tagline { font-style:italic; }
+`;
 
 export default Home;
