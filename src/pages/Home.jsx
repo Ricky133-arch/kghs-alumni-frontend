@@ -708,17 +708,17 @@ const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --rose:       #E8547A;
-  --rose-light: #F9C6D3;
-  --rose-pale:  #FDF1F4;
-  --rose-mid:   #F4D0DA;
-  --cream:      #FFFAF9;
+  --rose:       #FF69B4;
+  --rose-light: #FFC0CB;
+  --rose-pale:  #FFF0F5;
+  --rose-mid:   #FFD6E7;
+  --cream:      #FFFFFF;
   --ink:        #2A1A22;
   --ink-mid:    #6B4558;
   --ink-soft:   #A07090;
   --white:      #FFFFFF;
-  --shadow:     0 2px 20px rgba(232,84,122,.10), 0 1px 4px rgba(42,26,34,.06);
-  --shadow-lg:  0 12px 48px rgba(232,84,122,.16), 0 4px 16px rgba(42,26,34,.07);
+  --shadow:     0 2px 20px rgba(255,105,180,.10), 0 1px 4px rgba(42,26,34,.06);
+  --shadow-lg:  0 12px 48px rgba(255,105,180,.16), 0 4px 16px rgba(42,26,34,.07);
 }
 
 .h-root { font-family:'DM Sans',sans-serif; color:var(--ink); min-height:100vh; background:var(--cream); }
@@ -727,8 +727,8 @@ const CSS = `
 .h-section { padding:80px 0; }
 @media(min-width:768px){.h-section{padding:108px 0;}}
 .h-section-white  { background:var(--white); }
-.h-section-tinted { background:var(--cream); }
-.h-section-rose   { background:linear-gradient(135deg,var(--rose-pale) 0%,var(--white) 55%,var(--rose-pale) 100%); }
+.h-section-tinted { background:#FFF0F5; }
+.h-section-rose   { background:linear-gradient(135deg,#FFF0F5 0%,#FFFFFF 55%,#FFF0F5 100%); }); }
 
 .h-container { max-width:1200px; margin:0 auto; padding:0 20px; }
 .h-section-header { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:52px; text-align:center; }
