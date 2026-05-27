@@ -728,7 +728,7 @@ const CSS = `
 @media(min-width:768px){.h-section{padding:108px 0;}}
 .h-section-white  { background:var(--white); }
 .h-section-tinted { background:#FFF0F5; }
-.h-section-rose   { background:linear-gradient(135deg,#FFF0F5 0%,#FFFFFF 55%,#FFF0F5 100%); }); }
+.h-section-rose   { background:linear-gradient(135deg,#FFF0F5 0%,#FFFFFF 55%,#FFF0F5 100%); }
 
 .h-container { max-width:1200px; margin:0 auto; padding:0 20px; }
 .h-section-header { display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:52px; text-align:center; }
