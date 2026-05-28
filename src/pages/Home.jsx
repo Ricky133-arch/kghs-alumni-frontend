@@ -328,10 +328,15 @@ const Home = () => {
                       <span className="h-news-meta">
                         By {news[newsIdx]?.author?.name || 'Admin'} · {new Date(news[newsIdx]?.date).toLocaleDateString()}
                       </span>
-                      <Link to={`/news/${news[newsIdx]?._id}`} className="h-news-link">
-                        Read Full Story
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                      </Link>
+                     <Link
+  to={localStorage.getItem('token')
+    ? `/news/${news[newsIdx]?._id}`
+    : `/login?redirect=/news/${news[newsIdx]?._id}`}
+  className="h-news-link"
+>
+  Read Full Story
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+</Link>
                     </div>
                   </motion.div>
                 </AnimatePresence>
