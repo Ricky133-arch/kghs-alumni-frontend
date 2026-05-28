@@ -1,74 +1,57 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 // ─── Cloudinary URL helpers ───────────────────────────────────────────────────
-// Inserts Cloudinary transformation params into an existing upload URL.
-// e.g. .../image/upload/v123/kghs/photo.jpg
-//  →   .../image/upload/w_400,q_auto,f_auto/v123/kghs/photo.jpg
 const cloudinaryTransform = (url, params) => {
   if (!url || !url.includes('/upload/')) return url;
   return url.replace('/upload/', `/upload/${params}/`);
 };
-
-// Thumbnail: small, auto quality, WebP/AVIF auto format
 const thumbUrl = (url) => cloudinaryTransform(url, 'w_600,q_auto:low,f_auto');
-
-// Full lightbox: larger but still optimised
-const fullUrl = (url) => cloudinaryTransform(url, 'w_1200,q_auto,f_auto');
-
-// Tiny blurred placeholder (10px wide, very fast)
+const fullUrl  = (url) => cloudinaryTransform(url, 'w_1200,q_auto,f_auto');
 const placeholderUrl = (url) => cloudinaryTransform(url, 'w_20,q_10,e_blur:800,f_auto');
 
-// ─── Hook: window width ───────────────────────────────────────────────────────
+// ─── Hook: window width (debounced, passive) ──────────────────────────────────
 const useWindowWidth = () => {
   const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   useEffect(() => {
     let raf;
-    const handler = () => { clearTimeout(raf); raf = setTimeout(() => setWidth(window.innerWidth), 100); };
-    window.addEventListener('resize', handler);
-    return () => { window.removeEventListener('resize', handler); clearTimeout(raf); };
+    const handler = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => setWidth(window.innerWidth));
+    };
+    window.addEventListener('resize', handler, { passive: true });
+    return () => { window.removeEventListener('resize', handler); cancelAnimationFrame(raf); };
   }, []);
   return width;
 };
 
-// ─── Progressive image: blurred placeholder → full ───────────────────────────
-const ProgressiveImg = ({ src, alt, style, className }) => {
+// ─── Progressive image ────────────────────────────────────────────────────────
+const ProgressiveImg = memo(({ src, alt }) => {
   const [loaded, setLoaded] = useState(false);
-  const thumb = thumbUrl(src);
-  const placeholder = placeholderUrl(src);
-
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', ...style }}>
-      {/* Blurred tiny placeholder — loads almost instantly */}
+    // will-change: transform puts each image on its own compositor layer
+    <div style={{ position: 'relative', overflow: 'hidden', willChange: 'transform' }}>
       <img
-        src={placeholder}
-        alt=""
-        aria-hidden="true"
+        src={placeholderUrl(src)} alt="" aria-hidden="true"
         style={{
           position: 'absolute', inset: 0, width: '100%', height: '100%',
           objectFit: 'cover', filter: 'blur(12px)', transform: 'scale(1.05)',
-          transition: 'opacity 0.4s',
-          opacity: loaded ? 0 : 1,
+          opacity: loaded ? 0 : 1, transition: 'opacity 0.4s',
         }}
       />
-      {/* Full thumbnail */}
       <img
-        src={thumb}
-        alt={alt}
-        loading="lazy"
-        decoding="async"
+        src={thumbUrl(src)} alt={alt}
+        loading="lazy" decoding="async"
         onLoad={() => setLoaded(true)}
-        className={className}
         style={{
           display: 'block', width: '100%', objectFit: 'cover',
-          opacity: loaded ? 1 : 0,
-          transition: 'opacity 0.4s',
+          opacity: loaded ? 1 : 0, transition: 'opacity 0.4s',
         }}
       />
     </div>
   );
-};
+});
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
 const Lightbox = ({ image, onClose, onPrev, onNext, total, current }) => {
@@ -94,7 +77,8 @@ const Lightbox = ({ image, onClose, onPrev, onNext, total, current }) => {
         style={{
           position: 'fixed', inset: 0, zIndex: 9999,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(255,240,245,0.94)', backdropFilter: 'blur(18px)',
+          // solid-ish bg instead of backdrop-filter blur — much cheaper to composite
+          background: 'rgba(255,235,242,0.97)',
           padding: 16,
         }}
         onClick={onClose}
@@ -125,7 +109,6 @@ const Lightbox = ({ image, onClose, onPrev, onNext, total, current }) => {
           style={{ width: '100%', maxWidth: 720, position: 'relative' }}
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Lightbox shows full-res optimised image */}
           <img
             src={fullUrl(image.url)}
             alt={image.caption || 'KGHS Memory'}
@@ -204,7 +187,7 @@ const UploadModal = ({ onClose, onSuccess }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', background: 'rgba(255,220,235,0.7)', backdropFilter: 'blur(12px)' }}
+      style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', background: 'rgba(255,220,235,0.7)' }}
       onClick={onClose}
     >
       <motion.div
@@ -266,65 +249,72 @@ const UploadModal = ({ onClose, onSuccess }) => {
   );
 };
 
-// ─── Gallery Card ─────────────────────────────────────────────────────────────
-const GalleryCard = ({ img, onSelect, isMobile }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    viewport={{ once: true, amount: 0.05 }}
-    transition={{ duration: 0.4, delay: Math.min(img.origIndex * 0.025, 0.25) }}
-    whileHover={!isMobile ? { y: -6, boxShadow: '0 20px 40px rgba(255,150,180,0.25)' } : {}}
-    onClick={() => onSelect(img.origIndex)}
-    className="bg-white/90 border border-primary/20"
-    style={{ position: 'relative', cursor: 'pointer', borderRadius: 20, overflow: 'hidden',
-      // GPU-composite only — no backdrop-blur on cards (that's a big scroll perf killer)
-      transform: 'translateZ(0)',
-    }}
-  >
-    <ProgressiveImg
-      src={img.url}
-      alt={img.caption || 'KGHS Memory'}
-    />
+// ─── Gallery Card — no whileInView, no box-shadow animation ──────────────────
+const GalleryCard = memo(({ img, onSelect, isMobile }) => {
+  const [hovered, setHovered] = useState(false);
 
-    {isMobile ? (
-      <div style={{ padding: '10px 14px 12px' }}>
-        {img.caption && (
-          <p style={{ margin: '0 0 2px', fontSize: '0.9rem', fontStyle: 'italic', color: 'rgba(100,30,60,0.8)', lineHeight: 1.4 }}>
-            "{img.caption}"
+  return (
+    <div
+      onClick={() => onSelect(img.origIndex)}
+      onMouseEnter={() => !isMobile && setHovered(true)}
+      onMouseLeave={() => !isMobile && setHovered(false)}
+      className="bg-white/90 border border-primary/20"
+      style={{
+        position: 'relative', cursor: 'pointer', borderRadius: 20, overflow: 'hidden',
+        // CSS transition instead of framer-motion — runs on compositor, zero JS cost
+        transform: hovered ? 'translateY(-6px)' : 'translateY(0)',
+        // box-shadow via filter:drop-shadow keeps it on GPU layer
+        filter: hovered
+          ? 'drop-shadow(0 16px 32px rgba(255,150,180,0.28))'
+          : 'drop-shadow(0 2px 8px rgba(255,150,180,0.08))',
+        transition: 'transform 0.22s ease, filter 0.22s ease',
+        willChange: 'transform',
+      }}
+    >
+      <ProgressiveImg src={img.url} alt={img.caption || 'KGHS Memory'} />
+
+      {isMobile ? (
+        <div style={{ padding: '10px 14px 12px' }}>
+          {img.caption && (
+            <p style={{ margin: '0 0 2px', fontSize: '0.9rem', fontStyle: 'italic', color: 'rgba(100,30,60,0.8)', lineHeight: 1.4 }}>
+              "{img.caption}"
+            </p>
+          )}
+          <p style={{ margin: 0, fontSize: '0.72rem', color: 'rgba(160,60,90,0.55)', letterSpacing: '0.04em' }}>
+            {img.uploader?.name || 'A Sister'} · {new Date(img.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
           </p>
-        )}
-        <p style={{ margin: 0, fontSize: '0.72rem', color: 'rgba(160,60,90,0.55)', letterSpacing: '0.04em' }}>
-          {img.uploader?.name || 'A Sister'} · {new Date(img.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
-        </p>
-      </div>
-    ) : (
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.2 }}
-        style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(255,80,140,0.75) 0%, rgba(255,150,180,0.1) 55%, transparent 100%)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 16 }}
-      >
-        {img.caption && (
-          <p style={{ color: '#fff', margin: '0 0 3px', fontSize: '0.95rem', fontStyle: 'italic', fontWeight: 500, lineHeight: 1.3, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
-            "{img.caption}"
+        </div>
+      ) : (
+        <div
+          style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to top, rgba(255,80,140,0.75) 0%, rgba(255,150,180,0.1) 55%, transparent 100%)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 16,
+            opacity: hovered ? 1 : 0,
+            transition: 'opacity 0.2s ease',
+          }}
+        >
+          {img.caption && (
+            <p style={{ color: '#fff', margin: '0 0 3px', fontSize: '0.95rem', fontStyle: 'italic', fontWeight: 500, lineHeight: 1.3, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
+              "{img.caption}"
+            </p>
+          )}
+          <p style={{ color: 'rgba(255,255,255,0.88)', margin: 0, fontSize: '0.68rem', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 500 }}>
+            {img.uploader?.name || 'A Sister'} · {new Date(img.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
           </p>
-        )}
-        <p style={{ color: 'rgba(255,255,255,0.88)', margin: 0, fontSize: '0.68rem', letterSpacing: '0.06em', textTransform: 'uppercase', fontWeight: 500 }}>
-          {img.uploader?.name || 'A Sister'} · {new Date(img.date).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
-        </p>
-      </motion.div>
-    )}
-  </motion.div>
-);
+        </div>
+      )}
+    </div>
+  );
+});
 
-// ─── Responsive Masonry ───────────────────────────────────────────────────────
-const ResponsiveMasonry = ({ images, onSelect }) => {
-  const width = useWindowWidth();
-  const colCount = width < 480 ? 1 : width < 768 ? 2 : 3;
-  const isMobile = width < 768;
-
-  const cols = Array.from({ length: colCount }, () => []);
-  images.forEach((img, i) => cols[i % colCount].push({ ...img, origIndex: i }));
+// ─── Masonry — memoized so it only re-slices when images/cols change ──────────
+const ResponsiveMasonry = memo(({ images, onSelect, colCount, isMobile }) => {
+  const cols = useMemo(() => {
+    const c = Array.from({ length: colCount }, () => []);
+    images.forEach((img, i) => c[i % colCount].push({ ...img, origIndex: i }));
+    return c;
+  }, [images, colCount]);
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${colCount}, 1fr)`, gap: isMobile ? 12 : 16 }}>
@@ -337,7 +327,7 @@ const ResponsiveMasonry = ({ images, onSelect }) => {
       ))}
     </div>
   );
-};
+});
 
 // ─── Main Gallery ─────────────────────────────────────────────────────────────
 const Gallery = () => {
@@ -348,6 +338,7 @@ const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const width = useWindowWidth();
   const isMobile = width < 768;
+  const colCount = width < 480 ? 1 : width < 768 ? 2 : 3;
 
   const fetchImages = useCallback(() => {
     setLoading(true);
@@ -362,8 +353,15 @@ const Gallery = () => {
 
   useEffect(() => { fetchImages(); }, [fetchImages]);
 
-  const years = [...new Set(images.map(img => new Date(img.date).getFullYear()))].sort((a, b) => b - a);
-  const filtered = filter === 'all' ? images : images.filter(img => new Date(img.date).getFullYear() === Number(filter));
+  const years = useMemo(
+    () => [...new Set(images.map(img => new Date(img.date).getFullYear()))].sort((a, b) => b - a),
+    [images]
+  );
+  const filtered = useMemo(
+    () => filter === 'all' ? images : images.filter(img => new Date(img.date).getFullYear() === Number(filter)),
+    [images, filter]
+  );
+
   const isLoggedIn = !!localStorage.getItem('token');
 
   return (
@@ -420,7 +418,7 @@ const Gallery = () => {
 
           {/* Loading skeletons */}
           {loading && (
-            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${isMobile ? (width < 480 ? 1 : 2) : 3}, 1fr)`, gap: isMobile ? 12 : 16, marginBottom: 40 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: `repeat(${colCount}, 1fr)`, gap: isMobile ? 12 : 16, marginBottom: 40 }}>
               {Array.from({ length: isMobile ? 4 : 9 }).map((_, i) => (
                 <div key={i} style={{ borderRadius: 20, height: i % 3 === 0 ? 200 : i % 3 === 1 ? 160 : 240, background: 'linear-gradient(90deg,rgba(255,192,203,0.15) 25%,rgba(255,192,203,0.35) 50%,rgba(255,192,203,0.15) 75%)', backgroundSize: '500px 100%', animation: 'kghs-shimmer 1.5s infinite' }} />
               ))}
@@ -444,7 +442,12 @@ const Gallery = () => {
           {/* Masonry */}
           {!loading && filtered.length > 0 && (
             <div style={{ marginBottom: isMobile ? 36 : 56 }}>
-              <ResponsiveMasonry images={filtered} onSelect={(i) => setLightboxIndex(i)} />
+              <ResponsiveMasonry
+                images={filtered}
+                onSelect={(i) => setLightboxIndex(i)}
+                colCount={colCount}
+                isMobile={isMobile}
+              />
             </div>
           )}
 
