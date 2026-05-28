@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 const Spinner = () => (
   <span style={{ display: 'inline-block', width: 16, height: 16, border: '2px solid rgba(255,255,255,0.35)', borderTopColor: '#fff', borderRadius: '50%', animation: 'lgn-spin 0.8s linear infinite', verticalAlign: 'middle', marginRight: 8 }} />
@@ -21,6 +21,8 @@ const Login = () => {
   const [forgotLoading, setForgotLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = new URLSearchParams(location.search).get('redirect') || '/profile';
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ const Login = () => {
       localStorage.setItem('token',    res.data.token);
       localStorage.setItem('role',     res.data.user.role || 'alumni');
       localStorage.setItem('userName', res.data.user.name || '');
-      navigate('/profile');
+      navigate(redirectTo);
     } catch (err) {
       setLoading(false);
       if (err.response?.status === 403) {
