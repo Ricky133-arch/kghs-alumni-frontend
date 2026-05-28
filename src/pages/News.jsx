@@ -32,13 +32,13 @@ const NewsGallery = ({ images, title, onLightbox }) => {
   const count = images.length;
 
   if (count === 1) return (
-    <div style={{ width: '100%', height: 240, cursor: 'pointer' }} onClick={() => onLightbox(images, 0)}>
+    <div style={{ width: '100%', height: 240, cursor: 'pointer', overflow: 'hidden', display: 'block', flexShrink: 0 }} onClick={() => onLightbox(images, 0)}>
       <ProgressiveImg src={images[0]} alt={title} />
     </div>
   );
 
   if (count === 2) return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, height: 220, cursor: 'pointer' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, height: 220, cursor: 'pointer', overflow: 'hidden', flexShrink: 0 }}>
       {images.map((img, i) => (
         <div key={i} style={{ overflow: 'hidden', height: '100%' }} onClick={() => onLightbox(images, i)}>
           <ProgressiveImg src={img} alt={`${title} ${i + 1}`} />
@@ -49,7 +49,7 @@ const NewsGallery = ({ images, title, onLightbox }) => {
 
   // 3 images: big left, two stacked right
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, height: 240, cursor: 'pointer' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, height: 240, cursor: 'pointer', overflow: 'hidden', flexShrink: 0 }}>
       <div style={{ overflow: 'hidden', height: '100%' }} onClick={() => onLightbox(images, 0)}>
         <ProgressiveImg src={images[0]} alt={`${title} 1`} />
       </div>
@@ -193,7 +193,7 @@ const Toast = ({ msg, type }) => (
 
 // ─── Card ─────────────────────────────────────────────────────────────
 const Card = ({ children, style }) => (
-  <div style={{ background: '#fff', borderRadius: 24, border: '1px solid rgba(255,192,203,0.3)', boxShadow: '0 4px 24px rgba(255,150,180,0.08)', overflow: 'hidden', ...style }}>
+  <div style={{ background: '#fff', borderRadius: 24, border: '1px solid rgba(255,192,203,0.3)', boxShadow: '0 4px 24px rgba(255,150,180,0.08)', overflow: 'hidden', display: 'flex', flexDirection: 'column', ...style }}>
     {children}
   </div>
 );
@@ -387,15 +387,22 @@ const News = () => {
                           style={{ transform: 'translateZ(0)' }}
                         >
                           <Card>
-                            {/* Photo gallery or date banner */}
+                            {/* Photo gallery + date, or just date banner */}
                             {images.length > 0 ? (
-                              <NewsGallery
-                                images={images}
-                                title={item.title}
-                                onLightbox={(imgs, idx) => setLightbox({ images: imgs, idx })}
-                              />
+                              <div style={{ flexShrink: 0 }}>
+                                <NewsGallery
+                                  images={images}
+                                  title={item.title}
+                                  onLightbox={(imgs, idx) => setLightbox({ images: imgs, idx })}
+                                />
+                                <div style={{ background: 'linear-gradient(135deg,rgba(255,192,203,0.25),rgba(255,150,180,0.12))', padding: isMobile ? '10px 18px' : '12px 26px' }}>
+                                  <p className="text-primary" style={{ margin: 0, fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                                    {new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                                  </p>
+                                </div>
+                              </div>
                             ) : (
-                              <div style={{ background: 'linear-gradient(135deg,rgba(255,192,203,0.25),rgba(255,150,180,0.12))', padding: isMobile ? '14px 18px' : '18px 26px' }}>
+                              <div style={{ background: 'linear-gradient(135deg,rgba(255,192,203,0.25),rgba(255,150,180,0.12))', padding: isMobile ? '14px 18px' : '18px 26px', flexShrink: 0 }}>
                                 <p className="text-primary" style={{ margin: 0, fontWeight: 700, fontSize: '0.78rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
                                   {new Date(item.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
                                 </p>
@@ -403,7 +410,7 @@ const News = () => {
                             )}
 
                             {/* Body */}
-                            <div style={{ padding: isMobile ? '16px 18px 14px' : '22px 26px 18px' }}>
+                            <div style={{ padding: isMobile ? '16px 18px 14px' : '22px 26px 18px', flex: 1 }}>
                               <h2 style={{ margin: '0 0 10px', fontSize: isMobile ? '1.15rem' : '1.4rem', fontWeight: 800, color: 'rgba(30,15,25,0.9)', lineHeight: 1.25 }}>
                                 {item.title}
                               </h2>
@@ -419,7 +426,7 @@ const News = () => {
                             </div>
 
                             {/* Footer */}
-                            <div style={{ padding: isMobile ? '10px 18px 12px' : '11px 26px 13px', borderTop: '1px solid rgba(255,192,203,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6, background: 'rgba(255,192,203,0.04)' }}>
+                            <div style={{ padding: isMobile ? '10px 18px 12px' : '11px 26px 13px', borderTop: '1px solid rgba(255,192,203,0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 6, background: 'rgba(255,192,203,0.04)', flexShrink: 0 }}>
                               <p className="text-primary" style={{ margin: 0, fontSize: '0.8rem', fontWeight: 600 }}>
                                 By {item.author?.name || 'Admin'}
                               </p>
