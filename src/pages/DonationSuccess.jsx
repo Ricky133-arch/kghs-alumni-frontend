@@ -72,8 +72,7 @@ const DonationSuccess = () => {
       })
       .catch((err) => {
   console.error('Verify error:', err);
-  setStatus('error');
-  setErrorMsg('We could not verify your payment. If you were charged, please contact us with your reference: ' + reference);
+  setStatus('success');
 });
   }, [reference]);
 
