@@ -103,7 +103,11 @@ const AdminDashboard = () => {
     setActionLoading(s => ({ ...s, [id + '_approve']: true }));
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { isApproved: true }, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}`,
+        { isApproved: true },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setUsers(u => u.map(x => x._id === id ? { ...x, isApproved: true } : x));
       showToast('Sister welcomed into the family! ');
     } catch { showToast('Approval failed. Try again.', 'error'); }
@@ -115,7 +119,12 @@ const AdminDashboard = () => {
     setActionLoading(s => ({ ...s, [id + '_role']: true }));
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, { role: newRole }, { headers: { Authorization: `Bearer ${token}` } });
+      // ── Updated to use the dedicated /role endpoint ──
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/admin/users/${id}/role`,
+        { role: newRole },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setUsers(u => u.map(x => x._id === id ? { ...x, role: newRole } : x));
       showToast(`Role updated to ${newRole}`);
     } catch { showToast('Role update failed. Try again.', 'error'); }
