@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence, animate, useInView, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, animate, useInView, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { FaInstagram } from 'react-icons/fa';
@@ -75,19 +75,6 @@ const Arrow = ({ dir = 'right', size = 16 }) => (
 const ArrowLong = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-// ─── Value icons ──────────────────────────────────────────────────────
-const ICONS = {
-  sisterhood: <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />,
-  excellence: <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />,
-  service:    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" />,
-  empower:    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />,
-};
-const Icon = ({ name }) => (
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {ICONS[name]}
   </svg>
 );
 
@@ -387,13 +374,115 @@ const Leadership = () => {
   );
 };
 
-// ─── VALUES ───────────────────────────────────────────────────────────
+// ─── VISION (scroll-lit statement) ────────────────────────────────────
+const VISION_TEXT = "To cultivate a global sisterhood of empowered Kalabari Girls' High School alumnae who lead with excellence, compassion, and unwavering confidence — transforming communities, breaking barriers, and inspiring future generations of women to reach their fullest potential.";
+const VISION_ACCENTS = new Set(['sisterhood', 'excellence', 'compassion', 'confidence']);
+
+const LitWord = ({ word, progress, range, accent }) => {
+  const opacity = useTransform(progress, range, [0.16, 1]);
+  return (
+    <span className={`h-vw${accent ? ' h-vw-accent' : ''}`}>
+      <motion.span style={{ opacity }}>{word}</motion.span>{' '}
+    </span>
+  );
+};
+
+const Vision = () => {
+  const ref = useRef(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.85', 'end 0.5'] });
+  const words = VISION_TEXT.split(' ');
+
+  return (
+    <section className="h-vision" aria-labelledby="vision-heading">
+      <div className="h-container h-vision-grid">
+        <aside className="h-vision-side">
+          <span className="h-vision-num" aria-hidden="true">I.</span>
+          <h2 id="vision-heading" className="h-vision-label">Our Vision</h2>
+          <p className="h-vision-meta">Kalabari Girls' High School<br />Alumni Foundation · Est. 2018</p>
+        </aside>
+
+        <div className="h-vision-main">
+          <p ref={ref} className="h-vision-text">
+            {reduce
+              ? VISION_TEXT
+              : words.map((w, i) => {
+                  const start = i / words.length;
+                  const end = start + 1 / words.length;
+                  const key = w.toLowerCase().replace(/[^a-z]/g, '');
+                  return <LitWord key={i} word={w} progress={scrollYProgress} range={[start, end]} accent={VISION_ACCENTS.has(key)} />;
+                })}
+          </p>
+
+          <Reveal as="figure" className="h-vision-sign">
+            <span className="h-vision-rule" aria-hidden="true" />
+            <blockquote>Building legacies of leadership, one sister at a time.</blockquote>
+            <figcaption>— The Foundation's promise</figcaption>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── VALUES (index + sticky photograph) ───────────────────────────────
 const VALUES = [
-  { icon: 'sisterhood', t: 'Sisterhood',           b: 'Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.' },
-  { icon: 'excellence', t: 'Excellence',           b: 'Pursuing the highest standards in education, leadership, and personal achievement.' },
-  { icon: 'service',    t: 'Compassion & Service', b: 'Giving back to our community and uplifting those in need with kindness and generosity.' },
-  { icon: 'empower',    t: 'Empowerment',          b: 'Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.' },
+  { t: 'Sisterhood',           img: 'v1771403635/KGHS_DAY3_25_oj2203',  b: 'Unbreakable bonds of support, trust, and lifelong connection among all KGHS women.' },
+  { t: 'Excellence',           img: 'v1771403496/KGHS_DAY3_226_vq6m1k', b: 'Pursuing the highest standards in education, leadership, and personal achievement.' },
+  { t: 'Compassion & Service', img: 'v1771404007/KGHS_DAY1_31_ucwnrp',  b: 'Giving back to our community and uplifting those in need with kindness and generosity.' },
+  { t: 'Empowerment',          img: 'v1771403564/KGHS_DAY3_12_chze2v',  b: 'Equipping every girl and woman with the confidence, skills, and opportunities to lead and succeed globally.' },
 ];
+
+const Values = () => {
+  const [active, setActive] = useState(0);
+  return (
+    <section className="h-values-sec" aria-labelledby="values-heading">
+      <div className="h-container">
+        <div className="h-values-top">
+          <span className="h-vision-num h-vision-num-dark" aria-hidden="true">II.</span>
+          <h2 id="values-heading" className="h-values-heading">What we<br /><em>stand for</em></h2>
+          <p className="h-values-intro">Four principles, carried from the classrooms of Buguma to wherever our sisters now live and lead.</p>
+        </div>
+
+        <div className="h-values-grid">
+          <div className="h-values-photo" aria-hidden="true">
+            {VALUES.map((v, i) => (
+              <img key={v.img} src={cld(v.img, 1000)} srcSet={cldSet(v.img)} sizes="(max-width:900px) 100vw, 520px"
+                alt="" loading="lazy" decoding="async" className={`h-values-img${i === active ? ' on' : ''}`} />
+            ))}
+            <span className="h-values-photo-num">{String(active + 1).padStart(2, '0')}</span>
+            <span className="h-values-photo-cap">{VALUES[active].t}</span>
+          </div>
+
+          <ol className="h-values-list">
+            {VALUES.map((v, i) => {
+              const on = i === active;
+              return (
+                <li key={v.t} className={`h-vrow${on ? ' on' : ''}`}>
+                  <button className="h-vrow-btn" aria-expanded={on}
+                    onClick={() => setActive(i)} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}>
+                    <span className="h-vrow-num">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="h-vrow-title">{v.t}</span>
+                    <span className="h-vrow-plus" aria-hidden="true" />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {on && (
+                      <motion.div className="h-vrow-body"
+                        initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.45, ease: EASE }}>
+                        <p>{v.b}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 // ─── MAIN HOME ────────────────────────────────────────────────────────
 const Home = () => {
@@ -440,7 +529,7 @@ const Home = () => {
             <div className="h-hero-content">
               <motion.span className="h-hero-badge"
                 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, ease: EASE }}>
-                <span className="h-pulse" /> Kalabari Girls' High School · Buguma
+                Kalabari Girls' High School · Buguma
               </motion.span>
               <motion.h1 className="h-hero-title"
                 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: EASE }}>
@@ -457,15 +546,11 @@ const Home = () => {
               </motion.div>
             </div>
 
-            <motion.div className="h-hero-stats"
-              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.95, duration: 0.8, ease: EASE }}>
-              {[['2018', 'Foundation formed'], ['300+', 'Registered members'], ['Restored', 'School reinstated']].map(([v, l]) => (
-                <div key={l} className="h-hero-stat">
-                  <span className="h-hero-stat-val">{v}</span>
-                  <span className="h-hero-stat-label">{l}</span>
-                </div>
-              ))}
-            </motion.div>
+            <motion.p className="h-hero-caption"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1, duration: 0.8 }}>
+              <span>Pictured</span>
+              Homecoming, Day One.<br />Old girls return to Buguma.
+            </motion.p>
           </div>
 
           <motion.a href="#news-heading" className="h-hero-scroll" aria-label="Scroll down"
@@ -473,19 +558,6 @@ const Home = () => {
             <span className="h-hero-scroll-dot" />
           </motion.a>
         </section>
-
-        {/* ── MARQUEE ── */}
-        <div className="h-marquee" aria-hidden="true">
-          <div className="h-marquee-track">
-            {Array.from({ length: 2 }).map((_, k) => (
-              <div key={k} className="h-marquee-group">
-                {['Sisterhood', 'Excellence', 'Compassion', 'Service', 'Empowerment', 'Legacy', 'Leadership', 'Confidence'].map(w => (
-                  <span key={w}>{w}<i>✦</i></span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
 
         <LatestNews news={news} />
         <UpcomingEvents events={events} />
@@ -532,36 +604,9 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ── VISION + VALUES (bento) ── */}
-        <section className="h-section h-rose" aria-labelledby="vision-heading">
-          <div className="h-container">
-            <SectionHeader eyebrow="Looking Forward" id="vision-heading" title={<>Our Vision & <em>Values</em></>} />
-            <div className="h-bento">
-              <Reveal className="h-bento-vision">
-                <div className="h-bento-vision-img">
-                  <FadeImg id="v1771403921/KGHS_DAY1_53_gnrwrj" alt="KGHS alumnae" className="h-img h-img-fill" />
-                </div>
-                <div className="h-bento-vision-text">
-                  <span className="h-label">Our Vision</span>
-                  <p>To cultivate a global sisterhood of empowered Kalabari Girls' High School alumnae who lead with excellence, compassion, and unwavering confidence — transforming communities, breaking barriers, and inspiring future generations of women to reach their fullest potential.</p>
-                  <blockquote className="h-quote">“Building legacies of leadership, one sister at a time.”</blockquote>
-                </div>
-              </Reveal>
-
-              <Reveal className="h-bento-img" delay={0.08}>
-                <FadeImg id="v1771404007/KGHS_DAY1_31_ucwnrp" alt="KGHS alumnae celebrating" className="h-img h-img-fill" />
-              </Reveal>
-
-              {VALUES.map((v, i) => (
-                <Reveal key={v.t} className="h-value" delay={0.1 + i * 0.06}>
-                  <span className="h-value-icon"><Icon name={v.icon} /></span>
-                  <h3 className="h-value-title">{v.t}</h3>
-                  <p className="h-value-body">{v.b}</p>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── VISION + VALUES ── */}
+        <Vision />
+        <Values />
 
         <Leadership />
 
@@ -799,8 +844,6 @@ html { scroll-behavior:smooth; }
 /* ── Type ── */
 .h-head { display:flex; flex-direction:column; gap:14px; margin-bottom:clamp(36px,5vw,60px); }
 .h-head-center { align-items:center; text-align:center; }
-.h-eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--rose); background:var(--white); border:1px solid var(--line); border-radius:100px; padding:6px 14px; box-shadow:var(--shadow-sm); width:fit-content; }
-.h-eyebrow-dot { width:6px; height:6px; border-radius:50%; background:var(--rose); box-shadow:0 0 0 3px var(--rose-pale); }
 .h-heading { font-family:'Playfair Display',serif; font-size:clamp(2rem,4.6vw,3.4rem); font-weight:800; line-height:1.08; color:var(--ink); margin:0; letter-spacing:-.025em; text-wrap:balance; }
 .h-heading em, .h-donate-title em, .h-const-title em { font-style:italic; font-weight:700; color:var(--rose); }
 .h-left { text-align:left; }
@@ -848,28 +891,14 @@ html { scroll-behavior:smooth; }
 .h-hero-inner { position:relative; z-index:2; width:100%; display:grid; gap:40px; align-items:end; }
 @media(min-width:960px){ .h-hero-inner{ grid-template-columns:1.5fr 1fr; } }
 .h-hero-content { max-width:760px; }
-.h-hero-badge { display:inline-flex; align-items:center; gap:10px; font-size:.75rem; font-weight:500; letter-spacing:.08em; color:rgba(255,255,255,.9); background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:100px; padding:8px 16px; margin-bottom:24px; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
-.h-pulse { width:8px; height:8px; border-radius:50%; background:var(--rose); box-shadow:0 0 0 0 rgba(255,105,180,.7); animation:pulse 2s infinite; }
-@keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(255,105,180,.7)} 70%{box-shadow:0 0 0 10px rgba(255,105,180,0)} 100%{box-shadow:0 0 0 0 rgba(255,105,180,0)} }
 .h-hero-title { font-family:'Playfair Display',serif; font-size:clamp(2.6rem,7.5vw,5.8rem); font-weight:800; line-height:1.0; letter-spacing:-.035em; margin:0 0 24px; text-wrap:balance; }
 .h-hero-title em { font-style:italic; font-weight:700; color:var(--rose-light); }
 .h-hero-sub { font-size:clamp(1rem,1.8vw,1.18rem); color:rgba(255,255,255,.82); line-height:1.6; max-width:540px; margin:0 0 34px; font-weight:300; }
 .h-hero-ctas { display:flex; flex-wrap:wrap; gap:12px; }
-.h-hero-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.22); border-radius:var(--r-md); overflow:hidden; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
-.h-hero-stat { background:rgba(42,26,34,.28); padding:20px 16px; display:flex; flex-direction:column; gap:4px; }
-.h-hero-stat-val { font-family:'Playfair Display',serif; font-size:clamp(1.25rem,2.6vw,1.8rem); font-weight:700; color:#fff; }
-.h-hero-stat-label { font-size:.72rem; color:rgba(255,255,255,.7); letter-spacing:.04em; }
 .h-hero-scroll { position:absolute; bottom:22px; left:50%; translate:-50% 0; z-index:3; width:24px; height:38px; border:1.5px solid rgba(255,255,255,.5); border-radius:20px; display:none; justify-content:center; padding-top:7px; }
 @media(min-width:960px){ .h-hero-scroll{ display:flex; } }
 .h-hero-scroll-dot { width:4px; height:8px; border-radius:4px; background:#fff; }
 
-/* ── Marquee ── */
-.h-marquee { background:var(--ink); color:#fff; overflow:hidden; padding:16px 0; }
-.h-marquee-track { display:flex; width:max-content; animation:marquee 40s linear infinite; }
-.h-marquee-group { display:flex; }
-.h-marquee span { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1rem,2vw,1.35rem); padding:0 22px; display:inline-flex; align-items:center; gap:44px; white-space:nowrap; opacity:.92; }
-.h-marquee i { font-style:normal; color:var(--rose); font-size:.8em; }
-@keyframes marquee { to { transform:translateX(-50%); } }
 
 /* ── News ── */
 .h-news { max-width:980px; margin:0 auto; display:grid; gap:24px; background:var(--white); border:1px solid var(--line); border-radius:var(--r-lg); padding:clamp(24px,4vw,48px); box-shadow:var(--shadow-lg); position:relative; overflow:hidden; }
@@ -952,25 +981,6 @@ html { scroll-behavior:smooth; }
 .h-thumb:hover { opacity:.85; }
 .h-thumb.on { opacity:1; border-color:var(--rose); transform:translateY(-2px); }
 
-/* ── Bento ── */
-.h-bento { display:grid; gap:16px; grid-template-columns:1fr; }
-@media(min-width:640px){ .h-bento{ grid-template-columns:repeat(2,1fr); } }
-@media(min-width:1024px){ .h-bento{ grid-template-columns:repeat(4,1fr); } }
-.h-bento-vision { background:var(--white); border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow); display:grid; }
-@media(min-width:640px){ .h-bento-vision{ grid-column:span 2; } }
-@media(min-width:1024px){ .h-bento-vision{ grid-column:span 3; grid-template-columns:1fr 1.2fr; } }
-.h-bento-vision-img { border-radius:0; min-height:240px; }
-.h-bento-vision-text { padding:clamp(24px,3.5vw,40px); display:flex; flex-direction:column; gap:16px; justify-content:center; }
-.h-bento-vision-text p { margin:0; font-size:clamp(1rem,1.6vw,1.12rem); line-height:1.75; color:var(--ink-mid); }
-.h-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.1rem,2vw,1.35rem); color:var(--rose); line-height:1.45; margin:6px 0 0; padding-left:18px; border-left:3px solid var(--rose-light); }
-.h-bento-img { border-radius:var(--r-lg); overflow:hidden; box-shadow:var(--shadow); min-height:260px; }
-@media(min-width:640px){ .h-bento-img{ grid-column:span 2; } }
-@media(min-width:1024px){ .h-bento-img{ grid-column:span 1; } }
-.h-value { background:var(--white); border:1px solid var(--line); border-radius:var(--r-md); padding:26px 22px; box-shadow:var(--shadow-sm); transition:transform .3s, box-shadow .3s, border-color .3s; }
-.h-value:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--rose-light); }
-.h-value-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; color:#fff; background:linear-gradient(135deg,var(--rose),var(--rose-deep)); box-shadow:0 8px 20px -6px rgba(255,105,180,.6); margin-bottom:18px; }
-.h-value-title { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; margin:0 0 8px; color:var(--ink); }
-.h-value-body { font-size:.88rem; color:var(--ink-mid); line-height:1.7; margin:0; }
 
 /* ── Leadership tabs ── */
 .h-tabs-wrap { display:flex; justify-content:center; margin-bottom:32px; }
@@ -1074,10 +1084,72 @@ html { scroll-behavior:smooth; }
 .h-footer-bottom p { font-size:.78rem; margin:0; color:rgba(255,255,255,.55); }
 .h-footer-tagline { font-style:italic; font-family:'Playfair Display',serif; }
 
+/* ── Editorial labels (replaces pill eyebrows) ── */
+.h-eyebrow { display:inline-flex; align-items:center; gap:14px; font-size:.72rem; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--rose); }
+.h-eyebrow-dot { width:32px; height:1px; background:currentColor; display:inline-block; }
+.h-head-center .h-eyebrow::after { content:''; width:32px; height:1px; background:currentColor; }
+.h-hero-badge { display:inline-flex; align-items:center; gap:14px; font-size:.74rem; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-bottom:28px; }
+.h-hero-badge::before { content:''; width:40px; height:1px; background:var(--rose-light); }
+.h-hero-caption { justify-self:end; align-self:end; margin:0; max-width:220px; font-family:'Playfair Display',serif; font-style:italic; font-size:.95rem; line-height:1.5; color:rgba(255,255,255,.78); padding-top:14px; border-top:1px solid rgba(255,255,255,.35); display:none; }
+.h-hero-caption span { display:block; font-family:'DM Sans',sans-serif; font-style:normal; font-size:.66rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--rose-light); margin-bottom:6px; }
+@media(min-width:960px){ .h-hero-caption{ display:block; } }
+
+/* ── Vision ── */
+.h-vision { background:var(--ink); color:#fff; padding:clamp(88px,13vw,170px) 0; position:relative; overflow:hidden; }
+.h-vision::before { content:'“'; position:absolute; right:-2vw; top:-8vw; font-family:'Playfair Display',serif; font-size:clamp(18rem,40vw,36rem); line-height:1; color:var(--rose); opacity:.06; pointer-events:none; }
+.h-vision-grid { display:grid; gap:48px; position:relative; }
+@media(min-width:960px){ .h-vision-grid{ grid-template-columns:220px 1fr; gap:72px; } }
+.h-vision-side { display:flex; flex-direction:column; gap:14px; }
+@media(min-width:960px){ .h-vision-side{ position:sticky; top:120px; align-self:start; padding-top:12px; border-top:1px solid rgba(255,255,255,.2); } }
+.h-vision-num { font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:var(--rose-light); }
+.h-vision-num-dark { color:var(--rose); }
+.h-vision-label { margin:0; font-size:.74rem; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:#fff; }
+.h-vision-meta { margin:0; font-size:.8rem; line-height:1.6; color:rgba(255,255,255,.5); }
+.h-vision-text { font-family:'Playfair Display',serif; font-weight:600; font-size:clamp(1.75rem,4.1vw,3.5rem); line-height:1.22; letter-spacing:-.02em; margin:0; text-wrap:pretty; }
+.h-vw { display:inline; }
+.h-vw-accent { font-style:italic; color:var(--rose-light); }
+.h-vision-sign { margin:clamp(48px,7vw,88px) 0 0; display:grid; grid-template-columns:auto 1fr; column-gap:22px; row-gap:8px; align-items:center; max-width:620px; }
+.h-vision-rule { grid-row:span 2; width:56px; height:1px; background:var(--rose); }
+.h-vision-sign blockquote { margin:0; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.1rem,2vw,1.4rem); color:#fff; line-height:1.4; }
+.h-vision-sign figcaption { font-size:.72rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); }
+
+/* ── Values ── */
+.h-values-sec { background:var(--white); padding:clamp(88px,12vw,150px) 0; }
+.h-values-top { display:grid; gap:16px; margin-bottom:clamp(44px,6vw,80px); align-items:end; }
+@media(min-width:900px){ .h-values-top{ grid-template-columns:60px 1fr 340px; gap:32px; } }
+.h-values-heading { margin:0; font-family:'Playfair Display',serif; font-weight:800; font-size:clamp(2.6rem,7vw,5.6rem); line-height:.95; letter-spacing:-.04em; color:var(--ink); }
+.h-values-heading em { font-style:italic; font-weight:600; color:var(--rose); }
+.h-values-intro { margin:0; font-size:1rem; line-height:1.7; color:var(--ink-mid); }
+.h-values-grid { display:grid; gap:36px; }
+@media(min-width:900px){ .h-values-grid{ grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:64px; align-items:start; } }
+.h-values-photo { position:relative; aspect-ratio:4/5; overflow:hidden; background:var(--rose-mid); border-radius:2px; }
+@media(min-width:900px){ .h-values-photo{ position:sticky; top:100px; } }
+@media(max-width:899px){ .h-values-photo{ aspect-ratio:4/3; } }
+.h-values-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transform:scale(1.08); transition:opacity .7s ease, transform 1.4s cubic-bezier(.22,1,.36,1); }
+.h-values-img.on { opacity:1; transform:scale(1); }
+.h-values-photo::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg,transparent 55%,rgba(42,26,34,.6)); pointer-events:none; }
+.h-values-photo-num { position:absolute; top:14px; right:20px; z-index:2; font-family:'Playfair Display',serif; font-weight:800; font-size:clamp(4rem,9vw,7rem); line-height:1; color:transparent; -webkit-text-stroke:1.5px rgba(255,255,255,.85); font-variant-numeric:tabular-nums; }
+.h-values-photo-cap { position:absolute; left:20px; bottom:18px; z-index:2; font-size:.72rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:#fff; }
+.h-values-list { list-style:none; margin:0; padding:0; border-top:1px solid var(--ink); }
+.h-vrow { border-bottom:1px solid var(--line); }
+.h-vrow-btn { width:100%; display:grid; grid-template-columns:44px 1fr 22px; align-items:center; gap:16px; padding:clamp(20px,2.6vw,30px) 0; background:none; border:none; cursor:pointer; text-align:left; font-family:inherit; color:var(--ink-soft); transition:color .3s; }
+.h-vrow-num { font-size:.78rem; font-weight:600; letter-spacing:.1em; font-variant-numeric:tabular-nums; align-self:start; padding-top:.7em; }
+.h-vrow-title { font-family:'Playfair Display',serif; font-weight:700; font-size:clamp(1.7rem,3.6vw,2.9rem); line-height:1.08; letter-spacing:-.025em; transition:transform .45s cubic-bezier(.22,1,.36,1); }
+.h-vrow-plus { position:relative; width:18px; height:18px; }
+.h-vrow-plus::before, .h-vrow-plus::after { content:''; position:absolute; left:0; right:0; top:50%; height:1.5px; background:currentColor; transition:transform .35s; }
+.h-vrow-plus::after { transform:rotate(90deg); }
+.h-vrow.on .h-vrow-btn, .h-vrow-btn:hover { color:var(--ink); }
+.h-vrow.on .h-vrow-num { color:var(--rose); }
+.h-vrow.on .h-vrow-title { transform:translateX(8px); }
+.h-vrow.on .h-vrow-title { font-style:italic; color:var(--rose); }
+.h-vrow.on .h-vrow-plus { color:var(--rose); }
+.h-vrow.on .h-vrow-plus::after { transform:rotate(0deg); }
+.h-vrow-body { overflow:hidden; }
+.h-vrow-body p { margin:0; padding:0 0 clamp(22px,2.6vw,30px) 60px; max-width:520px; font-size:1rem; line-height:1.75; color:var(--ink-mid); }
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
-  .h-marquee-track { animation:none; }
 }
 `;
 
