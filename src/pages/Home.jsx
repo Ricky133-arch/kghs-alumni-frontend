@@ -262,93 +262,47 @@ const Home = () => {
       <div className="h-root">
 
         {/* ── HERO ── */}
-        <section className="hx" aria-label="Welcome">
-          <div className="hx-inner">
+        <section className="hh" aria-label="Welcome">
+          <div className="hh-bg"
+            style={{ backgroundImage: `url('${cld('v1771271342/KGHS_DAY1_15_1_jdblve', 1800)}')` }}
+          />
+          <div className="hh-overlay" />
+          <div className="hh-glow" aria-hidden="true" />
 
-            {/* masthead */}
-            <motion.div className="hx-mast"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.1 }}>
-              <span>Kalabari Girls' High School</span>
-              <span className="hx-mast-mid">Buguma · Asari-Toru · Rivers State</span>
-              <span>Est. 2018</span>
-            </motion.div>
-
-            <div className="hx-grid">
-              {/* words */}
-              <div className="hx-copy">
-                <motion.p className="hx-pre"
-                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.25 }}>
-                  Welcome to the
-                </motion.p>
-                <h1 className="hx-title">
-                  {['KGHS', 'Alumni', 'Foundation'].map((w, i) => (
-                    <span key={w} className="hx-line">
-                      <motion.span className={i === 1 ? 'hx-word hx-word-em' : 'hx-word'}
-                        initial={{ y: '105%' }} animate={{ y: 0 }}
-                        transition={{ duration: 1, delay: 0.35 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}>
-                        {w}
-                      </motion.span>
-                    </span>
-                  ))}
-                </h1>
-
-                <motion.div className="hx-foot"
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.9 }}>
-                  <ol className="hx-verbs">
-                    <li><span>i.</span>Connect</li>
-                    <li><span>ii.</span>Share</li>
-                    <li><span>iii.</span>Inspire</li>
-                  </ol>
-                  <p className="hx-lede">
-                    The old girls of KGHS — reunited, rebuilding the school that raised us, and opening its doors to the next generation.
-                  </p>
-                  <div className="hx-actions">
-                    <Link to="/signup" className="hx-cta">
-                      <span>Join Our Community</span>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </Link>
-                    <a href="#story-heading" className="hx-link">Read our story</a>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* picture */}
-              <div className="hx-media">
-                <motion.div className="hx-arch"
-                  initial={{ clipPath: 'inset(100% 0 0 0)' }} animate={{ clipPath: 'inset(0% 0 0 0)' }}
-                  transition={{ duration: 1.4, delay: 0.3, ease: [0.76, 0, 0.24, 1] }}>
-                  <motion.img
-                    src={cld('v1771271342/KGHS_DAY1_15_1_jdblve', 1200)}
-                    srcSet={cldSet('v1771271342/KGHS_DAY1_15_1_jdblve')}
-                    sizes="(max-width:900px) 90vw, 520px"
-                    alt="KGHS alumnae at the homecoming in Buguma"
-                    loading="eager" decoding="async" className="hx-img"
-                    initial={{ scale: 1.25 }} animate={{ scale: 1 }}
-                    transition={{ duration: 2.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </motion.div>
-
-                <motion.div className="hx-seal" aria-hidden="true"
-                  initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}>
-                  <svg viewBox="0 0 120 120" className="hx-seal-ring">
-                    <defs><path id="hx-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" /></defs>
-                    <text><textPath href="#hx-circle">ONE SISTER AT A TIME · BUILDING LEGACIES ·</textPath></text>
-                  </svg>
-                  <img src="https://i.imgur.com/WwrdAkS.png" alt="" className="hx-seal-logo" />
-                </motion.div>
-
-                <motion.p className="hx-cap"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 0.8 }}>
-                  <span>Fig. 1</span> Homecoming, Day One — Buguma
-                </motion.p>
-              </div>
+          <div className="hh-inner">
+            <div className="hh-content">
+              <motion.span className="hh-badge"
+                initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, ease: [0.22, 1, 0.36, 1] }}>
+                Kalabari Girls' High School · Buguma
+              </motion.span>
+              <motion.h1 className="hh-title"
+                initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}>
+                Welcome to the <em>KGHS Alumni</em> Foundation
+              </motion.h1>
+              <motion.p className="hh-sub"
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
+                Connect · Share · Inspire — a global sisterhood restoring a school and raising the next generation of leaders.
+              </motion.p>
+              <motion.div className="hh-ctas"
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+                <Link to="/signup" className="hh-btn hh-btn-primary">
+                  Join Our Community
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </Link>
+                <Link to="/donations" className="hh-btn hh-btn-glass">Donate</Link>
+              </motion.div>
             </div>
 
-            <a href="#news-heading" className="hx-scroll" aria-label="Scroll to latest news">
-              <span>Scroll</span><i />
-            </a>
+            <motion.p className="hh-caption"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1, duration: 0.8 }}>
+              <span>Pictured</span>
+              Homecoming, Day One.<br />Old girls return to Buguma.
+            </motion.p>
           </div>
+
+          <a href="#news-heading" className="hh-scroll" aria-label="Scroll down">
+            <span className="hh-scroll-dot" />
+          </a>
         </section>
 
         {/* ── LATEST NEWS ── */}
@@ -835,51 +789,35 @@ const CSS = `
 .h-img-accent { position:absolute; bottom:-14px; right:-14px; width:55%; height:55%; border-radius:22px; background:var(--rose-light); z-index:-1; }
 .h-img-accent-rose { background:var(--rose-mid); }
 
-/* ── Hero (editorial) ── */
-.hx { position:relative; background:var(--rose-pale); color:var(--ink); overflow:hidden; }
-.hx::before { content:''; position:absolute; inset:0; background:radial-gradient(70% 60% at 85% 40%, var(--rose-mid) 0%, transparent 70%); opacity:.7; pointer-events:none; }
-.hx-inner { position:relative; max-width:1240px; margin:0 auto; padding:clamp(28px,4vw,44px) clamp(18px,4vw,36px) clamp(56px,7vw,88px); min-height:100svh; display:flex; flex-direction:column; }
-.hx-mast { display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-top:1px solid var(--ink); border-bottom:1px solid var(--rose-light); font-size:.68rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-mid); }
-.hx-mast-mid { display:none; }
-@media(min-width:900px){ .hx-mast-mid{ display:inline; } }
-.hx-grid { flex:1; display:grid; gap:clamp(36px,5vw,64px); align-items:center; padding-top:clamp(36px,6vw,64px); }
-@media(min-width:900px){ .hx-grid{ grid-template-columns:1.15fr .85fr; } }
-.hx-pre { margin:0 0 6px; font-family:'Playfair Display',serif; font-style:italic; font-size:clamp(1.1rem,2vw,1.5rem); color:var(--ink-mid); }
-.hx-title { margin:0; font-family:'Playfair Display',serif; font-weight:800; font-size:clamp(3.4rem,10.5vw,8.6rem); line-height:.9; letter-spacing:-.045em; color:var(--ink); }
-.hx-line { display:block; overflow:hidden; padding-bottom:.06em; }
-.hx-word { display:inline-block; }
-.hx-word-em { font-style:italic; font-weight:600; color:var(--rose); padding-left:.6em; }
-.hx-foot { margin-top:clamp(28px,4vw,44px); display:grid; gap:22px; max-width:520px; }
-.hx-verbs { list-style:none; margin:0; padding:0; display:flex; border-top:1px solid var(--rose-light); }
-.hx-verbs li { flex:1; padding:12px 0 0; font-size:.78rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--ink); }
-.hx-verbs li + li { padding-left:16px; border-left:1px solid var(--rose-light); }
-.hx-verbs span { font-family:'Playfair Display',serif; font-style:italic; font-weight:600; text-transform:none; letter-spacing:0; color:var(--rose); margin-right:8px; }
-.hx-lede { margin:0; font-size:clamp(.98rem,1.5vw,1.08rem); line-height:1.7; color:var(--ink-mid); }
-.hx-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px 28px; }
-.hx-cta { display:inline-flex; align-items:center; gap:18px; background:var(--ink); color:#fff; text-decoration:none; padding:16px 22px 16px 26px; font-size:.92rem; font-weight:600; letter-spacing:.02em; border-radius:2px; transition:background .3s; }
-.hx-cta svg { transition:transform .3s cubic-bezier(.22,1,.36,1); }
-.hx-cta:hover { background:var(--rose); }
-.hx-cta:hover svg { transform:translateX(5px); }
-.hx-link { font-size:.92rem; font-weight:500; color:var(--ink); text-decoration:none; background:linear-gradient(var(--rose),var(--rose)) left bottom/100% 1px no-repeat; padding-bottom:3px; transition:background-size .35s, color .2s; }
-.hx-link:hover { color:var(--rose); background-size:0 1px; background-position:right bottom; }
-.hx-media { position:relative; justify-self:center; width:min(100%,460px); }
-.hx-arch { position:relative; aspect-ratio:3/4; border-radius:999px 999px 0 0; overflow:hidden; background:var(--rose-mid); box-shadow:0 40px 80px -30px rgba(42,26,34,.45); }
-.hx-arch::after { content:''; position:absolute; inset:10px; border:1px solid rgba(255,255,255,.55); border-radius:999px 999px 0 0; pointer-events:none; }
-.hx-img { width:100%; height:100%; object-fit:cover; display:block; }
-.hx-seal { position:absolute; left:-34px; bottom:56px; width:122px; height:122px; border-radius:50%; background:var(--white); box-shadow:0 14px 34px -12px rgba(42,26,34,.35); display:grid; place-items:center; }
-@media(max-width:520px){ .hx-seal{ left:-10px; width:100px; height:100px; } }
-.hx-seal-ring { position:absolute; inset:0; width:100%; height:100%; animation:hxSpin 28s linear infinite; }
-.hx-seal-ring text { font-family:'DM Sans',sans-serif; font-size:9.6px; font-weight:600; letter-spacing:.2em; fill:var(--ink); }
-.hx-seal-logo { width:44%; height:44%; object-fit:contain; border-radius:50%; }
-@keyframes hxSpin { to { transform:rotate(360deg); } }
-.hx-cap { margin:14px 0 0; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); text-align:right; }
-.hx-cap span { font-family:'Playfair Display',serif; font-style:italic; text-transform:none; letter-spacing:0; color:var(--rose); margin-right:6px; }
-.hx-scroll { position:absolute; left:clamp(18px,4vw,36px); bottom:24px; display:none; align-items:center; gap:12px; font-size:.66rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-mid); text-decoration:none; }
-.hx-scroll i { position:relative; width:56px; height:1px; background:var(--rose-light); overflow:hidden; }
-.hx-scroll i::after { content:''; position:absolute; inset:0; background:var(--rose); animation:hxLine 2.2s cubic-bezier(.76,0,.24,1) infinite; }
-@keyframes hxLine { 0%{transform:translateX(-100%)} 60%,100%{transform:translateX(100%)} }
-@media(min-width:900px){ .hx-scroll{ display:inline-flex; } }
-@media (prefers-reduced-motion: reduce){ .hx-seal-ring, .hx-scroll i::after { animation:none; } }
+/* ── Hero ── */
+.hh { position:relative; min-height:100vh; min-height:100svh; display:flex; align-items:flex-end; overflow:hidden; color:#fff; padding:120px 0 clamp(48px,8vw,88px); }
+.hh-bg { position:absolute; inset:-4%; background-size:cover; background-position:center; animation:hhZoom 24s linear infinite alternate; }
+@keyframes hhZoom { from{transform:scale(1.04)} to{transform:scale(1.12)} }
+.hh-overlay { position:absolute; inset:0; background:linear-gradient(180deg, rgba(42,26,34,.35) 0%, rgba(42,26,34,.25) 35%, rgba(42,26,34,.82) 100%), linear-gradient(90deg, rgba(42,26,34,.55) 0%, transparent 70%); }
+.hh-glow { position:absolute; width:60vw; height:60vw; max-width:800px; max-height:800px; right:-15%; bottom:-30%; background:radial-gradient(circle, rgba(255,105,180,.35) 0%, transparent 65%); filter:blur(20px); pointer-events:none; }
+.hh-inner { position:relative; z-index:2; width:100%; max-width:1200px; margin:0 auto; padding:0 clamp(16px,4vw,32px); display:grid; gap:40px; align-items:end; }
+@media(min-width:960px){ .hh-inner{ grid-template-columns:1.5fr 1fr; } }
+.hh-content { max-width:760px; }
+.hh-badge { display:inline-flex; align-items:center; gap:14px; font-size:.74rem; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:rgba(255,255,255,.85); margin-bottom:28px; }
+.hh-badge::before { content:''; width:40px; height:1px; background:var(--rose-light); }
+.hh-title { font-family:'Playfair Display',serif; font-size:clamp(2.6rem,7.5vw,5.8rem); font-weight:800; line-height:1.0; letter-spacing:-.035em; margin:0 0 24px; text-wrap:balance; color:#fff; }
+.hh-title em { font-style:italic; font-weight:600; color:var(--rose-light); }
+.hh-sub { font-size:clamp(1rem,1.8vw,1.18rem); color:rgba(255,255,255,.82); line-height:1.6; max-width:540px; margin:0 0 34px; font-weight:300; }
+.hh-ctas { display:flex; flex-wrap:wrap; gap:12px; }
+.hh-btn { display:inline-flex; align-items:center; justify-content:center; gap:10px; border-radius:100px; padding:15px 28px; font-family:'DM Sans',sans-serif; font-size:.95rem; font-weight:600; letter-spacing:.01em; text-decoration:none; transition:transform .2s ease, background .2s ease; white-space:nowrap; }
+.hh-btn:hover { transform:translateY(-2px); }
+.hh-btn-primary { background:var(--rose); color:#fff; box-shadow:0 10px 30px -8px rgba(255,105,180,.7); }
+.hh-btn-primary:hover { background:#d43f6a; }
+.hh-btn-glass { background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,255,255,.35); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+.hh-btn-glass:hover { background:rgba(255,255,255,.24); }
+.hh-caption { justify-self:end; align-self:end; margin:0; max-width:220px; font-family:'Playfair Display',serif; font-style:italic; font-size:.95rem; line-height:1.5; color:rgba(255,255,255,.78); padding-top:14px; border-top:1px solid rgba(255,255,255,.35); display:none; }
+.hh-caption span { display:block; font-family:'DM Sans',sans-serif; font-style:normal; font-size:.66rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--rose-light); margin-bottom:6px; }
+@media(min-width:960px){ .hh-caption{ display:block; } }
+.hh-scroll { position:absolute; bottom:22px; left:50%; transform:translateX(-50%); z-index:3; width:24px; height:38px; border:1.5px solid rgba(255,255,255,.5); border-radius:20px; display:none; justify-content:center; padding-top:7px; }
+@media(min-width:960px){ .hh-scroll{ display:flex; } }
+.hh-scroll-dot { width:4px; height:8px; border-radius:4px; background:#fff; animation:hhDot 1.8s ease-in-out infinite; }
+@keyframes hhDot { 0%,100%{transform:translateY(0);opacity:1} 50%{transform:translateY(8px);opacity:.4} }
+@media (prefers-reduced-motion: reduce){ .hh-bg, .hh-scroll-dot { animation:none; } }
 
 .h-hero-btn { display:inline-flex; align-items:center; gap:8px; background:var(--rose); color:#fff; border:none; border-radius:100px; padding:15px 36px; font-family:'DM Sans',sans-serif; font-size:1rem; font-weight:600; cursor:pointer; box-shadow:0 8px 32px rgba(232,84,122,.45); transition:background .2s; letter-spacing:.02em; text-decoration:none; }
 .h-hero-btn:hover { background:#d43f6a; }
